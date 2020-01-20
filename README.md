@@ -6,7 +6,7 @@ Sections are configured in ```/src/data/config.json```
 
 The default category id is set to ```237```, the [Campfire](https://edgeryders.eu/c/campfire) category on Edgeryders.
 
-Global classes are set in ```/src/assets/tailwind.css```
+Global classes are set in ```/src/assets/main.css```
 
 Styling uses Tailwind utilities, [read more here](https://tailwindcss.com/docs/adding-new-utilities/#app) on how utilities work.
 
