@@ -1,29 +1,30 @@
 <template>
-  <div class="section" id="people">
+  <div class="section md:section-md" id="people">
     <h1 class="section_title">{{ custom.title }}</h1>
 
-    <div class="w-full flex items-start" v-if="filtered_users">
-      <div class="section_users">
+    <div class="wrapper md:wrapper-md" v-if="filtered_users">
+      <div class="section_users md:section_users-md">
         <div
-          class="user_avatar"
+          class="user_avatar md:user_avatar-md"
           v-for="(item, index) in filtered_users"
           :key="item.name"
-        >
-          <img
-            :src="item.avatar"
-            @click="setActive(index)"
-            :class="{ active: selected === index }"
-          />
-        </div>
+          :style="{ backgroundImage: 'url(' + item.avatar + ')' }"
+          @click="setActive(index)"
+          :class="{ active: selected === index }"
+        ></div>
       </div>
 
       <div class="w-full px-6" v-if="filtered_users[selected]">
         <a
           class="user_name"
           :href="'https://edgeryders.eu/u/' + filtered_users[selected].username"
-          >{{ filtered_users[selected].name }} @{{
-            filtered_users[selected].username
-          }}</a
+        >
+          <span class="mr-1">
+            {{ filtered_users[selected].name }}
+          </span>
+          <span class="font-normal text-lg"
+            >@{{ filtered_users[selected].username }}</span
+          ></a
         >
         <p class="user_bio">{{ filtered_users[selected].bio }}</p>
       </div>

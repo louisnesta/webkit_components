@@ -1,15 +1,15 @@
 <template>
-  <div class="section" id="edgeryders">
-    <div class="section_title flex">
+  <div class="section md:section-md" id="edgeryders">
+    <div class="section_title flex items-center">
       <div class="er_logo mr-3"></div>
-      <h1 class="text-4xl font-bold">{{ custom.title }}</h1>
+      <h1 class="text-2xl md:text-4xl font-bold">{{ custom.title }}</h1>
     </div>
     <div class="w-full flex flex-col items-start justify-between bg-white">
       <div
         class="w-full flex flex-col md:flex-row md:px-0 md:mt-4 leading-normal"
       >
         <div
-          class="w-full pt-0 md:w-1/2 px-6 md:px-0 md:pr-8 md:pt-2 text-left md:text-right md:border-r border-gray-200"
+          class="w-full pt-0 md:w-1/2 md:px-6 md:px-0 md:pr-8 md:pt-2 text-left md:text-right md:border-r border-gray-200"
         >
           <h3
             class="hidden font-display text-2xl font-bold text-center md:inline-block md:text-right md:mb-2 mt-2"
@@ -30,7 +30,7 @@
             </button></a
           >
         </div>
-        <div class="md:w-1/2 px-0 flex flex-col md:pl-8 mt-4">
+        <div class="md:w-1/2 flex flex-col md:pl-8 mt-4">
           <div class="w-full inline-block">
             <div class="icon automation"></div>
             <div class="icon activism"></div>
@@ -53,7 +53,7 @@
         </div>
         <div class="md:w-1/2 mt-2 px-0 pt-0 mb-12 md:pl-8 pt-4">
           <h3
-            class="font-display leading-tight text-2xl font-bold text-center md:text-left md:leading-normal mb-2"
+            class="font-display leading-tight text-2xl font-bold text-left md:leading-normal mb-2"
           >
             This is how it works.
           </h3>
@@ -176,6 +176,27 @@ export default {
   }
   &.nomad {
     background-image: url("data:image/svg+xml, %3Csvg width='77' height='73' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FF4501' fill-rule='nonzero' stroke='%23FF4501'%3E%3Cpath stroke='%23ddd' stroke-width='.2' d='M75.1 2.8l-.3-.4-.3-.3A2 2 0 0 0 74 2c-3.7-2.2-10.7-.2-15.6 4.4l-7 6.7-32.1-2h-.2c-2.6 0-4.6 1.4-5.1 3.6-.5 2 .7 5.2 5.4 7.2l15.3 7.3c-2.5 2.8-7.2 8.2-9.5 11.9l-9 1c-1 0-1.8 1-1.7 2l.6 4.7c0 .8.8 1.5 1.6 1.6l6.5.9.9 6c.1 1 .8 1.6 1.7 1.7l5 .5c.5 0 1-.1 1.4-.4.4-.3.6-.8.7-1.2l1-8.5c3.8-2.3 9.5-6.8 12.4-9.1l7.7 14.5c1.9 4 4.6 5.3 6.7 5.3h1c2.2-.5 3.6-2.4 3.7-5V55l-2.2-30.6 7.1-6.7c4.8-4.6 7-11.2 4.7-14.8zM60 22.3c-.4.4-.6 1-.6 1.4L61.6 55c0 .6-.2 1.2-.6 1.3-.7.1-2.2-.6-3.4-3.1l-8.8-16.8a2 2 0 0 0-1.7-1 2 2 0 0 0-1.3.4c-.1.1-9.9 8.2-14.6 10.7-.5.3-.9.8-1 1.4l-.8 7.6-1.6-.2-.8-5.9c-.1-.4-.4-.8-.7-1a2 2 0 0 0-1.2-.7l-6.2-.9-.2-1.4 8-.9a2 2 0 0 0 1.5-.9c2.6-4.5 11.1-13.8 11.2-13.8.4-.5.6-1 .4-1.6 0-.6-.4-1-1-1.3l-17.6-8.4c-2.7-1.1-3.4-2.6-3.3-3.2 0-.4.7-.6 1.3-.6l32.9 2a2 2 0 0 0 1.5-.4l7.7-7.4c3.9-3.7 8.7-4.8 10.6-4 .8 1.8-.4 6.4-4.2 10.1L60 22.3z'/%3E%3Cpath fill='%23FF4501' stroke='%23ddd' stroke-width='.2' d='M18.4 33c.8-.6.8-1.8 0-2.5a2 2 0 0 0-2.7 0L1.6 44c-.8.7-.8 1.9 0 2.6a2 2 0 0 0 2.7 0L18.4 33zM40.7 56.6L28.6 68.7a1.9 1.9 0 1 0 2.7 2.7l12.1-12.1a1.9 1.9 0 1 0-2.7-2.7zM17.6 54.5l-13 12.3c-.8.8-.8 2 0 2.7.4.3.9.5 1.4.5.5 0 1-.2 1.4-.5l13-12.3c.8-.7.8-2 0-2.7a2 2 0 0 0-2.8 0z'/%3E%3C/g%3E%3C/svg%3E%0A");
+  }
+}
+
+@media (max-width: 640px) {
+  .icon {
+    height: 70px !important;
+    width: 21%;
+  }
+  .er_logo {
+    width: 50px;
+  }
+  .er_photo {
+    .photo {
+      height: 185px !important;
+      width: 100%;
+      padding-bottom: 30px;
+      left: 0;
+      h3 {
+        bottom: 4%;
+      }
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="section" id="topics">
+  <div class="section md:section-md" id="topics">
     <h1 class="section_title">{{ custom.title }}</h1>
 
     <swiper :options="sliderOptions" ref="mySwiper" class="section_slider">
@@ -60,7 +60,7 @@ export default {
             slidesPerColumn: 1,
             slidesPerGroup: 1,
             centeredSlides: true,
-            spaceBetween: 30,
+            spaceBetween: 20,
             slidesPerColumnFill: "row"
           }
         }

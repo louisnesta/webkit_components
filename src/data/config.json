@@ -20,6 +20,10 @@
       }
     },
     {
+      "type": "events",
+      "title": "Events"
+    },
+    {
       "type": "people",
       "title": "People"
     },

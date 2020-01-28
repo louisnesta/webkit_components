@@ -12,6 +12,10 @@
         v-if="section.type == 'custom'"
         :custom="getSectionData('custom')"
       />
+      <Events
+        v-if="section.type == 'events'"
+        :custom="getSectionData('events')"
+      />
       <People
         v-if="section.type == 'people'"
         :users="category.users"
@@ -38,6 +42,7 @@ import config from "@/data/config.json";
 import Nav from "@/components/Navigation.vue";
 import Hero from "@/components/Hero.vue";
 import Custom from "@/components/Custom.vue";
+import Events from "@/components/Events.vue";
 import Topics from "@/components/Topics.vue";
 import People from "@/components/People.vue";
 import Edgeryders from "@/components/Edgeryders.vue";
@@ -57,6 +62,7 @@ export default {
   components: {
     People,
     Topics,
+    Events,
     Hero,
     Nav,
     Custom,

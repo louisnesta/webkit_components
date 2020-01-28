@@ -1,11 +1,11 @@
 <template>
-  <div class="section" id="about">
+  <div class="section md:section-md" id="about">
     <h1 class="section_title" v-if="custom.title">{{ custom.title }}</h1>
     <div
-      class="section_custom"
+      class="wrapper md:wrapper-md"
       :class="{ reverse: custom.text.position == 'left' }"
     >
-      <div v-if="custom.image.url" class="section_image">
+      <div v-if="custom.image.url" class="section_image md:section_image-md">
         <img class="w-full" :src="custom.image.url" />
       </div>
 
@@ -17,7 +17,7 @@
         </video>
       </div>
 
-      <div class="w-full section_text">
+      <div class="w-full section_text md:pt-4">
         {{ custom.text.content }}
       </div>
     </div>

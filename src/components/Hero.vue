@@ -1,13 +1,18 @@
 <template>
-  <div class="hero">
-    <div class="hero_logo">
-      <img :src="getLogo()" />
-    </div>
-    <div class="hero_info">
-      <h1 class="hero_title" v-if="isCustom('title')">{{ custom.title }}</h1>
-      <h1 class="hero_title" v-else>{{ data.name }}</h1>
-      <p class="hero_text" v-html="custom.text" v-if="isCustom('text')"></p>
-      <p class="hero_text" v-html="data.description_text" v-else></p>
+  <div class="hero md:hero-md">
+    <div class="content_wrapper md:content_wrapper-md">
+      <div class="hero_logo hidden sm-block">
+        <img :src="getLogo()" />
+      </div>
+      <div class="hero_info">
+        <div class="title_logo sm-hidden">
+          <img :src="getLogo()" />
+        </div>
+        <h1 class="hero_title" v-if="isCustom('title')">{{ custom.title }}</h1>
+        <h1 class="hero_title" v-else>{{ data.name }}</h1>
+        <p class="hero_text" v-html="custom.text" v-if="isCustom('text')"></p>
+        <p class="hero_text" v-html="data.description_text" v-else></p>
+      </div>
     </div>
   </div>
 </template>
