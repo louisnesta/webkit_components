@@ -24,6 +24,16 @@ module.exports = {
               ) || []
             );
           },
+          whitelist: [
+            "swiper-container",
+            "section_slider",
+            "swiper-container-initialized",
+            "swiper-container-horizontal",
+            "swiper-container-android",
+            "swiper-slide",
+            "swiper-wrapper",
+            "slide"
+          ],
           whitelistPatterns: [
             /-(leave|enter|appear)(|-(to|from|active))$/,
             /^(?!cursor-move).+-move$/,

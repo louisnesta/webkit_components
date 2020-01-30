@@ -120,6 +120,7 @@ export default {
     },
     selectEvent(day) {
       this.filterEvent(day.date);
+      this.minimize = true;
     },
     filterEvent(date) {
       var event = this.data.filter(function(obj) {
