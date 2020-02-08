@@ -128,49 +128,75 @@ export default {
     },
     next() {
       if (this.$mq === "md") {
-        this.selected = this.data.find(({ event: { start } }) => (
-          moment(start) > moment(this.selected.event.start).add(1, 'month').startOf('month')
-        )) || this.selected;
+        this.selected =
+          this.data.find(
+            ({ event: { start } }) =>
+              moment(start) >
+              moment(this.selected.event.start)
+                .add(1, "month")
+                .startOf("month")
+          ) || this.selected;
       } else {
-        this.selected = this.data.find(({ event: { start } }) => (
-          moment(start) > moment(this.selected.event.start)
-        )) || this.selected;
+        this.selected =
+          this.data.find(
+            ({ event: { start } }) =>
+              moment(start) > moment(this.selected.event.start)
+          ) || this.selected;
       }
       this.selectDate();
     },
     previous() {
       if (this.$mq === "md") {
-        this.selected = this.dataReverse.find(({ event: { start } }) => (
-          moment(start) < moment(this.selected.event.start).add(-1, 'month').endOf('month')
-        )) || this.selected;
+        this.selected =
+          this.dataReverse.find(
+            ({ event: { start } }) =>
+              moment(start) <
+              moment(this.selected.event.start)
+                .add(-1, "month")
+                .endOf("month")
+          ) || this.selected;
 
-        this.$refs.Calendar.ChooseDate(this.formatDate(this.selected.event.start))
+        this.$refs.Calendar.ChooseDate(
+          this.formatDate(this.selected.event.start)
+        );
       } else {
-        this.selected = this.dataReverse.find(({ event: { start } }) => (
-          moment(start) < moment(this.selected.event.start)
-        )) || this.selected;
+        this.selected =
+          this.dataReverse.find(
+            ({ event: { start } }) =>
+              moment(start) < moment(this.selected.event.start)
+          ) || this.selected;
       }
       this.selectDate();
     },
     selectDate() {
-      if (!this.selected) { return }
+      if (!this.selected) {
+        return;
+      }
 
-      this.$nextTick(() => (
-        this.$refs.Calendar.ChooseDate(this.formatDate(this.selected.event.start))
-      ))
+      this.$nextTick(() =>
+        this.$refs.Calendar.ChooseDate(
+          this.formatDate(this.selected.event.start)
+        )
+      );
     },
     formatDate(value) {
-      return moment(value).format("YYYY-MM-DD")
+      return moment(value).format("YYYY-MM-DD");
     },
     formatTime(value) {
-      return moment(value).format("HH:mm")
+      return moment(value).format("HH:mm");
     },
     getEvents() {
-      axios.get(`${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=event`).then(({ data }) => {
-        this.data = data.sort((a, b) => a.event.start.localeCompare(b.event.start));
-        this.selected = this.data[0]
-        this.selectDate()
-      });
+      axios
+        .get(
+          `${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=event`
+        )
+        .then(({ data }) => {
+          this.data = data.sort((a, b) =>
+            a.event.start.localeCompare(b.event.start)
+          );
+          this.selected = this.data[0];
+          this.selectDate();
+        });
     }
   },
   created() {
@@ -181,7 +207,9 @@ export default {
       return this.data.slice().reverse();
     },
     dates() {
-      return this.data.map(({ event: { start } }) => moment(start).format('M-d-YYYY'))
+      return this.data.map(({ event: { start } }) =>
+        moment(start).format("M-d-YYYY")
+      );
     }
   },
   mounted() {
@@ -194,7 +222,7 @@ export default {
       return moment(value).format("MMMM Do YYYY");
     },
     formatMonth: function(value) {
-      return moment(value).format('MMMM YYYY')
+      return moment(value).format("MMMM YYYY");
     }
   }
 };

@@ -142,8 +142,9 @@ export default {
       }
     },
     async getActiveUsers() {
-      axios.get(`${this.baseUrl}/webkit_components/users.json`)
-        .then(({ data }) => (this.users = data))
+      axios
+        .get(`${this.baseUrl}/webkit_components/users.json`)
+        .then(({ data }) => (this.users = data));
     },
     setActive(index) {
       this.selected = index;
