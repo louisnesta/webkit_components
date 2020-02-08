@@ -4,7 +4,7 @@
 
     <swiper :options="sliderOptions" ref="mySwiper" class="section_slider">
       <!-- slides -->
-      <swiper-slide v-for="item in data" :key="item.created_at">
+      <swiper-slide v-for="item in topics" :key="item.created_at">
         <div class="slide">
           <div
             v-if="item.image_url"
@@ -37,7 +37,7 @@ import moment from "moment";
 import "swiper/dist/css/swiper.css";
 
 export default {
-  props: ["data", "custom"],
+  props: ["topics", "custom"],
   data() {
     return {
       selected: 0,
@@ -76,8 +76,8 @@ export default {
     }
   },
   filters: {
-    formatDate: function(value) {
-      return moment(String(value)).format("dddd MMMM Do YYYY");
+    formatDate: function(date) {
+      return moment(date).format("dddd MMMM Do YYYY");
     }
   },
   components: {

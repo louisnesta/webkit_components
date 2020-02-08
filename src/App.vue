@@ -15,6 +15,7 @@
       <Events
         v-if="section.type == 'events'"
         :custom="getSectionData('events')"
+        :baseUrl="baseUrl"
       />
       <People
         v-if="section.type == 'people'"
@@ -23,7 +24,7 @@
       />
       <Topics
         v-if="section.type == 'topics'"
-        :data="category.topic_list.topics"
+        :topics="topics"
         :custom="getSectionData('topics')"
       />
       <Edgeryders
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import config from "@/data/config.json";
+import data from "@/data/config.json";
 
 import Nav from "@/components/Navigation.vue";
 import Hero from "@/components/Hero.vue";
@@ -54,9 +55,11 @@ export default {
   name: "home",
   data() {
     return {
-      data: config,
-      category: null,
-      categories: null
+      baseUrl: "http://localhost:3000",
+      data,
+      category: { users: [] },
+      categories: [],
+      topics: []
     };
   },
   components: {
@@ -70,36 +73,25 @@ export default {
     Terms
   },
   created() {
-    this.getCategories();
-    this.getCategory(this.data.category);
+    this.fetchData();
   },
   methods: {
-    getCategories() {
+    fetchData() {
       axios
-        .get("https://edgeryders.eu/categories.json")
-        .then(({ data }) => {
-          this.categories = data.category_list.categories;
-        })
-        .catch();
+        .get(`${this.baseUrl}/webkit_components/categories.json`)
+        .then(this.applyCategory);
     },
-    getCategory(id) {
-      axios
-        .get("https://edgeryders.eu/c/" + id + ".json")
-        .then(({ data }) => {
-          this.category = data;
-        })
-        .catch();
+    applyCategory({ data }) {
+      this.categories = data;
+      this.category = data.find(({ id }) => id === parseInt(this.data.category));
+      axios.get(`${this.baseUrl}/webkit_components/topics.json?categories=${this.category.slug}`)
+        .then(({ data }) => (this.topics = data))
     },
     getCategoryMetadata(id) {
-      return this.categories.filter(category => category.id == id)[0];
+      return this.categories.find(category => category.id === id) || {};
     },
     getSectionData(type) {
-      return this.data.sections.filter(section => section.type == type)[0];
-    },
-    getLogo(obj) {
-      if (obj.uploaded_logo !== null) {
-        return "https://edgeryders.eu/" + obj["uploaded_logo"]["url"];
-      }
+      return this.data.sections.find(section => section.type === type) || {};
     }
   },
   computed: {

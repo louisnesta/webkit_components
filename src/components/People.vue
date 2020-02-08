@@ -104,7 +104,7 @@ export default {
       bio: null,
       allusers: null,
       index: this.users,
-      filtered_users: false
+      filtered_users: []
     };
   },
   components: { Stack, Row },
