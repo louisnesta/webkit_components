@@ -15,12 +15,12 @@
       <Events
         v-if="section.type == 'events'"
         :custom="getSectionData('events')"
-        :baseUrl="baseUrl"
+        :baseUrl="data.baseUrl"
       />
       <People
         v-if="section.type == 'people'"
         :custom="getSectionData('people')"
-        :baseUrl="baseUrl"
+        :baseUrl="data.baseUrl"
       />
       <Topics
         v-if="section.type == 'topics'"
@@ -55,7 +55,6 @@ export default {
   name: "home",
   data() {
     return {
-      baseUrl: "http://localhost:3000",
       data,
       category: { users: [] },
       categories: [],
@@ -78,7 +77,7 @@ export default {
   methods: {
     fetchData() {
       axios
-        .get(`${this.baseUrl}/webkit_components/categories.json`)
+        .get(`${this.data.baseUrl}/webkit_components/categories.json`)
         .then(this.applyCategory);
     },
     applyCategory({ data }) {
@@ -88,7 +87,7 @@ export default {
       );
       axios
         .get(
-          `${this.baseUrl}/webkit_components/topics.json?categories=${this.category.slug}`
+          `${this.data.baseUrl}/webkit_components/topics.json?categories=${this.category.slug}`
         )
         .then(({ data }) => (this.topics = data));
     },
