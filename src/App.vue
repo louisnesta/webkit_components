@@ -19,8 +19,8 @@
       />
       <People
         v-if="section.type == 'people'"
-        :users="category.users"
         :custom="getSectionData('people')"
+        :baseUrl="baseUrl"
       />
       <Topics
         v-if="section.type == 'topics'"
