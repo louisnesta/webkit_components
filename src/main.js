@@ -6,10 +6,10 @@ import VueScrollactive from "vue-scrollactive";
 import VueDragscroll from "vue-dragscroll";
 
 Vue.use(VueMq, {
-  breakpoints: {
-    sm: 450,
-    md: Infinity
-  }
+	breakpoints: {
+		sm: 450,
+		md: Infinity
+	}
 });
 
 Vue.use(VueScrollactive);

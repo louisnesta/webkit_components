@@ -1,20 +1,20 @@
 <template>
   <div class="card_row" ref="content" v-dragscroll.x="true">
-    <div class="card" v-for="item in cards" :key="item.id">
+    <div class="card" v-for="item in cards" :key="item">
       <div class="card_title">
         <div
           class="avatar"
-          :style="{ backgroundImage: `url('${item.avatar_url}')` }"
+          :style="{ backgroundImage: 'url(' + item.avatar + ')' }"
         ></div>
         <div class="card_name">
           <h3>
             <span v-if="item.name">{{ item.name }}</span
             ><span v-else>{{ item.username }}</span>
           </h3>
-          <p>Active since {{ item.created_at | formatDate }}</p>
+          <p>Active since {{ item.since | formatDate }}</p>
         </div>
       </div>
-      <div class="card_excerpt" v-html="item.bio_raw"></div>
+      <div class="card_excerpt" v-html="item.bio"></div>
       <div class="card_footer">Connect with @{{ item.username }}</div>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
     }
   },
   filters: {
-    formatDate: function(date) {
-      return moment(date).format("MM/DD/YY");
+    formatDate: function(value) {
+      return moment(String(value)).format("MM/DD/YY");
     }
   }
 };
