@@ -18,19 +18,19 @@
     <div class="wrapper md:wrapper-md" :class="view">
       <div class="list md:list-md" v-if="view == 'list'">
         <div
-          v-for="item in data_reverse"
-          :key="item.timestamp"
-          :class="{ active: item.timestamp == selected.timestamp }"
+          v-for="item in data"
+          :key="item.id"
+          :class="{ active: item.id === selected.id }"
           class="list_item"
-          @click="filterEvent(item.date)"
+          @click="filterEvent(item)"
         >
-          <p class="font-bold">{{ item.timestamp | formatDate }}</p>
+          <p class="font-bold">{{ item.event.start | formatDate }}</p>
           <h4>{{ item.title }}</h4>
         </div>
       </div>
       <div
         class="calendar_container md:calendar_container-md"
-        :class="{ active: minimize == true }"
+        :class="{ active: minimize }"
         v-if="view == 'calendar'"
       >
         <div class="calendar_nav md:calendar_nav-md" v-if="selected">
@@ -38,31 +38,28 @@
           <h3 @click="toggle">
             <span class="triangle md:hidden"></span>
             <span v-if="$mq == 'sm'">{{
-              selected.timestamp | formatDate
+              selected.event.start | formatDate
             }}</span>
-            <span v-else>{{ month | formatMonth }}</span>
+            <span v-else>{{ selected.event.start | formatMonth }}</span>
           </h3>
           <button class="arrow right" @click="next"></button>
         </div>
         <FunctionalCalendar
           v-if="data"
           ref="Calendar"
-          @choseDay="selectEvent"
-          :dayNames="dayNames"
-          :date-format="'dd-mm-yyyy'"
-          :change-month-function="true"
-          :change-year-function="true"
-          :marked-dates="data"
-          :isDatePicker="true"
-        >
-        </FunctionalCalendar>
+          date-format="dd-mm-yyyy"
+          @chose-day="selectEvent"
+          :day-names="dayNames"
+          :marked-dates="dates"
+          :is-date-picker="true"
+        />
       </div>
       <div v-if="selected" class="selected_event md:selected_event-md">
         <a class="event_title" :href="selected.url" target="_blank">
           <h3>{{ selected.title }}</h3>
           <div class="event_info" v-if="selected.time !== '00:00'">
             <span class="time">{{ selected.time }}</span>
-            <span class="timezone">{{ selected.timezone }}</span>
+            <span class="timezone">{{ selected.event.timezone }}</span>
           </div>
         </a>
         <div class="event_excerpt">
@@ -72,7 +69,7 @@
         </div>
         <div class="event_footer">
           Added on {{ selected.created_at | formatDate }} by
-          {{ selected.posted_by }}
+          {{ selected.author.name || selected.author.username }}
         </div>
       </div>
     </div>
@@ -85,14 +82,13 @@ import { FunctionalCalendar } from "vue-functional-calendar";
 import moment from "moment";
 
 export default {
-  props: ["custom"],
+  props: ["custom", "baseUrl"],
   data() {
     return {
       calendar: null,
       data: null,
-      months_data: null,
+      months: null,
       view: "calendar",
-      raw_data: null,
       selected: null,
       month: null,
       minimize: true,
@@ -106,203 +102,114 @@ export default {
     toggleView(view) {
       this.view = view;
       if (view == "calendar") {
-        var date = this.formatDate(this.selected.timestamp);
-
-        this.$nextTick(() => {
-          this.selectDate(date);
-          this.month =
-            "01-" +
-            this.selected.timestamp.substring(5, 7) +
-            "-" +
-            this.selected.timestamp.substring(0, 4);
-        });
+        this.selectDate();
       }
     },
     selectEvent(day) {
-      this.filterEvent(day.date);
+      this.filterEvent(day);
       this.toggle();
     },
-    filterEvent(date) {
-      var event = this.data.filter(function(obj) {
-        return obj.date == date;
-      });
-      if (event[0] != undefined) {
-        this.toggle;
-        this.selected = event[0];
-        this.month =
-          "01-" +
-          this.selected.timestamp.substring(5, 7) +
-          "-" +
-          this.selected.timestamp.substring(0, 4);
+    filterEvent(item) {
+      const event = this.data.find(obj => obj.id === item.id);
+      if (!event) {
+        return;
       }
-    },
-    getEventIndex(day) {
-      var index = this.data.findIndex(obj => obj.date === day);
 
-      return index;
+      this.toggle();
+      this.selected = event;
+    },
+    getEventIndex(date) {
+      return this.data.findIndex(obj => obj.date === date);
     },
     toggle() {
       if (this.$mq == "sm") {
         this.minimize = !this.minimize;
       }
     },
-    selectDate(date) {
-      this.$refs.Calendar.ChooseDate(date);
-    },
     next() {
       if (this.$mq === "md") {
-        this.next_month();
+        this.selected =
+          this.data.find(
+            ({ event: { start } }) =>
+              moment(start) >
+              moment(this.selected.event.start)
+                .add(1, "month")
+                .startOf("month")
+          ) || this.selected;
       } else {
-        this.next_date();
+        this.selected =
+          this.data.find(
+            ({ event: { start } }) =>
+              moment(start) > moment(this.selected.event.start)
+          ) || this.selected;
       }
+      this.selectDate();
     },
     previous() {
       if (this.$mq === "md") {
-        this.previous_month();
+        this.selected =
+          this.dataReverse.find(
+            ({ event: { start } }) =>
+              moment(start) <
+              moment(this.selected.event.start)
+                .add(-1, "month")
+                .endOf("month")
+          ) || this.selected;
+
+        this.$refs.Calendar.ChooseDate(
+          this.formatDate(this.selected.event.start)
+        );
       } else {
-        this.previous_date();
+        this.selected =
+          this.dataReverse.find(
+            ({ event: { start } }) =>
+              moment(start) < moment(this.selected.event.start)
+          ) || this.selected;
       }
+      this.selectDate();
     },
-    previous_month() {
-      var select;
-      var index = this.months_data.findIndex(obj => obj === this.month);
-
-      if (this.months_data[index - 1]) {
-        select = this.months_data[index - 1];
-      } else {
-        select = this.months_data[this.months_data.length - 1];
+    selectDate() {
+      if (!this.selected) {
+        return;
       }
 
-      this.selectDate(select);
-      this.month = select;
+      this.$nextTick(() =>
+        this.$refs.Calendar.ChooseDate(
+          this.formatDate(this.selected.event.start)
+        )
+      );
     },
-    next_month() {
-      var select;
-      var index = this.months_data.findIndex(obj => obj === this.month);
-
-      if (this.months_data[index + 1]) {
-        select = this.months_data[index + 1];
-      } else {
-        select = this.months_data[0];
-      }
-
-      this.selectDate(select);
-      this.month = select;
-    },
-    previous_date() {
-      var index = this.getEventIndex(this.selected.date);
-      var prev_date;
-      if (this.data[index - 1]) {
-        this.selected = this.data[index - 1];
-        prev_date = this.formatDate(this.data[index - 1].timestamp);
-        this.selectDate(prev_date);
-      } else {
-        this.selected = this.data[this.data.length - 1];
-        prev_date = this.formatDate(this.data[this.data.length - 1].timestamp);
-        this.selectDate(prev_date);
-      }
-    },
-    next_date() {
-      var index = this.getEventIndex(this.selected.date);
-      var next_date;
-      if (this.data[index + 1]) {
-        this.selected = this.data[index + 1];
-        next_date = this.formatDate(this.data[index + 1].timestamp);
-        this.selectDate(next_date);
-      } else {
-        this.selected = this.data[0];
-        next_date = this.formatDate(this.data[0].timestamp);
-        this.selectDate(next_date);
-      }
-    },
-    formatDate(value, parse) {
-      function parseNumber(number) {
-        return parseInt(number);
-      }
-
-      var year;
-      var day;
-      var month;
-
-      if (parse == true) {
-        year = parseNumber(value.substring(0, 4));
-        month = parseNumber(value.substring(5, 7));
-        day = parseNumber(value.substring(8, 10));
-      } else {
-        year = value.substring(0, 4);
-        month = value.substring(5, 7);
-        day = value.substring(8, 10);
-      }
-
-      var date = day + "-" + month + "-" + year;
-      return date;
+    formatDate(value) {
+      return moment(value).format("YYYY-MM-DD");
     },
     formatTime(value) {
-      var time = value.substring(11, 16);
-      return time;
+      return moment(value).format("HH:mm");
     },
     getEvents() {
       axios
-        .get("https://edgeryders.eu/tags/event.json?page=1")
+        .get(
+          `${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=event`
+        )
         .then(({ data }) => {
-          var array = data.topic_list.topics.filter(function(el) {
-            return el.event;
-          });
-          this.raw_data = array;
-
-          var events = array.map(obj => ({
-            date: this.formatDate(obj.event.start, true),
-            time: this.formatTime(obj.event.start),
-            timestamp: obj.event.start,
-            timezone: obj.event.timezone,
-            class: "class2",
-            title: obj.title,
-            excerpt: obj.excerpt,
-            url: "https://edgeryders.eu/t/" + obj.slug,
-            replies: obj.posts_count,
-            image: obj.image_url,
-            created_at: obj.created_at,
-            posted_by: obj.posters[0].user_id,
-            category: obj.category_id
-          }));
-
-          var sorted_events = events.sort((a, b) =>
-            a.timestamp.localeCompare(b.timestamp)
+          this.data = data.sort((a, b) =>
+            a.event.start.localeCompare(b.event.start)
           );
-
-          this.data = sorted_events;
-
-          function get_month(val) {
-            var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
-            return date;
-          }
-
-          var months = sorted_events.map(obj => get_month(obj.timestamp));
-          var months_array = new Set(months);
-          this.months_data = [...months_array];
-
-          this.selected = this.data[this.data.length - 1];
-
-          this.$nextTick(() => {
-            var date = this.formatDate(this.selected.timestamp);
-            this.selectDate(date);
-          });
-
-          this.month =
-            "01-" +
-            this.selected.timestamp.substring(5, 7) +
-            "-" +
-            this.selected.timestamp.substring(0, 4);
-        })
-        .catch();
+          this.selected = this.data[0];
+          this.selectDate();
+        });
     }
   },
   created() {
     this.getEvents();
   },
   computed: {
-    data_reverse: function() {
+    dataReverse() {
       return this.data.slice().reverse();
+    },
+    dates() {
+      return this.data.map(({ event: { start } }) =>
+        moment(start).format("M-d-YYYY")
+      );
     }
   },
   mounted() {
@@ -312,14 +219,10 @@ export default {
   },
   filters: {
     formatDate: function(value) {
-      return moment(String(value)).format("MMMM Do YYYY");
+      return moment(value).format("MMMM Do YYYY");
     },
     formatMonth: function(value) {
-      var day = value.substring(0, 2);
-      var month = value.substring(3, 5);
-      var year = value.substring(6, 10);
-      var date = month + "/" + day + "/" + year;
-      return moment(String(date)).format("MMMM YYYY");
+      return moment(value).format("MMMM YYYY");
     }
   }
 };

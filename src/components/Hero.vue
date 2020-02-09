@@ -21,8 +21,8 @@
 export default {
   methods: {
     getLogo() {
-      if (this.data.uploaded_logo !== null) {
-        return "https://edgeryders.eu/" + this.data["uploaded_logo"]["url"];
+      if (this.data.uploaded_logo && this.data.uploaded_logo.url) {
+        return `https://edgeryders.eu/${this.data.uploaded_logo.url}`;
       }
     },
     isCustom(field) {
