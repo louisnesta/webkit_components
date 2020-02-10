@@ -4,6 +4,7 @@ import "./assets/main.css";
 import VueMq from "vue-mq";
 import VueScrollactive from "vue-scrollactive";
 import VueDragscroll from "vue-dragscroll";
+import Vue2TouchEvents from "vue2-touch-events";
 
 Vue.use(VueMq, {
 	breakpoints: {
@@ -14,6 +15,7 @@ Vue.use(VueMq, {
 
 Vue.use(VueScrollactive);
 Vue.use(VueDragscroll);
+Vue.use(Vue2TouchEvents);
 
 Vue.config.productionTip = false;
 

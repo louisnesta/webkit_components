@@ -7,25 +7,22 @@
       :custom="getSectionData('hero')"
     />
 
-    <div v-for="section in data.sections" :key="section.type">
+    <div v-for="section in data.sections" :key="section.title">
       <Custom
         v-if="section.type == 'custom'"
         :custom="getSectionData('custom')"
       />
+      <Topics v-if="section.type == 'topics'" :custom="section" />
       <Events
         v-if="section.type == 'events'"
         :custom="getSectionData('events')"
       />
-      <People
-        v-if="section.type == 'people'"
+      <Users
+        v-if="section.type == 'users'"
         :users="category.users"
-        :custom="getSectionData('people')"
+        :custom="section"
       />
-      <Topics
-        v-if="section.type == 'topics'"
-        :data="category.topic_list.topics"
-        :custom="getSectionData('topics')"
-      />
+      <People v-if="section.type == 'people'" :custom="section" />
       <Edgeryders
         v-if="section.type == 'edgeryders'"
         :custom="getSectionData('edgeryders')"
@@ -43,8 +40,9 @@ import Nav from "@/components/Navigation.vue";
 import Hero from "@/components/Hero.vue";
 import Custom from "@/components/Custom.vue";
 import Events from "@/components/Events.vue";
-import Topics from "@/components/Topics.vue";
+import Topics from "@/components/Stories.vue";
 import People from "@/components/People.vue";
+import Users from "@/components/Users.vue";
 import Edgeryders from "@/components/Edgeryders.vue";
 import Terms from "@/components/Terms.vue";
 
@@ -61,6 +59,7 @@ export default {
   },
   components: {
     People,
+    Users,
     Topics,
     Events,
     Hero,

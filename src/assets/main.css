@@ -309,15 +309,23 @@
 		@apply px-20 py-10;
 	}
 
-	.section#people {
+	.section#users {
 		@apply px-0;
 	}
 
-	.section#people .section_title {
+	.section#topics {
+		@apply px-0;
+	}
+
+	.section#topics .section_title {
 		@apply mx-6;
 	}
 
-	.section-md#people.section_title {
+	.section#users .section_title {
+		@apply mx-6;
+	}
+
+	.section-md#users.section_title {
 		@apply mx-0;
 	}
 
@@ -388,8 +396,10 @@
 	}
 
 	.card_row {
-		@apply w-full flex pt-4 pb-6;
-		height: 400px;
+		@apply flex pt-4 pb-6;
+		height: 100%;
+		width: 100%;
+		margin: 0 auto;
 		overflow-x: auto;
 		overflow-y: hidden;
 		-webkit-overflow-scrolling: touch;
@@ -398,48 +408,97 @@
 		display: flex;
 	}
 	.card_row .card {
-		@apply flex flex-col flex-shrink-0 justify-between relative rounded-lg bg-white overflow-hidden ml-6;
-		width: 270px;
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		@apply inline-block flex-shrink-0 relative;
+		width: 300px;
 		transition: all 0.4s ease;
 		height: 380px;
+
 		scroll-snap-align: start;
 	}
+	.card_row .card .card_container {
+		@apply rounded-lg overflow-hidden bg-white relative flex flex-col justify-start items-center;
+		width: 90%;
+		margin: 0 auto;
+		height: 100%;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	}
+
+	.card_row .card.topic .topic_title {
+		@apply mb-6;
+	}
+
+	.card_row .card.topic .topic_title h2 {
+		@apply text-2xl font-bold bg-white px-2 py-2 inline;
+		width: 90%;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
+	}
+
+	.card_row .card.topic .topic_data {
+		@apply px-4;
+		position: absolute;
+		left: 3%;
+		display: flex;
+		align-items: start;
+		justify-content: center;
+		flex-direction: column;
+		width: 93%;
+		height: 93% !important;
+		-webkit-perspective: inherit;
+		perspective: inherit;
+		z-index: 2;
+		transform: translateY(-50%) translateZ(60px);
+		-webkit-transform: translateY(-50%) translateZ(60px);
+		-ms-transform: translateY(-50%) translateZ(60px);
+		top: 50%;
+	}
+
+	.card_row .card.topic .topic_data .profile_badge {
+		@apply mt-0;
+	}
+
 	.card_row .card:hover {
 		cursor: pointer;
 	}
 	.card_title {
-		@apply w-full bg-gray-200 py-3 px-2 flex items-center;
-		height: 80px;
+		@apply w-full relative bg-gray-200 py-3 mt-6 px-2 flex items-center;
+		height: 160px;
 		background: rgba(0, 0, 0, 0.02);
+		z-index: 10;
 	}
 	.card_stack .card_title {
 		background: rgba(0, 0, 0, 0.08);
 		border-radius: 15px 15px 0 0;
 	}
-	.card_title .card_name {
-		@apply w-full flex flex-col pr-4 pt-1 text-left;
+	.card_name {
+		@apply w-full flex flex-col px-6 pt-6 text-left;
 	}
 	.card_name h3 {
-		@apply w-full font-bold border-b w-full pb-1;
+		@apply w-full text-xl font-bold border-b w-full pb-1;
 	}
 	.card_name p {
-		@apply mt-1 text-xs text-left;
+		@apply mt-2 text-xs text-left;
 	}
-	.card_title .avatar {
-		@apply flex-shrink-0 bg-cover rounded-lg mr-3 ml-2;
-		width: 55px;
-		height: 55px;
+	.card .avatar {
+		@apply flex-shrink-0 bg-cover rounded-lg mt-3 mx-auto;
+		width: 82%;
+		background-position: center center !important;
+		height: 145px;
+		box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.1);
 	}
 	.card_excerpt {
-		@apply flex-grow overflow-scroll w-full px-4 pt-3 pb-4 text-xs;
-		max-height: 70%;
+		@apply flex-grow relative overflow-scroll w-full px-0 mx-auto mt-2 pb-4 text-xs text-left;
+		height: 80%;
+		width: 80%;
+		text-align: left;
+		z-index: 10;
 	}
 	.card_stack .card_excerpt {
 		@apply mb-4;
 	}
 	.card_footer {
-		@apply py-3 px-4 text-white font-bold text-xs;
+		@apply py-3 px-4 w-full text-white font-bold text-xs relative;
+		z-index: 10;
 		box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.1);
 		background: linear-gradient(
 			0deg,

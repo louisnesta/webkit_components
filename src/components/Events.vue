@@ -241,9 +241,9 @@ export default {
       var time = value.substring(11, 16);
       return time;
     },
-    getEvents() {
+    getEvents(tag) {
       axios
-        .get("https://edgeryders.eu/tags/event.json?page=1")
+        .get("https://edgeryders.eu/tags/" + tag + ".json?page=1")
         .then(({ data }) => {
           var array = data.topic_list.topics.filter(function(el) {
             return el.event;
@@ -298,7 +298,7 @@ export default {
     }
   },
   created() {
-    this.getEvents();
+    this.getEvents(this.custom.tag);
   },
   computed: {
     data_reverse: function() {
