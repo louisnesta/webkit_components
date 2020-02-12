@@ -249,82 +249,31 @@ export default {
       return null
     }
     },
-    dummyEvents() {
-      this.data = [
-        {
-          date: "9-4-2019",
-          start: "11:00",
-          end: "14:00",
-          timestamp: "2019-04-09T11:00:20+02:00",
-          timezone: "Europe/Stockholm",
-          class: "class2",
-          title: "Event 0",
-          url:
-            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
-          replies: 83,
-          image:
-            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
-          created_at: "2019-04-06T12:20:41.656Z",
-          posted_by: 4022,
-          category: 316
-        },
-        {
-          date: "9-5-2019",
-          start: "13:00",
-          end: "15:00",
-          timestamp: "2019-05-09T13:00:20+02:00",
-          timezone: "Europe/Stockholm",
-          class: "class2",
-          title: "Event 1",
-          url:
-            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
-          replies: 83,
-          image:
-            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
-          created_at: "2019-04-06T12:20:41.656Z",
-          posted_by: 4022,
-          category: 316
-        },
-        {
-          date: "11-5-2019",
-          start: "13:00",
-          end: "15:00",
-          timestamp: "2019-05-11T13:00:20+02:00",
-          timezone: "Europe/Stockholm",
-          class: "class2",
-          title: "Internet of Humans matchmaking event in Stockholm",
-          excerpt:
-            "Stockholm launch event\nHow do we collaborate to build a human-centric next generation internet? You are invited to an alliance working towards this goal. Internet of Humans is a track within our annual Edgeryders festival. It is dedicated to bringing together existing projects into a demo of a Next Generation Internet that supports values of openness, cooperation across borders, decentralization, inclusiveness, and protection of privacy. At this event, we will be telling our stories and getting &hellip;",
-          url:
-            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
-          replies: 83,
-          image:
-            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
-          created_at: "2019-04-06T12:20:41.656Z",
-          posted_by: 4022,
-          category: 316
-        },
-        {
-          date: "11-5-2019",
-          start: "15:00",
-          end: "17:00",
-          timestamp: "2019-05-11T15:00:20+02:00",
-          timezone: "Europe/Stockholm",
-          class: "class2",
-          title: "Event 2",
-          excerpt: "Second event",
-          url:
-            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
-          replies: 83,
-          image:
-            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
-          created_at: "2019-04-06T12:20:41.656Z",
-          posted_by: 4022,
-          category: 316
-        }
-      ];
+    sortEvents(array) {
+      var events = array.map(obj => ({
+        date: this.formatDate(obj.event.start, true),
+        start: this.formatTime(obj.event.start),
+        end: this.formatTime(obj.event.end),
+        timestamp: obj.event.start,
+        timezone: obj.event.timezone,
+        class: "class2",
+        title: obj.title,
+        excerpt: obj.excerpt,
+        url: "https://edgeryders.eu/t/" + obj.slug,
+        replies: obj.posts_count,
+        image: obj.image_url,
+        created_at: obj.created_at,
+        posted_by: obj.posters[0].user_id,
+        category: obj.category_id
+      }));
 
-      function get_month(val) {
+      var sorted_events = events.sort((a, b) =>
+        a.timestamp.localeCompare(b.timestamp)
+      );
+
+      this.data = sorted_events;
+
+       function get_month(val) {
         var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
         return date;
       }
@@ -352,53 +301,7 @@ export default {
         latest_event.timestamp.substring(5, 7) +
         "-" +
         latest_event.timestamp.substring(0, 4);
-    },
-    sortEvents(array) {
-      var events = array.map(obj => ({
-        date: this.formatDate(obj.event.start, true),
-        start: this.formatTime(obj.event.start),
-        end: this.formatTime(obj.event.end),
-        timestamp: obj.event.start,
-        timezone: obj.event.timezone,
-        class: "class2",
-        title: obj.title,
-        excerpt: obj.excerpt,
-        url: "https://edgeryders.eu/t/" + obj.slug,
-        replies: obj.posts_count,
-        image: obj.image_url,
-        created_at: obj.created_at,
-        posted_by: obj.posters[0].user_id,
-        category: obj.category_id
-      }));
 
-      var sorted_events = events.sort((a, b) =>
-        a.timestamp.localeCompare(b.timestamp)
-      );
-
-      this.data = sorted_events;
-
-      function get_month(val) {
-        var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
-        return date;
-      }
-
-      var months = sorted_events.map(obj => get_month(obj.timestamp));
-      var months_array = new Set(months);
-      this.months_data = [...months_array];
-
-      var latest_event = this.data[this.data.length - 1];
-      this.filterEvent(latest_event.date);
-      window.console.log('date' + latest_event.date);
-      this.$nextTick(() => {
-        var date = this.formatDate(latest_event.timestamp);
-        this.selectDate(date);
-      });
-
-      this.month =
-        "01-" +
-        latest_event.timestamp.substring(5, 7) +
-        "-" +
-        latest_event.timestamp.substring(0, 4);
     },
     async getEvents(tag) {
       let count = 0;
@@ -431,7 +334,7 @@ export default {
     }
   },
   created() {
-    this.dummyEvents();
+    this.getEvents(this.custom.tag);
   },
   computed: {
     data_reverse: function() {
