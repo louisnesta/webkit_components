@@ -14,7 +14,7 @@
           :style="{ backgroundImage: 'url(' + item.image + ')' }"
         ></div>
       </div>
-      <div class="w-full px-2 pt-4" v-if="people[selected]">
+      <div class="w-full px-6 md:px-2 md:pt-4" v-if="people[selected]">
         <a
           class="user_name border-b mb-2 pb-2"
           :href="people[selected].url"
@@ -114,7 +114,7 @@ export default {
   }
 }
 #people .user_avatar {
-  height: 85px !important;
+  height: 80px !important;
   border: 4px solid white;
   &.active {
     border: 4px solid black;

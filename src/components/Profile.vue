@@ -1,8 +1,8 @@
 <template>
-  <div class="profile_badge">
+  <a class="profile_badge" :href="'https://edgeryders.eu/u/' + data.username">
     <img :src="getAvatar(data.avatar_template)" />
     <p>@{{ data.username }}</p>
-  </div>
+  </a>
 </template>
 
 <script>

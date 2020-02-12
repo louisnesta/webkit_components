@@ -2,7 +2,10 @@
   "category": "237",
   "sections": [
     {
-      "type": "hero"
+      "type": "hero",
+      "background": {
+        "color": "#fafafa"
+      }
     },
     {
       "type": "custom",

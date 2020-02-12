@@ -2,7 +2,7 @@
   <div class="section md:section-md" id="events">
     <div class="section_title">
       {{ custom.title }}
-      <div class="toggle_menu md:flex">
+      <div class="toggle_menu mt-0 mb-0 md:flex">
         <div
           class="toggle calendar"
           :class="{ active: view == 'calendar' }"
@@ -22,7 +22,7 @@
           :key="item.timestamp"
           :class="{ active: item.timestamp == selected.timestamp }"
           class="list_item"
-          @click="filterEvent(item.date)"
+          @click="filterEventTimestamp(item.timestamp)"
         >
           <p class="font-bold">{{ item.timestamp | formatDate }}</p>
           <h4>{{ item.title }}</h4>
@@ -38,7 +38,7 @@
           <h3 @click="toggle">
             <span class="triangle md:hidden"></span>
             <span v-if="$mq == 'sm'">{{
-              selected.timestamp | formatDate
+              selected[0].timestamp | formatDate
             }}</span>
             <span v-else>{{ month | formatMonth }}</span>
           </h3>
@@ -57,23 +57,19 @@
         >
         </FunctionalCalendar>
       </div>
-      <div v-if="selected" class="selected_event md:selected_event-md">
-        <a class="event_title" :href="selected.url" target="_blank">
-          <h3>{{ selected.title }}</h3>
-          <div class="event_info" v-if="selected.time !== '00:00'">
-            <span class="time">{{ selected.time }}</span>
-            <span class="timezone">{{ selected.timezone }}</span>
-          </div>
-        </a>
-        <div class="event_excerpt">
-          <img :src="selected.image" v-if="selected.image" />
-
-          <div v-html="selected.excerpt"></div>
-        </div>
-        <div class="event_footer">
-          Added on {{ selected.created_at | formatDate }} by
-          {{ selected.posted_by }}
-        </div>
+      <div class="selected_event md:selected_event-md">
+        <h2
+          class="text-2xl font-bold pb-2 border-b mb-2 pl-2"
+          v-if="selected.length > 1 && $mq !== 'sm'"
+        >
+          {{ selected[0].timestamp | formatDate }}
+        </h2>
+        <Event
+          v-for="(event, index) in selected"
+          :data="event"
+          :multiple="selected.length > 1"
+          :key="index"
+        />
       </div>
     </div>
   </div>
@@ -82,6 +78,7 @@
 <script>
 import axios from "axios";
 import { FunctionalCalendar } from "vue-functional-calendar";
+import Event from "@/components/Event.vue";
 import moment from "moment";
 
 export default {
@@ -89,8 +86,10 @@ export default {
   data() {
     return {
       calendar: null,
+      counting: 1,
       data: null,
       months_data: null,
+      dates_data: null,
       view: "calendar",
       raw_data: null,
       selected: null,
@@ -100,13 +99,14 @@ export default {
     };
   },
   components: {
-    FunctionalCalendar
+    FunctionalCalendar,
+    Event
   },
   methods: {
     toggleView(view) {
       this.view = view;
       if (view == "calendar") {
-        var date = this.formatDate(this.selected.timestamp);
+        var date = this.formatDate(this.selected[0].timestamp);
 
         this.$nextTick(() => {
           this.selectDate(date);
@@ -122,22 +122,30 @@ export default {
       this.filterEvent(day.date);
       this.toggle();
     },
+    filterEventTimestamp(timestamp) {
+      var event = this.data.filter(function(obj) {
+        return obj.timestamp == timestamp;
+      });
+
+        this.selected = event;
+    
+    },
     filterEvent(date) {
       var event = this.data.filter(function(obj) {
         return obj.date == date;
       });
       if (event[0] != undefined) {
         this.toggle;
-        this.selected = event[0];
+        this.selected = event;
         this.month =
           "01-" +
-          this.selected.timestamp.substring(5, 7) +
+          this.selected[0].timestamp.substring(5, 7) +
           "-" +
-          this.selected.timestamp.substring(0, 4);
+          this.selected[0].timestamp.substring(0, 4);
       }
     },
     getEventIndex(day) {
-      var index = this.data.findIndex(obj => obj.date === day);
+      var index = this.dates_data.findIndex(obj => obj === day);
 
       return index;
     },
@@ -190,30 +198,26 @@ export default {
       this.month = select;
     },
     previous_date() {
-      var index = this.getEventIndex(this.selected.date);
-      var prev_date;
-      if (this.data[index - 1]) {
-        this.selected = this.data[index - 1];
-        prev_date = this.formatDate(this.data[index - 1].timestamp);
-        this.selectDate(prev_date);
+     var index = this.getEventIndex(this.selected[0].date);
+     var prev_date;
+      if (this.dates_data[index - 1]) {
+        prev_date = this.dates_data[index - 1];
       } else {
-        this.selected = this.data[this.data.length - 1];
-        prev_date = this.formatDate(this.data[this.data.length - 1].timestamp);
-        this.selectDate(prev_date);
+        prev_date = this.dates_data[this.dates_data.length-1];
       }
+      this.filterEvent(prev_date);
+      this.selectDate(prev_date)
     },
     next_date() {
-      var index = this.getEventIndex(this.selected.date);
+      var index = this.getEventIndex(this.selected[0].date);
       var next_date;
-      if (this.data[index + 1]) {
-        this.selected = this.data[index + 1];
-        next_date = this.formatDate(this.data[index + 1].timestamp);
-        this.selectDate(next_date);
+      if (this.dates_data[index + 1]) {
+        next_date = this.dates_data[index + 1]
       } else {
-        this.selected = this.data[0];
-        next_date = this.formatDate(this.data[0].timestamp);
-        this.selectDate(next_date);
+        next_date = this.dates_data[0];
       }
+      this.filterEvent(next_date);
+      this.selectDate(next_date)
     },
     formatDate(value, parse) {
       function parseNumber(number) {
@@ -238,67 +242,196 @@ export default {
       return date;
     },
     formatTime(value) {
+      if (value) {
       var time = value.substring(11, 16);
       return time;
+    } else {
+      return null
+    }
     },
-    getEvents(tag) {
-      axios
-        .get("https://edgeryders.eu/tags/" + tag + ".json?page=1")
-        .then(({ data }) => {
-          var array = data.topic_list.topics.filter(function(el) {
+    dummyEvents() {
+      this.data = [
+        {
+          date: "9-4-2019",
+          start: "11:00",
+          end: "14:00",
+          timestamp: "2019-04-09T11:00:20+02:00",
+          timezone: "Europe/Stockholm",
+          class: "class2",
+          title: "Event 0",
+          url:
+            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
+          replies: 83,
+          image:
+            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
+          created_at: "2019-04-06T12:20:41.656Z",
+          posted_by: 4022,
+          category: 316
+        },
+        {
+          date: "9-5-2019",
+          start: "13:00",
+          end: "15:00",
+          timestamp: "2019-05-09T13:00:20+02:00",
+          timezone: "Europe/Stockholm",
+          class: "class2",
+          title: "Event 1",
+          url:
+            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
+          replies: 83,
+          image:
+            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
+          created_at: "2019-04-06T12:20:41.656Z",
+          posted_by: 4022,
+          category: 316
+        },
+        {
+          date: "11-5-2019",
+          start: "13:00",
+          end: "15:00",
+          timestamp: "2019-05-11T13:00:20+02:00",
+          timezone: "Europe/Stockholm",
+          class: "class2",
+          title: "Internet of Humans matchmaking event in Stockholm",
+          excerpt:
+            "Stockholm launch event\nHow do we collaborate to build a human-centric next generation internet? You are invited to an alliance working towards this goal. Internet of Humans is a track within our annual Edgeryders festival. It is dedicated to bringing together existing projects into a demo of a Next Generation Internet that supports values of openness, cooperation across borders, decentralization, inclusiveness, and protection of privacy. At this event, we will be telling our stories and getting &hellip;",
+          url:
+            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
+          replies: 83,
+          image:
+            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
+          created_at: "2019-04-06T12:20:41.656Z",
+          posted_by: 4022,
+          category: 316
+        },
+        {
+          date: "11-5-2019",
+          start: "15:00",
+          end: "17:00",
+          timestamp: "2019-05-11T15:00:20+02:00",
+          timezone: "Europe/Stockholm",
+          class: "class2",
+          title: "Event 2",
+          excerpt: "Second event",
+          url:
+            "https://edgeryders.eu/t/internet-of-humans-matchmaking-event-in-stockholm",
+          replies: 83,
+          image:
+            "https://edgeryders.eu/uploads/default/original/2X/4/4893c749d51cf8eac39c34f6f2e751559db219c2.jpg",
+          created_at: "2019-04-06T12:20:41.656Z",
+          posted_by: 4022,
+          category: 316
+        }
+      ];
+
+      function get_month(val) {
+        var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
+        return date;
+      }
+
+      var months = this.data.map(obj => get_month(obj.timestamp));
+      var months_array = new Set(months);
+      this.months_data = [...months_array];
+
+      var dates = this.data.map(obj => obj.date);
+      var dates_array = new Set(dates);
+      this.dates_data = [...dates_array];
+
+      window.console.log(this.dates_data);
+
+      var latest_event = this.data[this.data.length - 1];
+      this.filterEvent(latest_event.date);
+      window.console.log('date' + latest_event.date);
+      this.$nextTick(() => {
+        var date = this.formatDate(latest_event.timestamp);
+        this.selectDate(date);
+      });
+
+      this.month =
+        "01-" +
+        latest_event.timestamp.substring(5, 7) +
+        "-" +
+        latest_event.timestamp.substring(0, 4);
+    },
+    sortEvents(array) {
+      var events = array.map(obj => ({
+        date: this.formatDate(obj.event.start, true),
+        start: this.formatTime(obj.event.start),
+        end: this.formatTime(obj.event.end),
+        timestamp: obj.event.start,
+        timezone: obj.event.timezone,
+        class: "class2",
+        title: obj.title,
+        excerpt: obj.excerpt,
+        url: "https://edgeryders.eu/t/" + obj.slug,
+        replies: obj.posts_count,
+        image: obj.image_url,
+        created_at: obj.created_at,
+        posted_by: obj.posters[0].user_id,
+        category: obj.category_id
+      }));
+
+      var sorted_events = events.sort((a, b) =>
+        a.timestamp.localeCompare(b.timestamp)
+      );
+
+      this.data = sorted_events;
+
+      function get_month(val) {
+        var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
+        return date;
+      }
+
+      var months = sorted_events.map(obj => get_month(obj.timestamp));
+      var months_array = new Set(months);
+      this.months_data = [...months_array];
+
+      var latest_event = this.data[this.data.length - 1];
+      this.filterEvent(latest_event.date);
+      window.console.log('date' + latest_event.date);
+      this.$nextTick(() => {
+        var date = this.formatDate(latest_event.timestamp);
+        this.selectDate(date);
+      });
+
+      this.month =
+        "01-" +
+        latest_event.timestamp.substring(5, 7) +
+        "-" +
+        latest_event.timestamp.substring(0, 4);
+    },
+    async getEvents(tag) {
+      let count = 0;
+      let pages = 1;
+      var eventArray = [];
+      var self = this;
+
+      while (count < pages) {
+        count++;
+        window.console.log(count);
+        window.console.log(pages);
+
+        let response = await axios.get(
+          "https://edgeryders.eu/tags/" + tag + ".json?page=" + count
+        );
+        if (response.data.topic_list.topics.length) {
+          pages++;
+          var array = response.data.topic_list.topics.filter(function(el) {
             return el.event;
           });
-          this.raw_data = array;
-
-          var events = array.map(obj => ({
-            date: this.formatDate(obj.event.start, true),
-            time: this.formatTime(obj.event.start),
-            timestamp: obj.event.start,
-            timezone: obj.event.timezone,
-            class: "class2",
-            title: obj.title,
-            excerpt: obj.excerpt,
-            url: "https://edgeryders.eu/t/" + obj.slug,
-            replies: obj.posts_count,
-            image: obj.image_url,
-            created_at: obj.created_at,
-            posted_by: obj.posters[0].user_id,
-            category: obj.category_id
-          }));
-
-          var sorted_events = events.sort((a, b) =>
-            a.timestamp.localeCompare(b.timestamp)
-          );
-
-          this.data = sorted_events;
-
-          function get_month(val) {
-            var date = "01-" + val.substring(5, 7) + "-" + val.substring(0, 4);
-            return date;
-          }
-
-          var months = sorted_events.map(obj => get_month(obj.timestamp));
-          var months_array = new Set(months);
-          this.months_data = [...months_array];
-
-          this.selected = this.data[this.data.length - 1];
-
-          this.$nextTick(() => {
-            var date = this.formatDate(this.selected.timestamp);
-            this.selectDate(date);
-          });
-
-          this.month =
-            "01-" +
-            this.selected.timestamp.substring(5, 7) +
-            "-" +
-            this.selected.timestamp.substring(0, 4);
-        })
-        .catch();
+          var newArray = eventArray.concat(array);
+          eventArray = newArray;
+        } else {
+          break;
+        }
+      }
+      if (count == pages) {
+        self.sortEvents(eventArray);
+      }
     }
   },
   created() {
-    this.getEvents(this.custom.tag);
+    this.dummyEvents();
   },
   computed: {
     data_reverse: function() {

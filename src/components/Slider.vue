@@ -5,39 +5,43 @@
     @mouseleave="toggle_play"
     v-if="slides.length !== undefined"
   >
+      <div class="toggle_menu md:flex">
+        <div
+          class="toggle previous"
+          @click="prev"
+        ></div>
+        <div
+          class="toggle next"
+          @click="next"
+        ></div>
+      </div>
+
     <transition-group class="carousel" tag="div">
       <div
         v-for="item in slides"
-        class="slide"
-        :key="item"
+        class="slide md:slide-md"
+        :key="item.created_at"
         v-touch:swipe.left="next"
         v-touch:swipe.right="prev"
       >
-        <div
-          class="image"
-          :style="{ background: 'url(' + item.image_url + ')' }"
-        >
-          <div class="item_data" v-if="item.posters[0].user_id">
-            <Profile :data="getUser(item.posters[0].user_id)" />
+    
+        <div class="item_post md:item_post-md" :style="{ background: 'url(' + item.image_url + ')' }">
+          <div class="item_title md:item_title-md">
+            <div>
+            <a :href="getPermalink(item.slug)" target="_blank">
+              <h4>{{ item.title }}</h4>
+              </a>
+            </div>
+              <p class="date">
+                <b>{{ item.created_at | formatDate }}</b>
+              </p>
           </div>
+          <Profile class="ml-2" :data="getUser(item.posters[0].user_id)" />
         </div>
-        <div class="item_post">
-          <a class="item_title" :href="getPermalink(item.slug)" target="_blank">
-            <h4>{{ item.title }}</h4>
-            <p class="date">
-              <b>{{ item.created_at | formatDate }}</b>
-            </p>
-          </a>
-          <p v-html="item.excerpt" class="excerpt"></p>
-        </div>
+        <div v-html="item.excerpt" class="excerpt md:excerpt-md"></div>
+
       </div>
     </transition-group>
-    <div class="carousel-controls">
-      <button class="carousel-controls__button" @click="prev">
-        prev
-      </button>
-      <button class="carousel-controls__button" @click="next">next</button>
-    </div>
   </div>
 </template>
 
@@ -111,43 +115,53 @@ export default {
 
 <style lang="scss" scoped>
 .carousel-view {
-  @apply px-6;
+  @apply px-6 mt-6;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
 }
 .carousel {
+  @apply mt-4;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   overflow: hidden;
-
-  width: 100%;
-  min-height: 25em;
+  width: 100%;   
 }
-.slide {
-  flex: 0 0 90%;
-  height: 20em;
-  margin: 1em;
-  overflow: scroll;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: between;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease-in-out;
+
+
+
+.slide .item_title {
+    p.date {
+      margin: 20px 10px !important;
+      background: black;
+      display: inline-block;
+      width: auto;
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+    }
+    p.excerpt {
+      font-size: 14px;
+    }
+  h4 {
+      font-weight: bold;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      background: white;
+      display: inline;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      padding: 15px 10px;
+      line-height: 35px !important;
+      margin: 10px;
+    }
+}
+.slide-md {
+ 
+ 
   .image {
-    background: black;
-    flex: 0 0 300px;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    background-position: center center !important;
-    background-size: cover !important;
+   
+
     .item_data {
       color: white;
       position: relative;
@@ -178,7 +192,7 @@ export default {
       }
     }
   }
-  .item_post {
+  .item_post-md {
     display: flex;
     padding: 20px;
     height: 100%;
@@ -186,27 +200,7 @@ export default {
     flex-direction: column;
     align-items: start;
     justify-content: space-between;
-    .item_title {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-    }
-    h4 {
-      font-weight: bold;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      width: 100%;
-      padding-bottom: 7px;
-      margin-bottom: 4px;
-    }
-    p.date {
-      margin: 3px 0 0 0 !important;
-      padding: 0;
-      color: rgba(0, 0, 0, 0.8);
-      font-size: 14px;
-    }
-    p.excerpt {
-      font-size: 14px;
-    }
+
   }
 }
 .slide:first-of-type {

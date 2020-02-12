@@ -1,6 +1,8 @@
 <template>
   <div class="section md:section-md" id="topics">
-    <h1 class="section_title" v-if="custom.title">{{ custom.title }}</h1>
+    <div class="section_title">
+      {{ custom.title }}
+    </div>
     <div
       class="wrapper px-6"
       :class="{ reverse: custom.text.position == 'left' }"

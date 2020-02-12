@@ -14,13 +14,7 @@
         class="avatar"
         :style="{ backgroundImage: 'url(' + item.avatar + ')' }"
       ></div>
-      <div class="card_name">
-        <h3>
-          <span v-if="item.name">{{ item.name }}</span
-          ><span v-else>{{ item.username }}</span>
-        </h3>
-        <p>Active since {{ item.since | formatDate }}</p>
-      </div>
+
     </div>
     <div class="card_excerpt" v-html="item.bio"></div>
     <div class="card_footer">Connect with @{{ item.username }}</div>
