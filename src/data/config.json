@@ -1,5 +1,6 @@
 {
-  "category": "237",
+  "category": 237,
+  "baseUrl" :"https://edgeryders.eu",
   "sections": [
     {
       "type": "hero",
@@ -46,7 +47,9 @@
     },
     {
       "type": "users",
-      "title": "Users"
+      "title": "Users",
+      "category": "campfire",
+      "only_bios": true
     },
     {
       "type": "people",

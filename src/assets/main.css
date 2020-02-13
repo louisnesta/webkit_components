@@ -466,7 +466,7 @@
 		display: flex;
 	}
 	.card_row .card {
-		@apply inline-block flex-shrink-0 relative;
+		@apply inline-block flex-shrink-0 relative pt-4;
 		width: 300px;
 		transition: all 0.4s ease;
 		height: 380px;
@@ -696,7 +696,7 @@
 	@apply mt-4 pt-2 border-gray-200 border-t font-bold;
 }
 /* purgecss start ignore */
-.class2 {
+.marked {
 	border-radius: 5px !important;
 	background: black !important;
 	color: white !important;
@@ -711,12 +711,12 @@
 	background: white !important;
 }
 
-.vfc-marked.class2 {
+.vfc-marked.marked {
 	color: white !important;
 	background: black !important;
 }
 
-.class2:hover {
+.marked:hover {
 	background: rgba(0, 0, 0, 0.8) !important;
 	cursor: pointer;
 }

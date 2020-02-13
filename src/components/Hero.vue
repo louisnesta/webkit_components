@@ -2,7 +2,8 @@
   <div class="hero md:hero-md" :style="styleObject">
     <div class="content_wrapper md:content_wrapper-md">
       <div class="hero_logo hidden sm-block">
-        <img :src="getLogo()" />
+                <img :src="getLogo()" />
+
       </div>
       <div class="hero_info">
         <div class="title_logo sm-hidden">
@@ -17,11 +18,10 @@
     <div class="hero_stats md:hero_stats-md">
 
         <div class="flex mb-3">
-        <p class="topics"><span>Topics</span><span class="key">{{data.topics_all_time}}</span></p>
+        <p class="topics"><span>Topics</span><span class="key">{{data.topic_count}}</span></p>
         <p class="posts"><span>Posts</span><span class="key">{{data.post_count}}</span></p>
         </div>
 
-        <p class="update"><span>Latest Update</span><span class="key">{{data.topics[0].last_posted_at | formatDate}}</span></p>
       </div>
     </div>
       
@@ -39,9 +39,7 @@ import moment from "moment";
 export default {
   methods: {
     getLogo() {
-      if (this.data.uploaded_logo !== null) {
-        return "https://edgeryders.eu/" + this.data["uploaded_logo"]["url"];
-      }
+        return "https://edgeryders.eu/" + this.data.uploaded_logo.url
     },
     isCustom(field) {
       var x = field;
@@ -55,22 +53,24 @@ export default {
   computed: {
     styleObject() {
       var obj;
-          if (this.custom.background.url){
-            obj = {
-              background: "url('" + this.custom.background.url + "')",
-              backgroundPosition: "cover"
-            }
-          } else if (this.custom.background.color) {
-            obj = {
-              background: this.custom.background.color
-            }
-        } else {
-           obj = {
-              background: "#efefef"
-            }
+        if (this.custom.background) {
+            if (this.custom.background.url){
+              obj = {
+                background: "url('" + this.custom.background.url + "')",
+                backgroundPosition: "cover"
+              }
+            } else if (this.custom.background.color) {
+              obj = {
+                background: this.custom.background.color
+              }
+          } else {
+             obj = {
+                background: "#efefef"
+              }
+          }
         }
-        return obj
-      }
+      return obj
+    }
   },
   filters: {
     formatDate: function(value) {

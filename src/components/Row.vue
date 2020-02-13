@@ -2,30 +2,30 @@
   <div class="row">
     <div class="card_row" ref="content" v-dragscroll.x="true" v-if="users">
       <Card
-        v-for="item in users"
-        :key="item"
+        v-for="(item, index) in users"
+        :key="index"
         class="card"
         :url="getUserUrl(item.username)"
       >
         <template slot="front">
           <div
-            class="avatar"
+            class="avatar mt-4"
             @click="scroll"
-            :style="{ backgroundImage: 'url(' + item.avatar + ')' }"
+            :style="{ backgroundImage: 'url(' + item.avatar_url + ')' }"
           ></div>
           <div class="card_name">
             <h3>
               <span v-if="item.name">{{ item.name }}</span
               ><span v-else>{{ item.username }}</span>
             </h3>
-            <p>Active since {{ item.since | formatDate }}</p>
+            <p>Active since {{ item.created_at | formatDate }}</p>
           </div>
         </template>
         <template slot="back">
           <h3>
             About
           </h3>
-          <div class="card_excerpt" v-html="item.bio"></div>
+          <div class="card_excerpt" v-html="item.bio_raw"></div>
           <div class="card_footer">Connect with @{{ item.username }}</div>
         </template>
       </Card>

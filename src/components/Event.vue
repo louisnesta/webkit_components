@@ -5,16 +5,16 @@
         <h3>{{ data.title }}</h3>
       </a>
       <div class="event_excerpt">
-         <div class="event_info md:event_info-md" v-if="data.start">
+         <div class="event_info md:event_info-md">
           <div class="event_date">
             <p class="date">
-              <b>{{ data.timestamp | formatDateSmall }}</b>
+              <b>{{ data.event.start | formatDateShort }}</b>
             </p>
             <div class="time">
               <p>
-                <b>{{ data.start }}</b>
-                <span v-if="data.end"
-                  > to <b>{{ data.end }}</b></span
+                <b>{{ data.event.start | formatTime }}</b>
+                <span v-if="data.event.end"
+                  > to <b>{{ data.event.end | formatTime }}</b></span
                 >
               </p>
             </div>
@@ -24,7 +24,7 @@
             Full details
           </a>
         </div>
-        <img class="mt-2" :src="data.image" v-if="data.image" />
+        <img class="mt-2" :src="data.image_url" v-if="data.image_url" />
 
         <div class="px-2" v-html="data.excerpt"></div>
       </div>
@@ -38,22 +38,22 @@
       >
         <h3>{{ data.title }}</h3>
         <div class="hidden md:inline-block">
-          <span class="time">{{ data.start }}</span>
-          <span class="timezone">{{ data.timezone }}</span>
+          <span class="time">{{ data.event.start | formatTime }}</span>
+          <span class="timezone" v-if="data.event.timezone">{{ data.event.timezone }}</span>
         </div>
       </div>
 
       <div class="event_excerpt" :class="{ expand: !minimize }">
-        <div class="event_info md:event_info-md" v-if="data.start">
+        <div class="event_info md:event_info-md">
           <div class="event_date">
             <p class="date">
-              <b>{{ data.timestamp | formatDateSmall }}</b>
+              <b>{{ data.event.start | formatDateShort }}</b>
             </p>
             <div class="time">
               <p>
-                <b>{{ data.start }}</b>
+                <b>{{ data.event.start | formatTime }}</b>
                 <span v-if="data.end"
-                  > to <b>{{ data.end }}</b></span
+                  > to <b>{{ data.event.end | formatTime }}</b></span
                 >
               </p>
             </div>
@@ -94,7 +94,10 @@ export default {
     formatDate: function(value) {
       return moment(String(value)).format("MMMM Do YYYY");
     },
-    formatDateSmall: function(value) {
+    formatTime: function(value) {
+      return moment(value).format("HH:mm");
+    },
+    formatDateShort: function(value) {
       return moment(String(value)).format("DD/MM/YY");
     }
   }

@@ -77,6 +77,7 @@ export default {
   -ms-transform-style: preserve-3d;
   background: #fff !important;
   transform-style: preserve-3d;
+  padding-top: 10px;
 }
 
 .card:hover .front {

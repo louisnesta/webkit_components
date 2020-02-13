@@ -32,36 +32,36 @@
         :key="componentKey"
       />
 
-      <Row v-else :users="filtered_users" />
+      <Row v-else :users="allusers" />
     </div>
 
     <div
       class="wrapper md:wrapper-md"
-      v-if="filtered_users && (view == 'list') | (view == 'grid')"
+      v-if="allusers && (view == 'list') | (view == 'grid')"
     >
       <div class="user_grid md:user_grid-md" v-if="view == 'grid'">
         <div
           class="user_avatar md:user_avatar-md"
-          v-for="(item, index) in filtered_users"
+          v-for="(item, index) in allusers"
           :key="item.name"
           @click="setActive(index)"
           :class="{ active: selected === index }"
         >
-          <img :src="item.avatar" />
+          <img :src="item.avatar_url" />
         </div>
       </div>
 
       <div class="user_list md:user_list-md" v-if="view == 'list'">
         <ul>
           <li
-            v-for="(item, index) in filtered_users"
+            v-for="(item, index) in allusers"
             :key="index"
             @click="setActive(index)"
             :class="{ active: selected === index }"
           >
             <div
               class="user_avatar"
-              :style="{ backgroundImage: 'url(' + item.avatar + ')' }"
+              :style="{ backgroundImage: 'url(' + item.avatar_url + ')' }"
             ></div>
             <p v-if="item.name">{{ item.name }}</p>
             <p v-else>{{ item.username }}</p>
@@ -69,20 +69,20 @@
         </ul>
       </div>
 
-      <div class="w-full px-6" v-if="filtered_users[selected]">
+      <div class="w-full px-6" v-if="allusers[selected]">
         <a
           class="user_name"
-          :href="'https://edgeryders.eu/u/' + filtered_users[selected].username"
+          :href="'https://edgeryders.eu/u/' + allusers[selected].username"
         >
           <span class="mr-1">
-            {{ filtered_users[selected].name }}
+            {{ allusers[selected].name }}
           </span>
-          <span v-if="filtered_users[selected].name" class="font-normal text-lg"
-            >@{{ filtered_users[selected].username }}</span
+          <span v-if="allusers[selected].name" class="font-normal text-lg"
+            >@{{ allusers[selected].username }}</span
           >
-          <span v-else> @{{ filtered_users[selected].username }} </span>
+          <span v-else> @{{ allusers[selected].username }} </span>
         </a>
-        <p class="user_bio">{{ filtered_users[selected].bio }}</p>
+        <div class="user_bio" v-html="allusers[selected].bio_raw"></div>
       </div>
     </div>
   </div>
@@ -93,17 +93,16 @@ import axios from "axios";
 import Stack from "@/components/Stack.vue";
 import Row from "@/components/Row.vue";
 export default {
-  props: ["users", "custom"],
+  props: ["custom", "baseUrl"],
   data() {
     return {
       selected: 0,
       view: "cards",
-      visibleCards: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-      allcards: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      visibleCards: [],
+      allcards: [],
       componentKey: 0,
       bio: null,
       allusers: null,
-      index: this.users,
       filtered_users: false
     };
   },
@@ -111,18 +110,6 @@ export default {
   methods: {
     toggleView(view) {
       this.view = view;
-      if (view == "calendar") {
-        var date = this.formatDate(this.selected.timestamp);
-
-        this.$nextTick(() => {
-          this.selectDate(date);
-          this.month =
-            "01-" +
-            this.selected.timestamp.substring(5, 7) +
-            "-" +
-            this.selected.timestamp.substring(0, 4);
-        });
-      }
     },
     forceRerender() {
       this.componentKey += 1;
@@ -140,44 +127,47 @@ export default {
       this.visibleCards.shift();
       if (this.visibleCards.length == 0) {
         const newCards = this.filtered_users.slice();
-
         this.visibleCards = newCards;
         this.forceRerender();
-        window.console.log("reset");
       }
     },
-    async getActiveUsers() {
-      const array = this.users.map(user => user["username"]);
+    async getUsers() {
+      let count = 0;
+      let total = 3;
 
-      const calls = array.map(x =>
-        axios.get(`https://edgeryders.eu/u/${x}.json`).then(resp => {
-          var obj = {
-            username: resp.data.user.username,
-            since: resp.data.user.created_at,
-            name: resp.data.user.name,
-            id: resp.data.user.id,
-            avatar: this.getAvatar(resp.data.user.avatar_template, 600),
-            bio: resp.data.user.bio_raw
-          };
-          return obj;
-        })
-      );
+      let from = 0;
+      let per = 50;
 
-      var result = await Promise.all(calls);
+      var usersArray = [];
 
-      this.allusers = result;
-      this.filtered_users = result.filter(user => user.bio && user.id !== 4922);
-      this.visibleCards = this.filtered_users.slice();
-    },
-    getAvatar(string, size) {
-      return "https://edgeryders.eu" + string.replace("{size}", size);
+      while (count < total) {
+        count++;
+        let response = await axios.get(
+          `${this.baseUrl}/webkit_components/users.json?from=${from}&per=${per}`
+        );
+        if (response.data.length) {
+          from = per * count;
+          var array = response.data.filter(function(item) {
+            return item.bio_raw;
+          });
+          var newArray = usersArray.concat(array);
+          usersArray = newArray;
+        } else {
+          break;
+        }
+      }
+      if (total == count) {
+        window.console.log(usersArray);
+        this.allusers = usersArray;
+        this.visibleCards = this.allusers.slice();
+      }
     },
     setActive(index) {
       this.selected = index;
     }
   },
   mounted: function() {
-    this.getActiveUsers();
+    this.getUsers(this.custom.category);
   }
 };
 </script>
