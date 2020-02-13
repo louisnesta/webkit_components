@@ -5,7 +5,7 @@
         v-for="(item, index) in users"
         :key="index"
         class="card"
-        :url="getUserUrl(item.username)"
+        :url="item.url"
       >
         <template slot="front">
           <div
@@ -32,9 +32,9 @@
     </div>
     <div class="card_row" ref="content" v-dragscroll.x="true" v-if="topics">
       <Card
-        v-for="item in topics.topic_list.topics"
+        v-for="item in topics"
         :key="item"
-        :url="getPermalink(item.slug)"
+        :url="item.url"
         class="card topic"
       >
         <template slot="image">
@@ -48,7 +48,7 @@
             <div class="topic_title">
               <h2>{{ item.title }}</h2>
             </div>
-            <Profile :data="getUser(item.posters[0].user_id)" />
+            <Profile :data="item.author" />
           </div>
         </template>
         <template slot="back">
@@ -70,26 +70,12 @@ export default {
     Card,
     Profile
   },
-  computed: {
-    selector() {
-      return document.querySelector("#content");
-    }
-  },
   methods: {
     scroll() {
       this.$nextTick(() => {
         this.$refs.content.scrollLeft += 1000;
       });
     },
-    getPermalink(slug) {
-      return "https://edgeryders.eu/t/" + slug;
-    },
-    getUserUrl(username) {
-      return "https://edgeryders.eu/u/" + username;
-    },
-    getUser(userId) {
-      return this.topics.users.filter(user => user.id == userId)[0];
-    }
   },
   filters: {
     formatDate: function(value) {

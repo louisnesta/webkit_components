@@ -28,7 +28,7 @@
         <div class="item_post md:item_post-md" :style="{ background: 'url(' + item.image_url + ')' }">
           <div class="item_title md:item_title-md">
             <div>
-            <a :href="getPermalink(item.slug)" target="_blank">
+            <a :href="item.url" target="_blank">
               <h4>{{ item.title }}</h4>
               </a>
             </div>
@@ -36,7 +36,7 @@
                 <b>{{ item.created_at | formatDate }}</b>
               </p>
           </div>
-          <Profile class="ml-2" :data="getUser(item.posters[0].user_id)" />
+          <Profile class="ml-2" :data="item.author" />
         </div>
         <div v-html="item.excerpt" class="excerpt md:excerpt-md"></div>
 
@@ -98,7 +98,7 @@ export default {
     }
   },
   created() {
-    this.slides = this.custom.topic_list.topics.slice(0);
+    this.slides = this.custom.slice(0);
     this.users = this.custom.users.slice(0);
     if (this.autoplay != undefined) {
       this.toggle_play(this.autoplay);

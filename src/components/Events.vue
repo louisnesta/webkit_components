@@ -84,9 +84,8 @@ export default {
   props: ["custom", "baseUrl"],
   data() {
     return {
-      calendar: null,
-      data: null,
       view: "calendar",
+      data: null,
       selected: null,
       minimize: true
     };
@@ -96,17 +95,17 @@ export default {
     Event
   },
   methods: {
-    toggleCalendar() {
-      if (this.$mq == "sm") {
-        this.minimize = !this.minimize;
-      }
-    },
     toggleView(view) {
       this.view = view;
       if (view == "calendar") {
         this.$nextTick(() => {
           this.$refs.Calendar.ChooseDate(this.selected[0].date);
         });
+      }
+    },
+    toggleCalendar() {
+      if (this.$mq == "sm") {
+        this.minimize = !this.minimize;
       }
     },
     selectEvent(value) {

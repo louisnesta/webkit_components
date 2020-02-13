@@ -1,19 +1,13 @@
 <template>
-  <a class="profile_badge" :href="'https://edgeryders.eu/u/' + data.username">
-    <img :src="getAvatar(data.avatar_template)" />
+  <a class="profile_badge" :href="data.url">
+    <img :src="data.avatar_url" />
     <p>@{{ data.username }}</p>
   </a>
 </template>
 
 <script>
 export default {
-  props: ["data"],
-  methods: {
-    getAvatar(url) {
-      var avatar = "https://edgeryders.eu" + url.replace("{size}", 100);
-      return avatar;
-    }
-  }
+  props: ["data"]
 };
 </script>
 <style lang="scss" scoped>

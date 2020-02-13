@@ -8,10 +8,10 @@
         <div
           class="user_avatar md:user_avatar-md"
           v-for="(item, index) in people"
-          :key="item.title"
+          :key="index"
           @click="setActive(index)"
           :class="{ active: selected === index }"
-          :style="{ backgroundImage: 'url(' + item.image + ')' }"
+          :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
         ></div>
       </div>
       <div class="w-full px-6 md:px-2 md:pt-4" v-if="people[selected]">
@@ -20,7 +20,7 @@
           :href="people[selected].url"
           target="_blank"
         >
-          {{ people[selected].title }}
+          {{ people[selected].title }} <span>{{ getUser(people[selected].excerpt) }}</span>
         </a>
 
         <div class="bio" v-if="getExcerpt(people[selected].excerpt).length > 1">
@@ -37,6 +37,7 @@
         <div class="user_bio" v-else>
           {{ getExcerpt(people[selected].excerpt)[0] }}
         </div>
+
       </div>
     </div>
   </div>
@@ -45,7 +46,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["custom"],
+  props: ["custom", "baseUrl"],
   data() {
     return {
       people: null,
@@ -57,7 +58,8 @@ export default {
       this.selected = index;
     },
     getExcerpt(excerpt) {
-      var array = excerpt
+      var string = String(excerpt);
+      var array = string
         .replace(/(@[^\s]*(?=<\/a>))/g, "")
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/\s*\[.*?\]\s*/g, "")
@@ -79,29 +81,32 @@ export default {
         return username[0];
       }
     },
-    getUsers(tag) {
-      axios
-        .get("https://edgeryders.eu/tags/" + tag + ".json")
-        .then(({ data }) => {
-          var people = data.topic_list.topics.map(obj => ({
-            title: obj.title,
-            excerpt: obj.excerpt,
-            url: "https://edgeryders.eu/t/" + obj.slug,
-            image: obj.image_url,
-            created_at: obj.created_at
-          }));
+    async getPeople(tag) {
+      let count = 0; let total = 1;
+      let from = 0; let per = 25;
+      var peopleArray = [];
 
-          var sorted = people.sort((a, b) =>
-            b.created_at.localeCompare(a.created_at)
-          );
+      while (count < total) {
+        count++;
+        let response = await axios.get(
+          `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&from=${from}&per=${per}`
+        );
+        if (response.data.length) {
+                  window.console.log(response.data)
 
-          this.people = sorted;
-        })
-        .catch();
+          total++; from = per * count;
+          peopleArray = peopleArray.concat(response.data);
+        } else {
+          break;
+        }
+      }
+      if (total == count) {
+        this.people = peopleArray;
+      }
     }
   },
   mounted: function() {
-    this.getUsers(this.custom.tag);
+    this.getPeople(this.custom.tag);
   }
 };
 </script>

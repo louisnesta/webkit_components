@@ -1,88 +1,74 @@
 <template>
   <div class="section md:section-md" id="topics">
-    <h1 class="section_title">{{ custom.title }}</h1>
+    <div class="section_title">
+      {{ custom.title }}
+    </div>
+    <div
+      class="wrapper px-6"
+      v-if="custom.text"
+      :class="{ reverse: custom.text.position == 'left' }"
+    >
+      <div v-if="custom.text.content" class="w-full section_text">
+        {{ custom.text.content }}
+      </div>
+    </div>
 
-    <swiper :options="sliderOptions" ref="mySwiper" class="section_slider">
-      <!-- slides -->
-      <swiper-slide v-for="item in data" :key="item.created_at">
-        <div class="slide">
-          <div
-            v-if="item.image_url"
-            class="slide_title bg_image"
-            :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
-          >
-            <h1>{{ item.title }}</h1>
-          </div>
-          <div v-else class="slide_title">
-            <h1>{{ item.title }}</h1>
-          </div>
-          <div class="slide_excerpt">
-            <p v-html="item.excerpt"></p>
-          </div>
-          <div class="slide_footer">
-            {{ item.created_at | formatDate }}
-          </div>
-        </div>
-      </swiper-slide>
-    </swiper>
+    <Slider
+      v-if="topics && custom.view == 'featured'"
+      :autoplay="5000"
+      :custom="topics"
+    />
 
-    <div class="slider_arrow left hidden md:block" @click="back()"></div>
-    <div class="slider_arrow right hidden md:block" @click="forward()"></div>
+    <Row v-if="topics && custom.view == 'cards'" :topics="topics" />
   </div>
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import moment from "moment";
-import "swiper/dist/css/swiper.css";
+import Slider from "@/components/Slider.vue";
+import Row from "@/components/Row.vue";
+import axios from "axios";
 
 export default {
-  props: ["data", "custom"],
+  props: ["custom", "baseUrl"],
   data() {
     return {
-      selected: 0,
-      bio: null,
-      users: null,
-      index: this.userdata,
-      filtered_users: false,
-      sliderOptions: {
-        autoplay: true,
-        speed: 1200,
-        delay: 500,
-        slidesPerView: 2,
-        slidesPerColumn: 1,
-        slidesPerGroup: 1,
-        spaceBetween: 30,
-        slidesPerColumnFill: "row",
-        breakpoints: {
-          640: {
-            slidesPerView: 1,
-            slidesPerColumn: 1,
-            slidesPerGroup: 1,
-            centeredSlides: true,
-            spaceBetween: 20,
-            slidesPerColumnFill: "row"
-          }
-        }
-      }
+      topics: null
     };
   },
-  methods: {
-    back() {
-      this.$refs.mySwiper.swiper.slidePrev();
-    },
-    forward() {
-      this.$refs.mySwiper.swiper.slideNext();
-    }
-  },
-  filters: {
-    formatDate: function(value) {
-      return moment(String(value)).format("dddd MMMM Do YYYY");
-    }
-  },
   components: {
-    swiper,
-    swiperSlide
+    Slider,
+    Row
+  },
+  created() {
+    if (this.custom.tag) {
+      this.getTopics(this.custom.tag, 'tags');
+    }
+    if (this.custom.category) {
+      this.getTopics(this.custom.category, 'category');
+    }
+  },
+  methods: {
+    async getTopics(value, filter) {
+      let count = 0; let total = 1;
+      let from = 0; let per = 25;
+      var topicsArray = [];
+
+      while (count < total) {
+        count++;
+        let response = await axios.get(
+          `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&from=${from}&per=${per}`
+        );
+        if (response.data.length) {
+          total++; from = per * count;
+          topicsArray = topicsArray.concat(response.data);
+        } else {
+          break;
+        }
+      }
+      if (total == count) {
+        this.topics = topicsArray;
+      }
+    }
   }
 };
 </script>

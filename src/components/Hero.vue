@@ -54,7 +54,7 @@ export default {
     styleObject() {
       var obj;
         if (this.custom.background) {
-            if (this.custom.background.url){
+            if (this.custom.background.url) {
               obj = {
                 background: "url('" + this.custom.background.url + "')",
                 backgroundPosition: "cover"
