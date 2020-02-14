@@ -12,6 +12,7 @@
       <People v-if="section.type == 'people'" :baseUrl="data.baseUrl" :custom="section" />
       <Edgeryders v-if="section.type == 'edgeryders'" :custom="section"
       />
+      <Form v-if="section.type == 'form'" :baseUrl="data.baseUrl" :custom="section" />
     </div>
 
     <Terms />
@@ -29,6 +30,7 @@ import Topics from "@/components/Topics.vue";
 import People from "@/components/People.vue";
 import Users from "@/components/Users.vue";
 import Edgeryders from "@/components/Edgeryders.vue";
+import Form from "@/components/Form.vue";
 import Terms from "@/components/Terms.vue";
 
 import axios from "axios";
@@ -52,6 +54,7 @@ export default {
     Nav,
     Custom,
     Edgeryders,
+    Form,
     Terms
   },
   created() {
