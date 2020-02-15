@@ -157,7 +157,6 @@ export default {
         }
       }
       if (total == count) {
-        window.console.log(usersArray);
         this.allusers = usersArray;
         this.visibleCards = this.allusers.slice();
       }

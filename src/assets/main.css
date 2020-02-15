@@ -6,6 +6,10 @@
 
 @tailwind utilities;
 
+*:focus {
+    outline: none;
+}
+
 .hero_title {
 	@apply flex font-display text-4xl font-bold text-left pl-0 pb-1 mb-4 border-b border-gray-200;
 }

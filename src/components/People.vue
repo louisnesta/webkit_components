@@ -92,8 +92,6 @@ export default {
           `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&from=${from}&per=${per}`
         );
         if (response.data.length) {
-                  window.console.log(response.data)
-
           total++; from = per * count;
           peopleArray = peopleArray.concat(response.data);
         } else {

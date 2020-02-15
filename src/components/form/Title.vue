@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1 class="title" v-if="title">{{ displayTitle }}</h1>
-    <h3 class="subtitle" v-if="subtitle">{{ subtitle }}</h3>
+  <div class="title">
+    <h1 v-if="title">{{ displayTitle }}</h1>
+    <h3 v-if="subtitle">{{ subtitle }}</h3>
   </div>
 </template>
 
@@ -19,3 +19,11 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.title {
+  @apply mb-5 pb-4 border-b;
+  h1 {
+    @apply font-bold pr-16 text-2xl leading-tight;
+  }
+}
+</style>

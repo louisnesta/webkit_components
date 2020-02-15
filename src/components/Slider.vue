@@ -98,8 +98,10 @@ export default {
     }
   },
   created() {
+    if (this.custom.length) {
     this.slides = this.custom.slice(0);
     this.users = this.custom.users.slice(0);
+    }
     if (this.autoplay != undefined) {
       this.toggle_play(this.autoplay);
     }

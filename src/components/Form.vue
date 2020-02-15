@@ -1,15 +1,22 @@
 <template>
   <div class="section section-md" id="form">
-    <div class="content">
-      <Title class="even" v-bind="slide" />
-      <div class="even">
-        <Body v-bind="slide" :response="response" :next="next" />
-        <Fields v-bind="slide" :response="response" :next="next" />
-        <Error v-for="error in errors" :key="error" :error="error" />
+    <div class="section_title">
+      {{ custom.title }}
+    </div>
+    <div class="wrapper md:wrapper-md">
+      <div class="content section_text" v-html="custom.content">
+      </div>
+      <div class="form">
+        <div class="even">
+          <Title class="even" v-bind="slide" />
+          <Body v-bind="slide" :response="response" :next="next" />
+          <Fields v-bind="slide" :response="response" :next="next" />
+          <Error v-for="error in errors" :key="error" :error="error" />
+        </div>
+        <Progress :index="slide.index" :maxIndex="maxIndex" mobile />
+        <Navigation :back="back" :next="next" :maxIndex="maxIndex" v-bind="slide" />
       </div>
     </div>
-    <Progress :index="slide.index" :maxIndex="maxIndex" mobile />
-    <Navigation :back="back" :next="next" :maxIndex="maxIndex" v-bind="slide" />
   </div>
 </template>
 
@@ -114,12 +121,14 @@ export default {
 
 <style scoped lang="scss">
 .content {
-  display: flex;
+  @apply flex flex-col pt-2;
+  flex-basis: 50%;
 }
 
-.even {
-  flex-basis: 50%;
-  margin-right: 2rem;
+.form {
+  @apply bg-gray-100 p-6 mt-2;
+  flex-basis: 45%;
+  flex-grow: 0;
 }
 
 @media (max-width: 768px) {
