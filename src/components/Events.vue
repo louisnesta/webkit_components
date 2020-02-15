@@ -48,6 +48,7 @@
           v-if="data"
           ref="Calendar"
           @choseDay="selectEvent"
+          :hiddenElements="['navigationArrows']"
           :date-format="'dd-mm-yyyy'"
           :change-month-function="true"
           :change-year-function="true"
@@ -114,17 +115,20 @@ export default {
         event = this.data.filter(function(obj) {
           return obj.date == value.date;
         });   
-        this.$nextTick(() => {
-          this.$refs.Calendar.ChooseDate(value.date);
-          this.toggleCalendar();
-        });
+        if (event.length) {
+          this.selected = event;
+          this.$nextTick(() => {
+            this.$refs.Calendar.ChooseDate(value.date);
+            this.toggleCalendar();
+          });
+        }
       }
       else {
         event = this.data.filter(function(obj) {
           return obj.created_at == value;
         });
+        this.selected = event;
       }
-      this.selected = event;
     },
     next() {
       var next;
