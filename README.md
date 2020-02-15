@@ -22,6 +22,7 @@ Styling uses Tailwind utilities, [read more here](https://tailwindcss.com/docs/a
 -   Topics
 -   Events
 -   Custom
+-   Form
 
 ## Custom Components
 
@@ -49,6 +50,12 @@ npm run build
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+#### Form configuration
+
+The form component is ported directly from the [edgeryders form builder](https://github.com/edgeryders/edgeryders-form), and most configuration noted on that repository will work within the `data/config.json` here.
+
+(NB that you'll need a `.env.<environment>` file with the values noted under [Installation](https://github.com/edgeryders/edgeryders-form#2-installation) in order for the form to submit successfully.)
 
 ## Dependencies
 
