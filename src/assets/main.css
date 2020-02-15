@@ -10,6 +10,8 @@
     outline: none;
 }
 
+button:focus {outline:0;}
+
 .hero_title {
 	@apply flex font-display text-4xl font-bold text-left pl-0 pb-1 mb-4 border-b border-gray-200;
 }
@@ -594,8 +596,6 @@
 		flex: 40% 0 0;
 		height: auto;
 		max-height: 340px !important;
-		border: 1px solid #efefef;
-		border-radius: 10px;
 	}
 	.selected_event-md {
 		flex: 55% 0 0;
@@ -733,14 +733,17 @@
 
 .calendar_container {
 	@apply relative;
-	max-height: 380px;
+	max-height: 340px;
 	overflow: hidden;
 	transition: max-height 0.4s ease;
+	border-radius: 10px;
+	border: 1px solid #efefef;
 }
 
 .calendar_container.active {
-	max-height: 60px !important;
+	max-height: 50px !important;
 	transition: max-height 0.4s ease;
+	border: 1px solid rgba(0,0,0,0);
 }
 
 .vfc-main-container {
@@ -782,13 +785,17 @@
 
 .arrow {
 	background: url("data:image/svg+xml,%3Csvg width='26' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.6 1.3c.7.7 1 1.5 1 2.4 0 .9-.3 1.8-1 2.4L8.8 22l15.8 15.8a3.4 3.4 0 010 4.8 3.4 3.4 0 01-4.8 0L1.5 24.4a3.4 3.4 0 010-4.8L19.8 1.3a3.4 3.4 0 014.8 0z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E")
-		center center no-repeat rgba(255, 255, 255, 0.1);
+		center center no-repeat;
+	background-color: rgba(255, 255, 255, 0);
 	background-size: 20% !important;
 	display: inline-block;
 	position: absolute;
 	top: 0;
 	width: 50px;
 	height: 50px;
+}
+.arrow:hover {
+	background-color: rgba(255, 255, 255, 0.1);
 }
 .arrow.left {
 	left: 0;

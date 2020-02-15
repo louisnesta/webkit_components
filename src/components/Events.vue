@@ -109,7 +109,7 @@ export default {
         this.minimize = !this.minimize;
       }
     },
-    selectEvent(value) {
+    selectEvent(value, toggle) {
       var event;
       if (value.date) {
         event = this.data.filter(function(obj) {
@@ -119,8 +119,10 @@ export default {
           this.selected = event;
           this.$nextTick(() => {
             this.$refs.Calendar.ChooseDate(value.date);
-            this.toggleCalendar();
           });
+          if (toggle !== false) {
+            this.toggleCalendar()
+          }
         }
       }
       else {
@@ -147,7 +149,7 @@ export default {
                 moment(start) > moment(this.selected[0].event.start)
             ) || this.selected[0];
       }
-      this.selectEvent(next);
+      this.selectEvent(next, false);
     },
     previous() {
       var prev;
@@ -165,7 +167,7 @@ export default {
               moment(start) < moment(this.selected[0].event.start)
           ) || this.selected[0];
       }
-       this.selectEvent(prev);
+       this.selectEvent(prev, false);
     },
     sortEvents(array) {
       var events = array.map( x => {
