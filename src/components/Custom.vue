@@ -17,15 +17,14 @@
         </video>
       </div>
 
-      <div class="w-full section_text md:pt-4">
-        {{ custom.text.content }}
-      </div>
+      <div v-if="html" v-html="custom.text.content" class="w-full section_text md:pt-4" />
+      <div v-else class="w-full section_text md:pt-4">{{ custom.text.content }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["custom"]
+  props: ["custom", "html"]
 };
 </script>
