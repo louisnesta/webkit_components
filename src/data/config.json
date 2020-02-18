@@ -57,23 +57,6 @@
       "tag": "webcontent-festival-organiser-bio"
     },
     {
-      "type": "topics",
-      "title": "Topics",
-      "view": "cards",
-      "tag": "webcontent-wellbeing-featured",
-      "image": {
-        "url": ""
-      },
-      "video": {
-        "src": "",
-        "poster": ""
-      },
-      "text": {
-        "content": "",
-        "position": ""
-      }
-    },
-    {
       "type": "edgeryders",
       "title": "We are Edgeryders"
     },

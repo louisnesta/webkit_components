@@ -24,7 +24,6 @@
         v-touch:swipe.left="next"
         v-touch:swipe.right="prev"
       >
-    
         <div class="item_post md:item_post-md" :style="{ background: 'url(' + item.image_url + ')' }">
           <div class="item_title md:item_title-md">
             <div>
@@ -53,8 +52,8 @@ export default {
   data() {
     return {
       play: false,
-      users: null,
-      slides: null
+      users: [],
+      slides: []
     };
   },
   components: {
@@ -99,8 +98,10 @@ export default {
   },
   created() {
     if (this.custom.length) {
-    this.slides = this.custom.slice(0);
-    this.users = this.custom.users.slice(0);
+      this.slides = this.custom.slice(0);
+    }
+    else if (this.custom.users && this.custom.users.length) {
+      this.users = this.custom.users.slice(0);
     }
     if (this.autoplay != undefined) {
       this.toggle_play(this.autoplay);
@@ -128,7 +129,7 @@ export default {
   justify-content: center;
   align-items: start;
   overflow: hidden;
-  width: 100%;   
+  width: 100%;
 }
 
 
@@ -159,11 +160,7 @@ export default {
     }
 }
 .slide-md {
- 
- 
   .image {
-   
-
     .item_data {
       color: white;
       position: relative;
