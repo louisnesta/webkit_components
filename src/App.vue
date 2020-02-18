@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full">
     <Nav style="margin-bottom: 60px" :data="selectedComponents" />
 
-    <Hero :data="getCategoryMetadata(data.category)" :custom="getSectionData('hero')"/>
+    <Hero :data="getCategoryMetadata(data.category)" :baseUrl="data.baseUrl" :custom="getSectionData('hero')"/>
 
     <div v-for="section in data.sections" :key="section.title">
       <Custom v-if="section.type == 'custom'" :custom="section"/>

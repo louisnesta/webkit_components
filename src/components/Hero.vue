@@ -39,15 +39,10 @@ import moment from "moment";
 export default {
   methods: {
     getLogo() {
-        return "https://edgeryders.eu/" + this.data.uploaded_logo.url
+      return `${this.baseUrl}/${this.data.uploaded_logo.url}`
     },
     isCustom(field) {
-      var x = field;
-      if (this.custom[x]) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.custom[field];
     }
   },
   computed: {
@@ -77,6 +72,6 @@ export default {
       return moment(String(value)).format("MMMM Do YYYY");
     }
   },
-  props: ["data", "custom"]
+  props: ["data", "custom", "baseUrl"]
 };
 </script>
