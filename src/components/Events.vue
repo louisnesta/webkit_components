@@ -169,49 +169,20 @@ export default {
       }
        this.selectEvent(prev, false);
     },
-    sortEvents(array) {
-      var events = array.map( x => {
-        x.date = this.formatDate(x.event.start);
-        x.class = "marked";
-        return x
-      })
-
-      var sorted_events = events.sort((a, b) =>
-        a.event.start.localeCompare(b.event.start)
-      );
-
-      this.data = sorted_events;
-      this.selectEvent(this.dataReverse[0]);
-    },
-    async getEvents(tag) {
-      let count = 0;
-      let total = 1;
-
-      let from = 0;
-      let per = 50;
-
-      var eventArray = [];
-
-      while (count < total) {
-        count++;
-        let response = await axios.get(
-          `${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=${tag}&from=${from}&per=${per}`
-        );
-        if (response.data.length) {
-          total++;
-          from = per * count;
-          var array = response.data.filter(function(item) {
-            return item.event;
-          });
-          var newArray = eventArray.concat(array);
-          eventArray = newArray;
-        } else {
-          break;
-        }
-      }
-      if (total == count) {
-        this.sortEvents(eventArray);
-      }
+    getEvents(tag) {
+      axios.get(
+        `${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=${tag}&per=500`
+      ).then(({ data }) => {
+        this.data = data
+          .filter(({ event }) => event)
+          .map(event => ({
+            ...event,
+            date: this.formatDate(event.event.start),
+            class: "marked"
+          }))
+          .sort((a, b) => a.event.start.localeCompare(b.event.start));
+        this.selectEvent(this.dataReverse[0]);
+      });
     },
     formatDate(value) {
       return moment(value).format("D-M-YYYY");

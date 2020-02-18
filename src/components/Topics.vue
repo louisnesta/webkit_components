@@ -48,26 +48,10 @@ export default {
     }
   },
   methods: {
-    async getTopics(value, filter) {
-      let count = 0; let total = 1;
-      let from = 0; let per = 25;
-      var topicsArray = [];
-
-      while (count < total) {
-        count++;
-        let response = await axios.get(
-          `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&from=${from}&per=${per}`
-        );
-        if (response.data.length) {
-          total++; from = per * count;
-          topicsArray = topicsArray.concat(response.data);
-        } else {
-          break;
-        }
-      }
-      if (total == count) {
-        this.topics = topicsArray;
-      }
+    getTopics(value, filter) {
+      axios.get(
+        `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500`
+      ).then(({ data }) => this.topics = data);
     }
   }
 };

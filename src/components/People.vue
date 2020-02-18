@@ -76,26 +76,10 @@ export default {
         return username[0];
       }
     },
-    async getPeople(tag) {
-      let count = 0; let total = 1;
-      let from = 0; let per = 25;
-      var peopleArray = [];
-
-      while (count < total) {
-        count++;
-        let response = await axios.get(
-          `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&from=${from}&per=${per}`
-        );
-        if (response.data.length) {
-          total++; from = per * count;
-          peopleArray = peopleArray.concat(response.data);
-        } else {
-          break;
-        }
-      }
-      if (total == count) {
-        this.people = peopleArray;
-      }
+    getPeople(tag) {
+      axios.get(
+        `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&per=500`
+      ).then(({ data }) => this.people = data);
     }
   },
   mounted: function() {
