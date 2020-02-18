@@ -131,35 +131,13 @@ export default {
         this.forceRerender();
       }
     },
-    async getUsers() {
-      let count = 0;
-      let total = 3;
-
-      let from = 0;
-      let per = 50;
-
-      var usersArray = [];
-
-      while (count < total) {
-        count++;
-        let response = await axios.get(
-          `${this.baseUrl}/webkit_components/users.json?from=${from}&per=${per}`
-        );
-        if (response.data.length) {
-          from = per * count;
-          var array = response.data.filter(function(item) {
-            return item.bio_raw;
-          });
-          var newArray = usersArray.concat(array);
-          usersArray = newArray;
-        } else {
-          break;
-        }
-      }
-      if (total == count) {
-        this.allusers = usersArray;
-        this.visibleCards = this.allusers.slice();
-      }
+    getUsers() {
+      axios.get(
+        `${this.baseUrl}/webkit_components/users.json?per=500`
+      ).then(({ data }) => {
+        this.allusers = data.filter(({ bio_raw }) => bio_raw);
+        this.visibleCards = this.users;
+      });
     },
     setActive(index) {
       this.selected = index;

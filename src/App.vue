@@ -41,8 +41,7 @@ export default {
     return {
       data,
       category: { users: [] },
-      categories: [],
-      topics: []
+      categories: []
     };
   },
   components: {
@@ -71,11 +70,6 @@ export default {
       this.category = data.find(
         ({ id }) => id === parseInt(this.data.category)
       );
-      axios
-        .get(
-          `${this.data.baseUrl}/webkit_components/topics.json?categories=${this.category.slug}`
-        )
-        .then(({ data }) => (this.topics = data));
     },
     getCategoryMetadata(id) {
       return this.categories.find(category => category.id === id) || {};
