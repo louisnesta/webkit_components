@@ -49,7 +49,7 @@ export default {
   props: ["custom", "baseUrl"],
   data() {
     return {
-      people: null,
+      people: [],
       selected: 0
     };
   },
@@ -58,20 +58,15 @@ export default {
       this.selected = index;
     },
     getExcerpt(excerpt) {
-      var string = String(excerpt);
-      var array = string
+      return excerpt
+        .toString()
         .replace(/(@[^\s]*(?=<\/a>))/g, "")
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/\s*\[.*?\]\s*/g, "")
         .replace("&hellip;", "...")
         .replace("&amp", "&")
         .split(/\n/g)
-        .filter(v => v != " ");
-
-      var array_cleaned = array.filter(function(element) {
-        return element.length > 3;
-      });
-      return array_cleaned;
+        .filter(v => v.length > 3);
     },
     getUser(excerpt) {
       var username = excerpt.match(/(@[^\s]*(?=<\/a>))/g);

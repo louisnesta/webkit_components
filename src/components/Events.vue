@@ -60,14 +60,14 @@
       <div class="selected_event md:selected_event-md">
         <h2
           class="text-2xl font-bold pb-2 border-b mb-2 pl-2"
-          v-if="selected.length > 1 && $mq !== 'sm'"
+          v-if="selected && selected.length > 1 && $mq !== 'sm'"
         >
           {{ selected[0].event.start | formatDate }}
         </h2>
         <Event
           v-for="(event, index) in selected"
           :data="event"
-          :multiple="selected.length > 1"
+          :multiple="selected && selected.length > 1"
           :key="index"
         />
       </div>
@@ -114,7 +114,7 @@ export default {
       if (value.date) {
         event = this.data.filter(function(obj) {
           return obj.date == value.date;
-        });   
+        });
         if (event.length) {
           this.selected = event;
           this.$nextTick(() => {
