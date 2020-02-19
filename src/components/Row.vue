@@ -33,7 +33,7 @@
     <div class="card_row" ref="content" v-dragscroll.x="true" v-if="topics">
       <Card
         v-for="item in topics"
-        :key="item"
+        :key="item.title"
         :url="item.url"
         class="card topic"
       >
@@ -48,12 +48,11 @@
             <div class="topic_title">
               <h2>{{ item.title }}</h2>
             </div>
-            <Profile :data="item.author" />
           </div>
         </template>
         <template slot="back">
           <div class="card_excerpt" v-html="item.excerpt"></div>
-          <div class="card_footer">Read more on this topic</div>
+          <div class="card_footer">Discuss this topic</div>
         </template>
       </Card>
     </div>
@@ -63,12 +62,10 @@
 <script>
 import moment from "moment";
 import Card from "@/components/FlipCard.vue";
-import Profile from "@/components/Profile.vue";
 export default {
   props: ["users", "topics"],
   components: {
-    Card,
-    Profile
+    Card
   },
   methods: {
     scroll() {

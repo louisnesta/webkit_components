@@ -8,10 +8,18 @@
       v-if="custom.text"
       :class="{ reverse: custom.text.position == 'left' }"
     >
-      <div v-if="custom.text.content" class="w-full section_text">
-        {{ custom.text.content }}
-      </div>
+      <div
+        v-if="custom.text.content"
+        v-html="custom.text.content"
+        class="w-full section_text"
+      />
     </div>
+
+    <SummitSlider
+      v-if="topics && custom.view == 'themes'"
+      :autoplay="5000"
+      :custom="topics"
+    />
 
     <Slider
       v-if="topics && custom.view == 'featured'"
@@ -19,12 +27,13 @@
       :custom="topics"
     />
 
-    <Row v-if="topics && custom.view == 'cards'" :topics="topics" />
+    <Row v-if="topics && custom.view == 'cards'" :topics="topics.sort((a, b) => (a.title > b.title) ? 1 : -1)" />
   </div>
 </template>
 
 <script>
 import Slider from "@/components/Slider.vue";
+import SummitSlider from "@/components/SummitSlider.vue";
 import Row from "@/components/Row.vue";
 import axios from "axios";
 
@@ -37,21 +46,24 @@ export default {
   },
   components: {
     Slider,
+    SummitSlider,
     Row
   },
   created() {
     if (this.custom.tag) {
-      this.getTopics(this.custom.tag, 'tags');
+      this.getTopics(this.custom.tag, "tags");
     }
     if (this.custom.category) {
-      this.getTopics(this.custom.category, 'category');
+      this.getTopics(this.custom.category, "category");
     }
   },
   methods: {
     getTopics(value, filter) {
-      axios.get(
-        `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500`
-      ).then(({ data }) => this.topics = data);
+      axios
+        .get(
+          `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500`
+        )
+        .then(({ data }) => (this.topics = data));
     }
   }
 };

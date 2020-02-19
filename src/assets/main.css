@@ -17,6 +17,7 @@ button:focus {outline:0;}
 	@apply flex font-display text-4xl font-bold text-left pl-0 pb-1 mb-4 border-gray-200;
 	font-family: "Montserrat";
 	font-weight: 800;
+	color: white;
 }
 
 .hero_title-md {
@@ -49,9 +50,10 @@ button:focus {outline:0;}
 .hero_text {
 	@apply font-display pl-1 mb-3 text-left;
 	max-height: 185px;
-	max-width: 650px;
+	max-width: 480px;
 	font-family: "Montserrat";
 	font-weight: 400;
+	color: white;
 }
 
 .hero_text-md {
@@ -328,6 +330,7 @@ button:focus {outline:0;}
 
 	.hero {
 		@apply w-full flex flex-col justify-center p-8 pb-6 relative items-center overflow-hidden;
+		height: 18rem;
 	}
 
 	.hero .content_wrapper {
@@ -412,7 +415,7 @@ button:focus {outline:0;}
 	}
 
 	.user_bio {
-		@apply text-left p-2 pb-4 px-0 overflow-scroll border-b;
+		@apply text-left p-2 pb-4 px-0 border-b;
 		max-height: 240px;
 	}
 
@@ -569,7 +572,7 @@ button:focus {outline:0;}
 		box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.1);
 	}
 	.card_excerpt {
-		@apply flex-grow relative overflow-scroll w-full px-0 mx-auto mt-2 pb-4 text-xs text-left;
+		@apply flex-grow relative w-full px-0 mx-auto mt-2 pb-4 text-xs text-left;
 		height: 80%;
 		width: 80%;
 		text-align: left;
