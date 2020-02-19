@@ -4,7 +4,7 @@
 
     <Hero :baseUrl="data.baseUrl" :custom="getSectionData('hero')" :category="getCategoryMetadata()"/>
 
-    <div v-for="section in data.sections" :key="section.title">
+    <div v-for="section in data.sections" :key="section.title" :id="section.id">
       <Custom v-if="section.type == 'custom'" :custom="section" html=true />
       <Topics v-if="section.type == 'topics'" :baseUrl="data.baseUrl" :custom="section" />
       <Events v-if="section.type == 'events'" :baseUrl="data.baseUrl" :custom="section" />
@@ -82,7 +82,18 @@ export default {
   },
   computed: {
     selectedComponents() {
-      return this.data.sections.map(section => section.type);
+      var filtered = this.data.sections.filter(function(el) {
+        return el.type !== "terms" && el.type !== "hero";
+      });
+    var navArray = filtered.map(function(el) {
+            if (el.type !== "terms" && el.type !== "hero") {
+              return {
+                title: el.title,
+                id: el.id,
+              } 
+            }
+          });
+    return navArray;
     }
   }
 };

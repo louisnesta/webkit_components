@@ -11,10 +11,10 @@
       >
         <a
           class="nav-item scrollactive-item"
-          :href="'#' + item"
-          v-for="item in filtered"
-          :key="item"
-          >{{ item }}</a
+          :href="'#' + item.id"
+          v-for="item in data"
+          :key="item.id"
+          >{{ item.title }}</a
         >
       </scrollactive>
     </div>
@@ -27,14 +27,7 @@
  */
 export default {
   name: "Navigation",
-  props: ["data"],
-  computed: {
-    filtered() {
-      return this.data.filter(function(el) {
-        return el !== "terms" && el !== "hero";
-      });
-    }
-  }
+  props: ["data"]
 };
 </script>
 

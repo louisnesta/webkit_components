@@ -20,6 +20,7 @@
     {
       "type": "custom",
       "title": "Custom Title",
+      "id": "custom",
       "image": {
         "url": "https://dummyimage.com/640x360/fff/aaa"
       },
@@ -35,6 +36,7 @@
     {
       "type": "topics",
       "title": "Stories",
+      "id": "stories",
       "view": "featured",
       "tag": "webcontent-wellbeing-featured",
       "image": {
@@ -52,21 +54,25 @@
     {
       "type": "events",
       "title": "Events",
+      "id": "events",
       "tag": "event"
     },
     {
       "type": "users",
       "title": "Users",
+      "id": "users",
       "category": "campfire",
       "only_bios": true
     },
     {
       "type": "people",
       "title": "People",
+      "id": "people",
       "tag": "webcontent-festival-organiser-bio"
     },
     {
       "type": "edgeryders",
+      "id": "edgeryders",
       "title": "We are Edgeryders"
     },
     {
@@ -75,6 +81,7 @@
     {
       "type": "form",
       "title": "Join us",
+      "id": "join",
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       "slideDefaults": {
         "title": "Q{{index}}",
