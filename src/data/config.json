@@ -5,15 +5,15 @@
     {
       "type": "hero",
       "background": {
-        "color": "#fafafa"
+        "color": "linear-gradient(63.1deg,#009c8e 9.02%,#ffdb6a 90.81%)"
       },
       "title": "Custom Title",
       "text": {
-        "content": "<strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "content": "<p><strong>Register now</strong> for the NGI Policy Summit 2020, hosted by the City of Amsterdam and the European Commission’s Next Generation Internet (NGI) initiative.</p>",
         "position": "left"
       },
       "image": {
-        "url": "https://dummyimage.com/640x360/fff/aaa",
+        "url": "",
         "width": 450
       }
     },

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu:400,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800|Ubuntu:400,800&display=swap");
 
 @tailwind base;
 
@@ -13,7 +14,9 @@
 button:focus {outline:0;}
 
 .hero_title {
-	@apply flex font-display text-4xl font-bold text-left pl-0 pb-1 mb-4 border-b border-gray-200;
+	@apply flex font-display text-4xl font-bold text-left pl-0 pb-1 mb-4 border-gray-200;
+	font-family: "Montserrat";
+	font-weight: 800;
 }
 
 .hero_title-md {
@@ -44,8 +47,11 @@ button:focus {outline:0;}
 }
 
 .hero_text {
-	@apply font-display pl-1 mb-3 text-left overflow-scroll;
+	@apply font-display pl-1 mb-3 text-left;
 	max-height: 185px;
+	max-width: 650px;
+	font-family: "Montserrat";
+	font-weight: 400;
 }
 
 .hero_text-md {
