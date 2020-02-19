@@ -82,18 +82,18 @@ export default {
   },
   computed: {
     selectedComponents() {
-      var filtered = this.data.sections.filter(function(el) {
-        return el.type !== "terms" && el.type !== "hero";
-      });
-    var navArray = filtered.map(function(el) {
-            if (el.type !== "terms" && el.type !== "hero") {
+    var navArray = this.data.sections.map(function(el) {
+            if (el.id) {
               return {
                 title: el.title,
                 id: el.id,
               } 
             }
           });
-    return navArray;
+    return navArray.filter(function (el) {
+        return el != null;
+    });
+    
     }
   }
 };
