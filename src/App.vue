@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full">
     <Nav style="margin-bottom: 60px" :data="selectedComponents" />
 
-    <Hero :data="getCategoryMetadata(data.category)" :baseUrl="data.baseUrl" :custom="getSectionData('hero')"/>
+    <Hero :baseUrl="data.baseUrl" :custom="getSectionData('hero')" :category="getCategoryMetadata()"/>
 
     <div v-for="section in data.sections" :key="section.title">
       <Custom v-if="section.type == 'custom'" :custom="section" html=true />
@@ -67,12 +67,14 @@ export default {
     },
     applyCategory({ data }) {
       this.categories = data;
-      this.category = data.find(
-        ({ id }) => id === parseInt(this.data.category)
-      );
     },
-    getCategoryMetadata(id) {
-      return this.categories.find(category => category.id === id) || {};
+    getCategoryMetadata() {
+      var hero_data = this.getSectionData('hero');
+      if (hero_data.category) {
+         return this.categories.find(category => category.id === hero_data.category) || {};
+      } else {
+        return null
+      }
     },
     getSectionData(type) {
       return this.data.sections.find(section => section.type === type) || {};

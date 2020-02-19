@@ -43,10 +43,6 @@ button:focus {outline:0;}
 	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.05);
 }
 
-.hero_info-md {
-	@apply pr-6;
-}
-
 .hero_text {
 	@apply font-display pl-1 mb-3 text-left overflow-scroll;
 	max-height: 185px;
@@ -320,7 +316,7 @@ button:focus {outline:0;}
 	}
 
 	.content_wrapper-md {
-		@apply flex items-start px-0;
+		@apply flex flex-row items-start px-0;
 		width: 960px;
 	}
 
@@ -328,7 +324,23 @@ button:focus {outline:0;}
 		@apply w-full flex flex-col justify-center p-8 pb-6 relative items-center overflow-hidden;
 	}
 
-	.hero .video {
+	.hero .content_wrapper {
+		@apply inline-block;
+	}
+	.hero .content_wrapper-md {
+		@apply flex;
+	}
+
+	.hero_image {
+		@apply w-full mr-0 mb-5;
+	}
+
+	.hero_image-md {
+		@apply mr-6 mb-0;
+		flex-shrink: 0;
+	}
+
+	.hero .hero_.video {
 		position: absolute;
 		width: 100%;
 		height: 500px;
