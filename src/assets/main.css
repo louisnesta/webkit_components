@@ -101,7 +101,7 @@ button:focus {outline:0;}
 }
 
 .user_name {
-	@apply text-2xl font-bold text-left w-full inline-block;
+	@apply text-2xl font-bold text-left w-full inline-block pb-4 border-b mt-4 mb-2;
 }
 
 .user_name-md {
@@ -335,6 +335,14 @@ button:focus {outline:0;}
 		@apply w-full mr-0 mb-5;
 	}
 
+	.action_container {
+		@apply mt-6;
+	}
+
+	a.action {
+		@apply p-3 mr-2 rounded-lg;
+	}
+
 	.hero_image-md {
 		@apply mr-6 mb-0;
 		flex-shrink: 0;
@@ -406,12 +414,13 @@ button:focus {outline:0;}
 	}
 
 	.user_bio {
-		@apply text-left p-2 pb-4 px-0 overflow-scroll border-b;
+		@apply text-left p-2 pb-4 px-0 overflow-scroll;
 		max-height: 240px;
 	}
 
 	.user_bio-md {
 		@apply px-2;
+		max-height: 100%;
 	}
 
 	.user_grid {
@@ -424,20 +433,19 @@ button:focus {outline:0;}
 	}
 
 	.user_grid-md {
-		@apply flex flex-wrap w-full mb-4 mx-6 mt-3 overflow-hidden float-left rounded-lg h-auto whitespace-normal;
+		@apply flex flex-wrap w-full mb-4 pl-6 mt-3 overflow-hidden float-left rounded-lg h-auto whitespace-normal;
 	}
 
-	.user_avatar {
-		@apply w-20 h-20 bg-cover inline-block;
+	.user_grid .user_avatar {
+		@apply w-16 h-16 bg-cover inline-block;
+		border: 5px solid white;
 	}
 
 	.user_avatar:hover {
 		cursor: pointer;
 	}
-	.user_avatar img {
-		@apply w-full;
-	}
-	.user_avatar.active img {
+
+	.user_avatar.active {
 		border: 5px solid black;
 	}
 
@@ -596,7 +604,8 @@ button:focus {outline:0;}
 	}
 
 	.section_image {
-		@apply w-full border border-gray-200 mt-4;
+		@apply border border-gray-200 mt-4;
+		flex-shrink: 0;
 	}
 
 	.section_image-md {

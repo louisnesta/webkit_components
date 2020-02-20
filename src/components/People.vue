@@ -96,7 +96,7 @@ export default {
   }
 }
 #people .user_avatar {
-  height: 80px !important;
+  height: 65px !important;
   border: 4px solid white;
   &.active {
     border: 4px solid black;

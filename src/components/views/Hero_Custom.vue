@@ -5,7 +5,12 @@
       </div>
       <div class="hero_info md:hero_info-md">
         <h1 class="hero_title">{{ data.title }}</h1>
-        <div class="hero_text" v-html="data.text.content"></div>
+        <div class="hero_text" v-html="data.text.content" :style="{textAlign: data.text.align}"></div>
+        <div class="action_container">
+          <a class="action" v-for="item in data.text.buttons" :style="styleObj(item)" :href="item.url" :key="item.url">
+            {{item.text}}
+          </a>
+        </div>
       </div>
 
       <div class="hero_video" v-if="data.background.video">
@@ -20,11 +25,24 @@
 import moment from "moment";
 
 export default {
-  methods: {
-  },
   filters: {
     formatDate: function(value) {
       return moment(String(value)).format("MMMM Do YYYY");
+    }
+  },
+  methods: {
+    styleObj(item) {
+      var styleObj = {
+        background: '#000',
+        color: '#fff'
+      };
+      if (item.background) {
+        styleObj["background"] = item.background;
+      };
+      if (item.color) {
+        styleObj["color"] = item.color;
+      };
+      return styleObj;
     }
   },
   props: ["data"]
