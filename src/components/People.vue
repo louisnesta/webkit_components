@@ -14,7 +14,7 @@
           :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
         ></div>
       </div>
-      <div class="w-full px-6 md:px-2 md:pt-4" v-if="people[selected]">
+      <div class="w-full px-6 md:px-6 md:pt-2" v-if="people[selected]">
         <a
           class="user_name border-b mb-2 pb-2"
           :href="people[selected].url"
