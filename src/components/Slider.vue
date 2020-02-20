@@ -47,7 +47,6 @@
 <script>
 import Profile from "@/components/Profile.vue";
 import moment from "moment";
-
 export default {
   data() {
     return {
@@ -131,9 +130,6 @@ export default {
   overflow: hidden;
   width: 100%;
 }
-
-
-
 .slide .item_title {
     p.date {
       margin: 20px 10px !important;
@@ -199,7 +195,6 @@ export default {
     flex-direction: column;
     align-items: start;
     justify-content: space-between;
-
   }
 }
 .slide:first-of-type {

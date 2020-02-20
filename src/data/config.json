@@ -90,7 +90,7 @@
       "id": "stories",
       "title": "Stories from the community",
       "view": "featured",
-      "tag": "webcontent-ngi-summit-2020-stories",
+      "tag": "ngi-summit-stories",
       "text": {
         "content": "<p>The Summit will explore three themes – visions for the future internet; empowering policy makers; and strengthening ecosystems – across a range of topics, from the environmental footprint of the internet to new models for the data economy.</p>",
         "position": "left"
@@ -160,11 +160,6 @@
         "email": "It seems you already have an account on our forum using this e-mail address, or have entered an invalid address. Please choose a different e-mail address and click again on \"Send\".",
         "default": "Sorry, we were unable to store your response due to an unknown error. Please try clicking on \"Send\" again."
       }
-    },
-    {
-      "type": "edgeryders",
-      "id": "edgeryders",
-      "title": "We are Edgeryders"
     },
     {
       "type": "terms"
