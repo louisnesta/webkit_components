@@ -27,7 +27,7 @@
       :custom="topics"
     />
 
-    <Row v-if="topics && custom.view == 'cards'" :topics="topics.sort((a, b) => (a.title > b.title) ? 1 : -1)" />
+    <Row v-if="topics && custom.view == 'cards'" :topics="sortedTopics" />
   </div>
 </template>
 
@@ -43,6 +43,12 @@ export default {
     return {
       topics: null
     };
+  },
+  computed: {
+    sortedTopics() {
+      let sorted = this.topics.slice().sort((a, b) => (a.title > b.title ? 1 : -1));
+      return sorted;
+    }
   },
   components: {
     Slider,
