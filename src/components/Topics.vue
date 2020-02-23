@@ -17,9 +17,10 @@
       v-if="topics && custom.view == 'featured'"
       :autoplay="5000"
       :custom="topics"
+      :display="custom.display"
     />
 
-    <Row v-if="topics && custom.view == 'cards'" :topics="topics" />
+    <Row v-if="topics && custom.view == 'cards'" :topics="topics" :display="custom.display" />
   </div>
 </template>
 
@@ -46,12 +47,26 @@ export default {
     if (this.custom.category) {
       this.getTopics(this.custom.category, 'category');
     }
+  
   },
   methods: {
     getTopics(value, filter) {
       axios.get(
         `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500`
-      ).then(({ data }) => this.topics = data);
+      ).then(({ data }) => {
+        this.topics = data; 
+        if (this.custom.sort) {
+          this.sortBy(data, this.custom.sort_by.property, this.custom.sort_by.order)
+        }
+      });
+    },
+    sortBy(data, value, order) {
+      var ord_val = -1;
+      if (order == 'ascending') {
+        ord_val = 1;
+      };
+      var sorted = data.sort((a,b) => (a[value] > b[value]) ? ord_val : ((b[value] > a[value]) ? -ord_val : 0));
+      this.data = sorted; 
     }
   }
 };

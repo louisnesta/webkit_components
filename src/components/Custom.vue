@@ -23,7 +23,7 @@
         <div v-else class="w-full section_text md:pt-4">{{ custom.text.content }}</div>
                
         <div v-if="custom.text.buttons" class="action_container">
-          <a class="action" v-for="item in custom.text.buttons" :href="item.url" :style="styleObj(item)" :key="item.url">
+          <a class="action" v-for="item in custom.text.buttons" :href="item.url" :style="styleObj(item)" :key="item.url" target="_blank">
             {{item.text}}
           </a>
         </div>

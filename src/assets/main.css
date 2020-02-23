@@ -250,6 +250,7 @@ button:focus {outline:0;}
 .wrapper .list {
 	@apply mr-10 mt-4;
 	max-height: 500px;
+	width: 100%;
 	border: 1px solid #efefef;
 	border-radius: 10px;
 	overflow: scroll;
