@@ -45,9 +45,10 @@
         </template>
         <template slot="front">
           <div class="topic_data">
-            <div class="topic_title">
+            <div class="topic_title" v-if="show('title')">
               <h2>{{ item.title }}</h2>
             </div>
+            <Profile v-if="show('author')" :data="item.author" />
           </div>
         </template>
         <template slot="back">
@@ -63,11 +64,14 @@
 import moment from "moment";
 import Card from "@/components/FlipCard.vue";
 export default {
-  props: ["users", "topics"],
+  props: ["users", "topics", "display"],
   components: {
     Card
   },
   methods: {
+    show(value) {
+      return this.display.includes(value);
+    },
     scroll() {
       this.$nextTick(() => {
         this.$refs.content.scrollLeft += 1000;

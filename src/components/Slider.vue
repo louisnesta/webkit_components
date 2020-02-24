@@ -26,16 +26,16 @@
       >
         <div class="item_post md:item_post-md" :style="{ background: 'url(' + item.image_url + ')' }">
           <div class="item_title md:item_title-md">
-            <div>
+            <div v-if="show('title')">
             <a :href="item.url" target="_blank">
               <h4>{{ item.title }}</h4>
               </a>
             </div>
-              <p class="date">
+              <p class="date" v-if="show('date')">
                 <b>{{ item.created_at | formatDate }}</b>
               </p>
           </div>
-          <Profile class="ml-2" :data="item.author" />
+          <Profile class="ml-2" v-if="show('author')" :data="item.author" />
         </div>
         <div v-html="item.excerpt" class="excerpt md:excerpt-md"></div>
 
@@ -59,6 +59,9 @@ export default {
     Profile
   },
   methods: {
+    show(value) {
+      return this.display.includes(value);
+    },
     next() {
       const first = this.slides.shift();
       this.slides = this.slides.concat(first);
@@ -111,7 +114,7 @@ export default {
       return moment(String(value)).format("dddd, MMMM DD YYYY");
     }
   },
-  props: ["autoplay", "custom"]
+  props: ["autoplay", "custom", "display"]
 };
 </script>
 

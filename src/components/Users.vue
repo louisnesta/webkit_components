@@ -43,12 +43,11 @@
         <div
           class="user_avatar md:user_avatar-md"
           v-for="(item, index) in allusers"
-          :key="item.name"
+          :key="index"
           @click="setActive(index)"
           :class="{ active: selected === index }"
-        >
-          <img :src="item.avatar_url" />
-        </div>
+          :style="{ backgroundImage: 'url(' + item.avatar_url + ')' }"
+        ></div>
       </div>
 
       <div class="user_list md:user_list-md" v-if="view == 'list'">
@@ -82,7 +81,7 @@
           >
           <span v-else> @{{ allusers[selected].username }} </span>
         </a>
-        <div class="user_bio" v-html="allusers[selected].bio_raw"></div>
+        <div class="user_bio md:user_bio-md" v-html="allusers[selected].bio_raw"></div>
       </div>
     </div>
   </div>

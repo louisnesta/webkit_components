@@ -11,7 +11,18 @@
       "title": "NGI POLICY SUMMIT",
       "text": {
         "content": "<p><strong>Register now</strong> for the NGI Policy Summit 2020, hosted by the City of Amsterdam and the European Commission’s Next Generation Internet (NGI) initiative.</p>",
-        "position": "left"
+        "align": "left",
+        "buttons": [
+          {
+            "text": "Call to Action",
+            "url": "https://edgeryders.eu",
+            "background": "orangered"
+          },
+          {
+            "text": "More Information",
+            "url": "https://edgeryders.eu"
+          }
+        ]
       },
       "image": {
         "url": "",
@@ -23,6 +34,7 @@
       "id": "about",
       "image": {
         "url": "https://www.het-sieraad.nl/wp-content/uploads/2019/11/het-sieraad-luchtfoto-links-1024x665.jpg"
+        "width": 420
       },
       "video": {
         "src": "",
@@ -30,19 +42,35 @@
       },
       "text": {
         "content": "<p><strong>When:</strong> <br>29 – 30 June - Main conference <br>1 July - Fringe Day</p><br><p><strong>Where:</strong> <br>Het Sieraad, Postjesweg 1, 1057 DT Amsterdam, Netherlands</p><br><p><strong>Costs:</strong> <br>The event is free of charge</p>",
-        "position": "left"
+        "position": "left",
+        "buttons": [
+          {
+            "text": "Call to Action",
+            "url": "https://edgeryders.eu",
+            "background": "orangered"
+          },
+          {
+            "text": "More Information",
+            "url": "https://edgeryders.eu"
+          }
+        ]
       }
     },
     {
       "type": "topics",
-      "id": "topics",
+      "title": "Stories",
       "title": "Summit topics",
       "view": "cards",
-      "tag": "webcontent-ngi-summit-2020-topics",
+      "tag": "webcontent-ngi-summit-2020-topics",,
       "text": {
         "content": "<p>The Summit will explore three themes – visions for the future internet; empowering policy makers; and strengthening ecosystems – across a range of topics, from the environmental footprint of the internet to new models for the data economy.</p>",
         "position": "left"
       }
+      "sort_by": {
+        "property": "title",
+        "order": "ascending"
+      },
+      "display": ["title", "author", "date"],
     },
     {
       "type": "custom",
