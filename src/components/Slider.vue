@@ -4,21 +4,20 @@
     @mouseover="clear_interval"
     @mouseleave="toggle_play"
   >
-      <div class="toggle_menu md:flex">
-        <div
-          class="toggle previous"
-          @click="changeSlide('previous')"
-        ></div>
-        <div
-          class="toggle next"
-          @click="changeSlide('next')"
-        ></div>
-      </div>
+    <div class="toggle_menu md:flex">
+      <div
+        class="toggle previous"
+        @click="changeSlide('previous')"
+      ></div>
+      <div
+        class="toggle next"
+        @click="changeSlide('next')"
+      ></div>
+    </div>
 
-      <transition-group tag="div" class="slider" :name="currentTransition" mode="out-in">
-
-      <div v-for="number in [currentIndex]" :key="number" class="slide md:slide-md" v-touch:swipe.left="next" v-touch:swipe.right="prev" >
-             <div class="item_post md:item_post-md" :style="{ background: 'url(' + currentSlide.image_url + ')' }">
+    <transition-group tag="div" class="slider" :name="currentTransition" mode="out-in">
+      <div v-for="number in [currentIndex]" :key="number" class="slide md:slide-md" v-touch:swipe.left="next" v-touch:swipe.right="prev">
+        <div class="item_post md:item_post-md" :style="{ background: 'url(' + currentSlide.image_url + ')' }">
           <div class="item_title md:item_title-md">
             <div v-if="show('title')">
               <a :href="currentSlide.url" target="_blank">
@@ -29,12 +28,12 @@
                 <b>{{ currentSlide.created_at | formatDate }}</b>
               </p>
           </div>
-          <Profile class="ml-2" v-if="show('author')" :data="currentSlide.author" />
+          <Profile class="ml-3" v-if="show('author')" :data="currentSlide.author" />
         </div>
         <div v-html="currentSlide.excerpt" class="excerpt md:excerpt-md"></div>
-
       </div>
-      </transition-group>
+    </transition-group>
+
   </div>
 </template>
 
@@ -123,23 +122,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.carousel-view {
-  @apply px-6 mt-6;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-.carousel {
-  @apply mt-4;
-  display: flex;
-  justify-content: center;
-  align-items: start;
+
+.slider{
   overflow: hidden;
-  width: 100%;
+  position: relative;
+  height: 20em;
+  margin: 10px auto 0;
+  border-radius: 10px;
+  width: 95%;
 }
 
+.slider .slide {
+  position: absolute;
+  width: 100%;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right:0;
+}
 
-.slide .item_title {
+.slider .slide .item_title {
     p.date {
       margin: 20px 10px !important;
       background: black;
@@ -204,10 +207,8 @@ export default {
     flex-direction: column;
     align-items: start;
     justify-content: space-between;
-
   }
 }
-
 
 .next-leave-active,
 .next-enter-active,
@@ -221,7 +222,6 @@ export default {
 .next-leave-to {
   transform: translate(-100%, 0);
 }
-
 .previous-enter {
   transform: translate(-100%, 0);
 }
@@ -229,23 +229,5 @@ export default {
   transform: translate(100%, 0);
 }
 
-.slider{
-  overflow: hidden;
-  position: relative;
-  height: 20em;
-  margin: 10px auto 0;
-  border-radius: 10px;
-  width: 95%;
-}
-
-.slider .slide {
-  position: absolute;
-  width: 100%;
-  border-radius: 10px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right:0;
-}
 
 </style>

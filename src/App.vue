@@ -10,6 +10,8 @@
       <Events v-if="section.type == 'events'" :baseUrl="data.baseUrl" :custom="section" />
       <Users v-if="section.type == 'users'" :baseUrl="data.baseUrl" :custom="section" />
       <People v-if="section.type == 'people'" :baseUrl="data.baseUrl" :custom="section" />
+      <Partners v-if="section.type == 'partners'" :custom="section"
+      />
       <Edgeryders v-if="section.type == 'edgeryders'" :custom="section"
       />
       <Form v-if="section.type == 'form'" :baseUrl="data.baseUrl" :custom="section" />
@@ -29,6 +31,7 @@ import Events from "@/components/Events.vue";
 import Topics from "@/components/Topics.vue";
 import People from "@/components/People.vue";
 import Users from "@/components/Users.vue";
+import Partners from "@/components/Partners.vue";
 import Edgeryders from "@/components/Edgeryders.vue";
 import Form from "@/components/Form.vue";
 import Terms from "@/components/Terms.vue";
@@ -52,6 +55,7 @@ export default {
     Hero,
     Nav,
     Custom,
+    Partners,
     Edgeryders,
     Form,
     Terms
