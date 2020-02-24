@@ -8,10 +8,18 @@
       v-if="custom.text"
       :class="{ reverse: custom.text.position == 'left' }"
     >
-      <div v-if="custom.text.content" class="w-full section_text">
-        {{ custom.text.content }}
-      </div>
+      <div
+        v-if="custom.text.content"
+        v-html="custom.text.content"
+        class="w-full section_text"
+      />
     </div>
+
+    <SummitSlider
+      v-if="topics && custom.view == 'themes'"
+      :autoplay="5000"
+      :custom="topics"
+    />
 
     <Slider
       v-if="topics && custom.view == 'featured'"
@@ -26,6 +34,7 @@
 
 <script>
 import Slider from "@/components/Slider.vue";
+import SummitSlider from "@/components/SummitSlider.vue";
 import Row from "@/components/Row.vue";
 import axios from "axios";
 
@@ -36,16 +45,23 @@ export default {
       topics: null
     };
   },
+  computed: {
+    sortedTopics() {
+      let sorted = this.topics.slice().sort((a, b) => (a.title > b.title ? 1 : -1));
+      return sorted;
+    }
+  },
   components: {
     Slider,
+    SummitSlider,
     Row
   },
   created() {
     if (this.custom.tag) {
-      this.getTopics(this.custom.tag, 'tags');
+      this.getTopics(this.custom.tag, "tags");
     }
     if (this.custom.category) {
-      this.getTopics(this.custom.category, 'category');
+      this.getTopics(this.custom.category, "category");
     }
   
   },

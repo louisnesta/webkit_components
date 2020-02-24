@@ -1,7 +1,10 @@
 <template>
   <header>
     <div class="menu md:pr-2">
-      <span class="nav-item logo"></span>
+      <a href="#">
+        <span class="nav-item logo">
+        </span>
+      </a>
       <scrollactive
         class="nav"
         active-class="active"
@@ -14,7 +17,7 @@
           :href="'#' + item.id"
           v-for="item in data"
           :key="item.id"
-          >{{ item.title }}</a
+          >{{ item.id.replace(/^\w/, c => c.toUpperCase()) }}</a
         >
       </scrollactive>
     </div>
@@ -84,9 +87,9 @@ export default {
   height: 60px;
   padding: 0 50px 0 20px;
   border-right: 1px solid rgba(255, 255, 255, 0.28);
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' version='1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='orangered' d='M0 250a250 250 0 1 1 500 0 250 250 0 0 1-500 0zm250 183V250H67a183 183 0 1 1 183 183z' fill-rule='evenodd'/%3E%3C/svg%3E")
+  background: url("https://edgeryders.eu/uploads/default/original/2X/b/b839095ec2fdb8e0e8f2a6324bfc9d42afe16455.png")
     no-repeat center #fafafa;
-  background-size: 45%;
+  background-size: 70%;
   transition: none;
   box-shadow: none;
   left: 0;

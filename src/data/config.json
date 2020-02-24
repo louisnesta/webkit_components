@@ -5,11 +5,12 @@
     {
       "type": "hero",
       "background": {
-        "color": "#fafafa"
+        "url": "https://research.ngi.eu/wp-content/uploads/2019/12/Society_v2-01.jpg",
+        "color": "linear-gradient(63.1deg,#009c8e 9.02%,#ffdb6a 90.81%)"
       },
-      "title": "Custom Title",
+      "title": "NGI POLICY SUMMIT",
       "text": {
-        "content": "<strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "content": "<p><strong>Register now</strong> for the NGI Policy Summit 2020, hosted by the City of Amsterdam and the European Commission’s Next Generation Internet (NGI) initiative.</p>",
         "align": "left",
         "buttons": [
           {
@@ -24,16 +25,15 @@
         ]
       },
       "image": {
-        "url": "https://dummyimage.com/640x360/fff/aaa",
+        "url": "",
         "width": 450
       }
     },
     {
       "type": "custom",
-      "title": "Custom Title",
-      "id": "custom",
+      "id": "about",
       "image": {
-        "url": "https://dummyimage.com/640x360/fff/aaa",
+        "url": "https://www.het-sieraad.nl/wp-content/uploads/2019/11/het-sieraad-luchtfoto-links-1024x665.jpg"
         "width": 420
       },
       "video": {
@@ -41,7 +41,7 @@
         "poster": ""
       },
       "text": {
-        "content": "<strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "content": "<p><strong>When:</strong> <br>29 – 30 June - Main conference <br>1 July - Fringe Day</p><br><p><strong>Where:</strong> <br>Het Sieraad, Postjesweg 1, 1057 DT Amsterdam, Netherlands</p><br><p><strong>Costs:</strong> <br>The event is free of charge</p>",
         "position": "left",
         "buttons": [
           {
@@ -59,14 +59,21 @@
     {
       "type": "topics",
       "title": "Stories",
-      "id": "stories",
-      "view": "featured",
-      "tag": "webcontent-wellbeing-featured",
+      "title": "Summit topics",
+      "view": "cards",
+      "tag": "webcontent-ngi-summit-2020-topics",,
+      "text": {
+        "content": "<p>The Summit will explore three themes – visions for the future internet; empowering policy makers; and strengthening ecosystems – across a range of topics, from the environmental footprint of the internet to new models for the data economy.</p>",
+        "position": "left"
+      }
       "sort_by": {
         "property": "title",
         "order": "ascending"
       },
       "display": ["title", "author", "date"],
+    },
+    {
+      "type": "custom",
       "image": {
         "url": ""
       },
@@ -75,42 +82,53 @@
         "poster": ""
       },
       "text": {
-        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "content": "<p>Join us in Amsterdam from 29 June to 1 July, as we bring together Europe’s leading policymakers and changemakers to set out a shared vision for the future of the internet. Together, we will explore how policy, innovation and citizen engagement can make the internet more sustainable, democratic and inclusive.</p> <p>Register now to secure your spot at the NGI Policy Summit 2020 and join the discussion on our Community Platform!</p><br><p>The Summit is aimed at policymakers at EU, national and local levels. We also welcome researchers, innovators and civil society organisations interested in building a more human-centric internet. The Summit is a space for participants to share knowledge and best practices and coordinate shared action towards common goals.</p>",
+        "position": "left"
+      }
+    },
+   {
+      "type": "custom",
+      "title": "What is the format of the conference?",
+      "image": {
+        "url": ""
+      },
+      "video": {
+        "src": "",
+        "poster": ""
+      },
+      "text": {
+        "content": "<p>The Summit will take place over two days (29-30 June), with an additional day of fringe activity (1 July). Beyond keynotes from thought leaders and panels with political decision makers, the Summit will harness the collective intelligence of our wider audience in live and online discussions, interactive plenaries, and workshops.</p>",
         "position": "left"
       }
     },
     {
       "type": "events",
-      "title": "Events",
-      "id": "events",
-      "tag": "event"
-    },
-    {
-      "type": "users",
-      "title": "Users",
-      "id": "users",
-      "category": "campfire",
-      "only_bios": true
+      "title": "Programme",
+      "id": "programme",
+      "tag": "event-ngi-summit-2020"
     },
     {
       "type": "people",
-      "title": "People",
-      "id": "people",
-      "tag": "webcontent-festival-organiser-bio"
+      "title": "Speakers",
+      "id": "speakers",
+      "tag": "webcontent-ngi-summit-2020-bio"
     },
     {
-      "type": "edgeryders",
-      "id": "edgeryders",
-      "title": "We are Edgeryders"
-    },
-    {
-      "type": "terms"
+      "type": "topics",
+      "id": "stories",
+      "title": "Stories from the community",
+      "view": "featured",
+      "tag": "ngi-summit-stories",
+      "text": {
+        "content": "<p>Follow what the community is saying and join the conversation.</p>",
+        "position": "left"
+      }
     },
     {
       "type": "form",
-      "title": "Join us",
-      "id": "join",
-      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "title": "Join the community",
+      "id": "community",
+      "content": "Welcome to the Internet of Humans conversations where we, as part of the NGI - Next Generation Internet - ask, and see if we can collectively answer, crucial questions. We want you to be part of it. <br> <br>What should the Internet - and all it encompasses, which means pretty much everything - really do for humanity? How should it work? How should it be governed? Participate in the conversation on Edgeryders and get to know the other participants of the NGI Summit.",
       "slideDefaults": {
         "title": "Q{{index}}",
         "backText": "BACK",
@@ -130,7 +148,7 @@
       },
       "slides": [{
         "index": 1,
-        "title": "This will create an account for you.",
+        "title": "This will create an account for you on the Edgeryders platform",
         "nextTitle": "SIGN UP",
         "body": "",
         "fields": [{
@@ -141,11 +159,6 @@
           "required": true,
           "autofocus": false,
           "error": "Please enter your name"
-        }, {
-          "name": "age",
-          "type": "integer",
-          "placeholder": "Age (optional)",
-          "half": true
         }, {
           "name": "email",
           "type": "email",
@@ -175,6 +188,9 @@
         "email": "It seems you already have an account on our forum using this e-mail address, or have entered an invalid address. Please choose a different e-mail address and click again on \"Send\".",
         "default": "Sorry, we were unable to store your response due to an unknown error. Please try clicking on \"Send\" again."
       }
+    },
+    {
+      "type": "terms"
     }
   ]
 }

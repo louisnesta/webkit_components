@@ -24,7 +24,7 @@ export default {
       if (this.custom.background.url) {
         return {
           background: `url('${this.custom.background.url}')`,
-          backgroundPosition: "cover"
+          backgroundPosition: "30% 70%",
         }
       } else if (this.custom.background.color) {
         return { 
