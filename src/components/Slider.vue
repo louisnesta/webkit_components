@@ -1,75 +1,73 @@
 <template>
   <div
-    class="carousel-view"
+    class="slider_container"
     @mouseover="clear_interval"
     @mouseleave="toggle_play"
-    v-if="slides.length !== undefined"
   >
       <div class="toggle_menu md:flex">
         <div
           class="toggle previous"
-          @click="prev"
+          @click="changeSlide('previous')"
         ></div>
         <div
           class="toggle next"
-          @click="next"
+          @click="changeSlide('next')"
         ></div>
       </div>
 
-    <transition-group class="carousel" tag="div">
-      <div
-        v-for="item in slides"
-        class="slide md:slide-md"
-        :key="item.created_at"
-        v-touch:swipe.left="next"
-        v-touch:swipe.right="prev"
-      >
-        <div class="item_post md:item_post-md" :style="{ background: 'url(' + item.image_url + ')' }">
+      <transition-group tag="div" class="slider" :name="currentTransition" mode="out-in">
+
+      <div v-for="number in [currentIndex]" :key="number" class="slide md:slide-md" v-touch:swipe.left="next" v-touch:swipe.right="prev" >
+             <div class="item_post md:item_post-md" :style="{ background: 'url(' + currentSlide.image_url + ')' }">
           <div class="item_title md:item_title-md">
             <div v-if="show('title')">
-            <a :href="item.url" target="_blank">
-              <h4>{{ item.title }}</h4>
+              <a :href="currentSlide.url" target="_blank">
+                <h4>{{ currentSlide.title }}</h4>
               </a>
             </div>
               <p class="date" v-if="show('date')">
-                <b>{{ item.created_at | formatDate }}</b>
+                <b>{{ currentSlide.created_at | formatDate }}</b>
               </p>
           </div>
-          <Profile class="ml-2" v-if="show('author')" :data="item.author" />
+          <Profile class="ml-2" v-if="show('author')" :data="currentSlide.author" />
         </div>
-        <div v-html="item.excerpt" class="excerpt md:excerpt-md"></div>
+        <div v-html="currentSlide.excerpt" class="excerpt md:excerpt-md"></div>
 
       </div>
-    </transition-group>
+      </transition-group>
   </div>
 </template>
 
 <script>
-import Profile from "@/components/Profile.vue";
 import moment from "moment";
+import Profile from "@/components/Profile.vue";
 
 export default {
   data() {
     return {
       play: false,
       users: [],
-      slides: []
+      slides: [],
+      currentIndex: 0,
+      currentTransition: 'next'
     };
   },
   components: {
-    Profile
+   Profile
   },
   methods: {
     show(value) {
       return this.display.includes(value);
     },
     next() {
-      const first = this.slides.shift();
-      this.slides = this.slides.concat(first);
+      this.changeSlide('next');
     },
     prev() {
-      const last = this.slides.pop();
-      this.slides = [last].concat(this.slides);
+      this.changeSlide('previous');
+    },
+    changeSlide(dir) {
+      this.currentIndex = dir === 'next' ? this.currentIndex + 1 : this.currentIndex - 1;
+      this.currentTransition = dir;
     },
     getUser(userId) {
       if (this.users.length) {
@@ -93,10 +91,15 @@ export default {
       if (this.autoplay && !this.interval) {
         var self = this;
         this.interval = setInterval(function() {
-          self.next();
+          self.changeSlide('next');
         }, this.autoplay);
         this.play = true;
       }
+    }
+  },
+  computed: {
+    currentSlide: function() {
+      return this.slides[Math.abs(this.currentIndex) % this.slides.length];
     }
   },
   created() {
@@ -134,7 +137,6 @@ export default {
   overflow: hidden;
   width: 100%;
 }
-
 
 
 .slide .item_title {
@@ -205,10 +207,45 @@ export default {
 
   }
 }
-.slide:first-of-type {
-  opacity: 0;
+
+
+.next-leave-active,
+.next-enter-active,
+.previous-leave-active,
+.previous-enter-active {
+  transition: 1s;
 }
-.slide:last-of-type {
-  opacity: 0;
+.next-enter {
+  transform: translate(100%, 0);
 }
+.next-leave-to {
+  transform: translate(-100%, 0);
+}
+
+.previous-enter {
+  transform: translate(-100%, 0);
+}
+.previous-leave-to {
+  transform: translate(100%, 0);
+}
+
+.slider{
+  overflow: hidden;
+  position: relative;
+  height: 20em;
+  margin: 10px auto 0;
+  border-radius: 10px;
+  width: 95%;
+}
+
+.slider .slide {
+  position: absolute;
+  width: 100%;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right:0;
+}
+
 </style>

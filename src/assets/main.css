@@ -633,6 +633,16 @@ button:focus {outline:0;}
 		width: 100px;
 	}
 
+	.slider_container  {
+		@apply flex flex-col;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+
+	.slider_container .toggle_menu {
+		@apply mr-6 mt-4;
+	}
+
 	.toggle_menu-md {
 		width: 150px !important;
 	}

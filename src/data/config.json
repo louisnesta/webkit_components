@@ -61,7 +61,7 @@
       "title": "Stories",
       "id": "stories",
       "view": "featured",
-      "tag": "webcontent-wellbeing-featured",
+      "tag": "ngi-summit-stories",
       "sort_by": {
         "property": "title",
         "order": "ascending"

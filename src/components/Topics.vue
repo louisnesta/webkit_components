@@ -47,7 +47,6 @@ export default {
     if (this.custom.category) {
       this.getTopics(this.custom.category, 'category');
     }
-  
   },
   methods: {
     getTopics(value, filter) {
