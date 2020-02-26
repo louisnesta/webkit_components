@@ -23,21 +23,7 @@
           {{ people[selected].title }} <span>{{ getUser(people[selected].excerpt) }}</span>
         </a>
 
-        <div class="bio" v-if="getExcerpt(people[selected].excerpt).length > 1">
-          <h2 class="font-bold mb-4">
-            {{ getExcerpt(people[selected].excerpt)[0] }}
-          </h2>
-          <p>
-            {{ getExcerpt(people[selected].excerpt)[1] }}
-          </p>
-          <p>
-            {{ getExcerpt(people[selected].excerpt)[2] }}
-          </p>
-        </div>
-        <div class="user_bio" v-else>
-          {{ getExcerpt(people[selected].excerpt)[0] }}
-        </div>
-
+        <div class="bio" v-html="people[selected].cooked" />
       </div>
     </div>
   </div>
@@ -57,17 +43,6 @@ export default {
     setActive(index) {
       this.selected = index;
     },
-    getExcerpt(excerpt) {
-      return excerpt
-        .toString()
-        .replace(/(@[^\s]*(?=<\/a>))/g, "")
-        .replace(/(<([^>]+)>)/gi, "")
-        .replace(/\s*\[.*?\]\s*/g, "")
-        .replace("&hellip;", "...")
-        .replace("&amp", "&")
-        .split(/\n/g)
-        .filter(v => v.length > 3);
-    },
     getUser(excerpt) {
       var username = excerpt.match(/(@[^\s]*(?=<\/a>))/g);
       if (username == null) {
@@ -78,7 +53,7 @@ export default {
     },
     getPeople(tag) {
       axios.get(
-        `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&per=500`
+        `${this.baseUrl}/webkit_components/topics.json?serializer=organizer&tags=${tag}&per=500`
       ).then(({ data }) => this.people = data);
     }
   },
@@ -101,5 +76,9 @@ export default {
   &.active {
     border: 4px solid black;
   }
+}
+
+.user_grid {
+  align-content: flex-start;
 }
 </style>
