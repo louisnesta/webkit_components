@@ -51,9 +51,9 @@ export default {
   methods: {
     getTopics(value, filter) {
       axios.get(
-        `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500`
+        `${this.baseUrl}/webkit_components/topics.json?${filter}=${value}&per=500&serializer=organizer`
       ).then(({ data }) => {
-        this.topics = data; 
+        this.topics = data;
         if (this.custom.sort) {
           this.sortBy(data, this.custom.sort_by.property, this.custom.sort_by.order)
         }
@@ -65,7 +65,7 @@ export default {
         ord_val = 1;
       };
       var sorted = data.sort((a,b) => (a[value] > b[value]) ? ord_val : ((b[value] > a[value]) ? -ord_val : 0));
-      this.data = sorted; 
+      this.data = sorted;
     }
   }
 };

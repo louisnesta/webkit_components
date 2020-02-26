@@ -30,7 +30,7 @@
           </div>
           <Profile class="ml-3" v-if="show('author')" :data="currentSlide.author" />
         </div>
-        <div v-html="currentSlide.excerpt" class="excerpt md:excerpt-md"></div>
+        <div v-html="cooked || currentSlide.excerpt" class="excerpt md:excerpt-md"></div>
       </div>
     </transition-group>
 
@@ -99,6 +99,14 @@ export default {
   computed: {
     currentSlide: function() {
       return this.slides[Math.abs(this.currentIndex) % this.slides.length];
+    },
+    cooked: function() {
+      if (!this.currentSlide) { return ""; }
+
+      return this.currentSlide.cooked.replace(
+        'class="lightbox-wrapper"',
+        'class="lightbox-wrapper hidden"'
+      )
     }
   },
   created() {
@@ -140,6 +148,10 @@ export default {
   left: 0;
   bottom: 0;
   right:0;
+}
+
+.slider .excerpt {
+  overflow: auto;
 }
 
 .slider .slide .item_title {
