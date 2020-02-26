@@ -12,7 +12,7 @@
     <Progress :index="index" :maxIndex="maxIndex" />
     <button
       :title="nextTitle"
-      class="text-white bg-primary border border-primary text-xm font-semibold rounded-lg px-4 py-3 leading-normal"
+      class="nav"
       v-if="allowNext"
       v-on:click="next"
     >
@@ -54,5 +54,13 @@ export default {
   display: flex;
   width: 100%;
   align-items: center;
+}
+.nav {
+  @apply p-3 px-6 mr-2 ml-6;
+  font-family: "Montserrat";
+  font-weight: 800;
+  color: #333;
+  background: rgb(255, 219, 106);
+  ;
 }
 </style>

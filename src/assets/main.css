@@ -607,11 +607,8 @@ button:focus {outline:0;}
     @apply py-3 px-4 w-full text-white font-bold text-xs relative;
     z-index: 10;
     box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(
-      0deg,
-      rgba(245, 82, 0, 1) 0%,
-      rgba(255, 154, 0, 1) 100%
-    );
+    background: #fad964;
+    color: #333;
   }
   .card_stack .card_footer {
     @apply w-full py-4;
