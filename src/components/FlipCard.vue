@@ -29,7 +29,7 @@ export default {
 .card {
   position: relative;
   -webkit-backface-visibility: hidden;
-  width: 280px !important;
+  width: 220px !important;
   height: 100%;
 }
 

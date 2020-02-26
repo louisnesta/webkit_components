@@ -7,35 +7,43 @@
       <div class="user_grid md:user_grid-md">
         <div
           class="user_avatar md:user_avatar-md"
-          v-for="(item, index) in people"
+          v-for="(item, index) in headliners"
+          :key="index"
+          @click="setActive(index)"
+          :class="{ active: selected === index }"
+          :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
+        ></div>
+        <div
+          class="user_avatar md:user_avatar-md other_speakers"
+          v-for="(item, index) in others"
           :key="index"
           @click="setActive(index)"
           :class="{ active: selected === index }"
           :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
         ></div>
       </div>
-      <div class="w-full px-6 md:px-6 md:pt-2" v-if="people[selected]">
+      <div class="w-full px-6 md:px-6 md:pt-2" v-if="headliners[selected]">
         <a
           class="user_name border-b mb-2 pb-2"
-          :href="people[selected].url"
+          :href="headliners[selected].url"
           target="_blank"
         >
-          {{ people[selected].title }} <span>{{ getUser(people[selected].excerpt) }}</span>
+          {{ headliners[selected].title }} <span>{{ getUser(headliners[selected].excerpt) }}</span>
         </a>
 
-        <div class="bio" v-if="getExcerpt(people[selected].excerpt).length > 1">
+        <div class="bio" v-if="getExcerpt(headliners[selected].excerpt).length > 1">
           <h2 class="font-bold mb-4">
-            {{ getExcerpt(people[selected].excerpt)[0] }}
+            {{ getExcerpt(headliners[selected].excerpt)[0] }}
           </h2>
           <p>
-            {{ getExcerpt(people[selected].excerpt)[1] }}
+            {{ getExcerpt(headliners[selected].excerpt)[1] }}
           </p>
           <p>
-            {{ getExcerpt(people[selected].excerpt)[2] }}
+            {{ getExcerpt(headliners[selected].excerpt)[2] }}
           </p>
         </div>
         <div class="user_bio" v-else>
-          {{ getExcerpt(people[selected].excerpt)[0] }}
+          {{ getExcerpt(headliners[selected].excerpt)[0] }}
         </div>
 
       </div>
@@ -49,7 +57,8 @@ export default {
   props: ["custom", "baseUrl"],
   data() {
     return {
-      people: [],
+      headliners: [],
+      others: [],
       selected: 0
     };
   },
@@ -76,14 +85,21 @@ export default {
         return username[0];
       }
     },
-    getPeople(tag) {
+    getPeople(headliners, others) {
       axios.get(
-        `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&per=500`
-      ).then(({ data }) => this.people = data);
+        `${this.baseUrl}/webkit_components/topics.json?tags=${headliners}&per=500`
+      ).then(({ data }) => {
+        this.headliners = data
+        axios.get(
+          `${this.baseUrl}/webkit_components/topics.json?tags=${others}&per=500`
+        ).then(({ data }) => {
+          this.others = data
+        })
+      })
     }
   },
   mounted: function() {
-    this.getPeople(this.custom.tag);
+    this.getPeople(this.custom.tagHeadliners, this.custom.tagOthers);
   }
 };
 </script>

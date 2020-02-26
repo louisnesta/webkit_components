@@ -24,7 +24,7 @@
 <script>
 import data from "@/data/config.json";
 
-import Nav from "@/components/Navigation.vue";
+import Nav from "@/components/NavigationNGI.vue";
 import Hero from "@/components/Hero.vue";
 import Custom from "@/components/Custom.vue";
 import Events from "@/components/Events.vue";

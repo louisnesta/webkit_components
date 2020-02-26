@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "./assets/main.css";
+import "./assets/main-ngi.css";
 import VueMq from "vue-mq";
 import VueScrollactive from "vue-scrollactive";
 import VueDragscroll from "vue-dragscroll";

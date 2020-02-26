@@ -2,29 +2,29 @@
   <div class="hero md:hero-md" :style="styleObject">
     
     <CategoryView v-if="category" :data="category" :baseUrl="baseUrl"></CategoryView>
-    <CustomView v-else :data="custom"></CustomView>
+    <SummitView v-else :data="custom"></SummitView>
 
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import CustomView from "@/components/views/Hero_Custom.vue";
 import CategoryView from "@/components/views/Hero_Category.vue";
+import SummitView from "@/components/views/Hero_Simple.vue";
 
 export default {
   methods: {
   },
   components: {
-    CustomView,
-    CategoryView
+    CategoryView,
+    SummitView
   },
   computed: {
     styleObject() {
       if (this.custom.background.url) {
         return {
           background: `url('${this.custom.background.url}')`,
-          backgroundPosition: "cover"
+          backgroundPosition: "0% 50%"
         }
       } else if (this.custom.background.color) {
         return { 

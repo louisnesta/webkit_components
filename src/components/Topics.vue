@@ -8,9 +8,7 @@
       v-if="custom.text"
       :class="{ reverse: custom.text.position == 'left' }"
     >
-      <div v-if="custom.text.content" class="w-full section_text">
-        {{ custom.text.content }}
-      </div>
+      <div v-if="custom.text.content" class="w-full section_text" v-html="custom.text.content"></div>
     </div>
 
     <Slider

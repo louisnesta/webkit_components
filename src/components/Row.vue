@@ -53,7 +53,7 @@
         </template>
         <template slot="back">
           <div class="card_excerpt" v-html="item.excerpt"></div>
-          <div class="card_footer">Read more on this topic</div>
+          <div class="card_footer">Discuss this topic</div>
         </template>
       </Card>
     </div>
