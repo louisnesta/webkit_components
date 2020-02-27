@@ -52,7 +52,7 @@
           </div>
         </template>
         <template slot="back">
-          <div class="card_excerpt" v-html="item.excerpt"></div>
+          <div class="card_excerpt" v-html="processCookedPost(item.cooked)"></div>
           <div class="card_footer">Discuss this topic</div>
         </template>
       </Card>
@@ -71,6 +71,19 @@ export default {
     Profile
   },
   methods: {
+    processCookedPost(post) {
+      var div = document.createElement('div');
+      div.innerHTML = post;
+      var lightboxes = div.getElementsByClassName('lightbox-wrapper');
+      while (lightboxes[0])
+         lightboxes[0].parentNode.removeChild(lightboxes[0])
+      var images = div.getElementsByTagName('img');
+      while (images[0])
+         images[0].parentNode.removeChild(images[0])
+      var repl = div.innerHTML;
+
+      return repl
+    },
     show(value) {
       return this.display.includes(value);
     },

@@ -8,14 +8,14 @@
         The NGI Policy Summit is organised by the  
         <a
           class="underline"
-          href="https://nesta.zoom.us/"
+          href="https://www.amsterdam.nl/"
           target="_blank"
           >City of Amsterdam</a
         >
         and 
         <a
           class="underline"
-          href="https://www.amsterdam.nl/"
+          href="https://www.nesta.org.uk/"
           targert="_blank"
           >Nesta</a
         >, in collaboration with the European Commission.

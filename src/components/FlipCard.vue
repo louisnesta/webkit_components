@@ -29,7 +29,7 @@ export default {
 .card {
   position: relative;
   -webkit-backface-visibility: hidden;
-  width: 220px !important;
+  width: 210px !important;
   height: 100%;
 }
 
@@ -111,7 +111,7 @@ export default {
 }
 
 .back h3 {
-  @apply text-xl font-bold text-left w-full pt-1 pb-2 mx-auto border-b;
+  @apply text-xl font-bold text-left w-full pt-1 pb-1 mx-auto border-b;
   width: 80%;
 }
 

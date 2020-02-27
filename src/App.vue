@@ -29,7 +29,7 @@ import Hero from "@/components/Hero.vue";
 import Custom from "@/components/Custom.vue";
 import Events from "@/components/Events.vue";
 import Topics from "@/components/Topics.vue";
-import People from "@/components/People.vue";
+import People from "@/components/PeopleNGI.vue";
 import Users from "@/components/Users.vue";
 import Partners from "@/components/Partners.vue";
 import Edgeryders from "@/components/Edgeryders.vue";

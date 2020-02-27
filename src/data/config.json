@@ -15,7 +15,7 @@
         "align": "left",
         "buttons": [
           {
-            "text": "Register",
+            "text": "Register interest",
             "url": "#",
             "background": "rgb(255, 219, 106)",
             "color": "#333"
@@ -39,7 +39,7 @@
         "poster": ""
       },
       "text": {
-        "content": "<p>Join us in Amsterdam from 29 June to 1 July, as we bring together Europe’s leading policymakers and changemakers to set out a shared vision for the future of the internet. Together, we will explore how policy, innovation and citizen engagement can make the internet more sustainable, democratic and inclusive.</p> <p>Register now to secure your spot at the NGI Policy Summit 2020 and join the discussion on our Community Platform!</p><br><p>The Summit is aimed at policymakers at EU, national and local levels. We also welcome researchers, innovators and civil society organisations interested in building a more human-centric internet. The Summit is a space for participants to share knowledge and best practices and coordinate shared action towards common goals.</p>",
+        "content": "<p>Join us in Amsterdam from 29 June to 1 July, as we bring together Europe’s leading policymakers and changemakers to set out a shared vision for the future of the internet. Together, we will explore how policy, innovation and citizen engagement can make the internet more sustainable, democratic and inclusive. Register now to secure your spot at the NGI Policy Summit 2020 and join the discussion on our Community Platform!</p><br><p>The Summit is aimed at policymakers at EU, national and local levels. We also welcome researchers, innovators and civil society organisations interested in building a more human-centric internet. The Summit is a space for participants to share knowledge and best practices and coordinate shared action towards common goals.</p>",
         "position": "left",
         "buttons": []
       }
@@ -66,6 +66,36 @@
       "tag": "webcontent-ngi-summit-2020-bio",
       "tagHeadliners": "webcontent-ngi-summit-2020-bio",
       "tagOthers": "webcontent-ngi-summit-2020-bio-small"
+    },
+    {
+      "type": "partners",
+      "id": "partners",
+      "display": {
+        "slides": 3
+      },
+      "content": [
+        {
+          "title": "City of Amsterdam",
+          "outlet": "City of Amsterdam",
+          "url":
+            "https://www.amsterdam.nl/en/",
+          "logo": "assets/img/logos/city_of_amsterdam.png"        
+        },
+        {
+          "title": "Nesta",
+          "outlet": "Nesta",
+          "url": " https://www.nesta.org.uk/",
+          "logo": "assets/img/logos/nesta.png"
+        },
+        {
+          "title":
+            "European Commission",
+          "outlet": "European Commission",
+          "url":
+            "https://ec.europa.eu/info/departments/communications-networks-content-and-technology_en",
+          "logo": "assets/img/logos/eucom.png"
+        }
+      ]
     },
     {
       "type": "topics",
@@ -108,10 +138,34 @@
       }
     },
     {
+      "type": "custom",
+      "id": "policy lab",
+      "image": {
+        "url": "https://research.ngi.eu/wp-content/uploads/2019/09/markus-spiske-70Rir5vB96U-unsplash-800x533.jpg",
+        "width": 400
+      },
+      "video": {
+        "src": "",
+        "poster": ""
+      },
+      "text": {
+        "content": "This event forms part of <strong>NGI Forward</strong>, the strategy and policy arm of the Next Generation Internet (NGI), a flagship initiative by the European Commission, which seeks to build a more democratic, resilient and inclusive future internet. The project is tasked with setting out an ambitious vision for what we want the future internet to look like, and identifying the concrete building blocks - from new technologies to policy interventions - that might help bring us closer towards that vision. You can find out more about our work at <a href='https://research.ngi.eu/'>NGI Forward’s Policy Lab</a>. ",
+        "position": "left",
+        "buttons": [
+          {
+            "text": "NGI Policy Lab",
+            "url": "https://edgeryders.eu",
+            "background": "rgb(255, 219, 106)",
+            "color": "#333"
+          }
+        ]
+      }
+    },
+    {
       "type": "form",
       "title": "Join the community",
       "id": "community",
-      "content": "Welcome to the Internet of Humans conversations where we, as part of the NGI - Next Generation Internet - ask, and see if we can collectively answer, crucial questions. We want you to be part of it. <br> <br>What should the Internet - and all it encompasses, which means pretty much everything - really do for humanity? How should it work? How should it be governed? Participate in the conversation on Edgeryders and get to know the other participants of the NGI Summit.",
+      "content": "What should the Internet - and all it encompasses, which means pretty much everything - really do for humanity? How should it work? How should it be governed? Join in the conversation on Edgeryders and get to know the other participants of the NGI Summit. We want to know what you have to say, and we want others to connect and collaborate with you.",
       "slideDefaults": {
         "title": "Q{{index}}",
         "backText": "BACK",

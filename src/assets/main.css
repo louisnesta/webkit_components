@@ -133,7 +133,7 @@ button:focus {outline:0;}
 }
 
 .slide {
-  @apply bg-gray-100 overflow-hidden border border-gray-200 rounded-lg relative flex flex-col;
+  @apply bg-gray-100 overflow-hidden rounded-lg relative flex flex-col;
   height: 400px;
 }
 
@@ -320,7 +320,17 @@ button:focus {outline:0;}
   .section-md {
     @apply w-auto px-8 pt-8 pb-4;
     margin: 0 auto;
-    width: 1200px;
+    max-width: 1100px;
+  }
+
+  .partners {
+    @apply w-full block bg-white relative px-8 py-6 pb-0;
+  }
+
+  .partners-md {
+    @apply w-auto px-8 pt-0 pb-0;
+    margin: 0 auto;
+    max-width: 1100px;
   }
 
   .content_wrapper {
@@ -330,7 +340,7 @@ button:focus {outline:0;}
 
   .content_wrapper-md {
     @apply flex flex-row items-start px-0;
-    width: 1200px;
+    max-width: 1100px;
   }
 
   .hero {
@@ -359,6 +369,14 @@ button:focus {outline:0;}
     font-weight: 800;
     position: relative;
     top: 1rem;
+  }
+
+  a.custom_action {
+    @apply p-3 px-6 mr-2 ml-6;
+    font-family: "Montserrat";
+    font-weight: 800;
+    position: relative;
+    top: -2rem;
   }
 
   .hero_image-md {
@@ -442,7 +460,7 @@ button:focus {outline:0;}
   }
 
   .user_grid {
-    @apply w-full whitespace-no-wrap h-20 mb-3 bg-white float-left;
+    @apply w-full whitespace-no-wrap ml-6 mb-3 bg-white float-left;
     width: 100%;
     overflow-y: hidden;
     white-space: nowrap;
@@ -455,12 +473,7 @@ button:focus {outline:0;}
   }
 
   .user_grid .user_avatar {
-    @apply w-40 h-40 bg-cover inline-block;
-    border: 5px solid white;
-  }
-
-  .user_grid .other_speakers {
-    @apply w-20 h-20 bg-cover inline-block;
+    @apply w-32 h-32 bg-cover inline-block;
     border: 5px solid white;
   }
 
@@ -518,7 +531,7 @@ button:focus {outline:0;}
     @apply inline-block flex-shrink-0 relative pt-4;
     width: 300px;
     transition: all 0.4s ease;
-    height: 320px;
+    height: 380px;
 
     scroll-snap-align: start;
   }
@@ -624,7 +637,7 @@ button:focus {outline:0;}
   }
 
   .section_image {
-    @apply border border-gray-200 mt-4;
+    @apply mt-4;
     flex-shrink: 0;
   }
 

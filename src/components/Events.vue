@@ -78,7 +78,7 @@
 <script>
 import axios from "axios";
 import { FunctionalCalendar } from "vue-functional-calendar";
-import Event from "@/components/Event.vue";
+import Event from "@/components/EventNGI.vue";
 import moment from "moment";
 
 export default {
@@ -87,6 +87,8 @@ export default {
     return {
       view: "calendar",
       data: null,
+      excerpts: null,
+      full: null,
       selected: null,
       minimize: true
     };
@@ -169,7 +171,7 @@ export default {
       }
        this.selectEvent(prev, false);
     },
-    getEvents(tag) {
+    getEventsOld(tag) {
       axios.get(
         `${this.baseUrl}/webkit_components/topics.json?serializer=event&tags=${tag}&per=500`
       ).then(({ data }) => {
@@ -183,6 +185,28 @@ export default {
           .sort((a, b) => a.event.start.localeCompare(b.event.start));
         this.selectEvent(this.dataReverse[0]);
       });
+    },
+    getEvents(tag) {
+      axios.get(
+        `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&per=500&serializer=event`
+      ).then(({ data }) => {
+        this.excerpts = data
+        return axios.get(
+        `${this.baseUrl}/webkit_components/topics.json?tags=${tag}&per=500&serializer=organizer`
+        )
+      }).then(({ data }) => {
+        this.full = data
+        this.data = this.excerpts
+          .filter(({ event }) => event)
+          .map(event => ({
+            ...event,
+            date: this.formatDate(event.event.start),
+            class: "marked",
+            cooked: data.find( ({ id }) => id === event.id ).cooked
+          }))
+          .sort((a, b) => a.event.start.localeCompare(b.event.start));
+        this.selectEvent(this.dataReverse[0]);
+      })
     },
     formatDate(value) {
       return moment(value).format("D-M-YYYY");

@@ -24,7 +24,7 @@
 
 <script>
 import Slider from "@/components/Slider.vue";
-import Row from "@/components/Row.vue";
+import Row from "@/components/RowNGI.vue";
 import axios from "axios";
 
 export default {

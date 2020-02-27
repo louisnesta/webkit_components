@@ -1,5 +1,5 @@
 <template>
-  <div class="section md:section-md" id="partners">
+  <div class="partners md:partners-md" id="partners">
    
    <Carousel :custom="custom" :display="display" autoplay='6000' />
 
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Carousel from "@/components/views/Carousel.vue";
+import Carousel from "@/components/views/CarouselNGI.vue";
 
 export default {
   components: {

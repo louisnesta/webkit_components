@@ -7,6 +7,11 @@
     >
       <div v-if="custom.image.url" class="section_image md:section_image-md" :style="{flexBasis: custom.image.width + 'px'}">
         <img class="w-full" :src="custom.image.url" />
+        <div v-if="custom.text.buttons" class="action_container">
+          <a class="custom_action" v-for="item in custom.text.buttons" :href="item.url" :style="styleObj(item)" :key="item.url" target="_blank">
+            {{item.text}}
+          </a>
+        </div>
       </div>
 
       <div v-if="custom.video.src" class="section_video">
@@ -21,13 +26,7 @@
 
         <div v-if="html" v-html="custom.text.content" class="w-full section_text md:pt-4"></div>
         <div v-else class="w-full section_text md:pt-4">{{ custom.text.content }}</div>
-               
-        <div v-if="custom.text.buttons" class="action_container">
-          <a class="action" v-for="item in custom.text.buttons" :href="item.url" :style="styleObj(item)" :key="item.url" target="_blank">
-            {{item.text}}
-          </a>
-        </div>
-
+              
       </div>
 
   </div>

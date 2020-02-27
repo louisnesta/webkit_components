@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="menu md:pr-2">
-      <span class="nav-item"></span>
+      <span class="nav-item logo"></span>
       <scrollactive
         class="nav"
         active-class="active"
@@ -80,13 +80,13 @@ export default {
 }
 
 .logo {
-  min-width: 65px;
+  min-width: 180px;
   height: 60px;
   padding: 0 50px 0 20px;
   border-right: 1px solid rgba(255, 255, 255, 0.28);
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' version='1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='orangered' d='M0 250a250 250 0 1 1 500 0 250 250 0 0 1-500 0zm250 183V250H67a183 183 0 1 1 183 183z' fill-rule='evenodd'/%3E%3C/svg%3E")
+  background: url("../assets/img/logos/ngiforward.svg")
     no-repeat center #fafafa;
-  background-size: 45%;
+  background-size: 90%;
   transition: none;
   box-shadow: none;
   left: 0;
