@@ -87,4 +87,8 @@ export default (form, errorMessages) =>
     form,
     process.env.VUE_APP_DISCOURSE_AUTH_KEY,
     errorMessages
-  ).then(json => createTopic(form, json.api_keys[0].key, errorMessages));
+  ).then(json => (
+    form.settings.createTopic
+      ? createTopic(form, json.api_keys[0].key, errorMessages)
+      : json
+  ))
