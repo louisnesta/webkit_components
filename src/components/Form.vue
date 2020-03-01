@@ -35,6 +35,7 @@ export default {
     return { form: {}, currentIndex: 0, errors: [] };
   },
   created() {
+    this.$set(this.form, 'settings', { createTopic: this.custom.settings });
     this.slides
       .filter(s => s.index)
       .forEach(({ index, body, settings, fields }) => {
