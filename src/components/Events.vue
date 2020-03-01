@@ -13,9 +13,17 @@
           :class="{ active: view == 'list' }"
           @click="toggleView('list')"
         ></div>
+        <div
+          class="toggle list"
+          :class="{ active: view == 'timeline' }"
+          @click="toggleView('timeline')"
+        ></div>
       </div>
     </div>
-    <div class="wrapper md:wrapper-md" :class="view">
+    <div class="wrapper md:wrapper-md" :class="view" v-if="view == 'timeline'">
+      <Timeline :custom="data" />
+    </div>
+    <div class="wrapper md:wrapper-md" :class="view" v-if="view !== 'timeline'">
       <div class="list md:list-md" v-if="view == 'list'">
         <div
           v-for="(item, index) in dataReverse"
@@ -79,6 +87,7 @@
 import axios from "axios";
 import { FunctionalCalendar } from "vue-functional-calendar";
 import Event from "@/components/Event.vue";
+import Timeline from "@/components/views/Timeline.vue";
 import moment from "moment";
 
 export default {
@@ -93,7 +102,8 @@ export default {
   },
   components: {
     FunctionalCalendar,
-    Event
+    Event,
+    Timeline
   },
   methods: {
     toggleView(view) {
