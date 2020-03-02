@@ -25,7 +25,7 @@
 
     <div class="md:w-1/4 pt-6 md:p-0 md:px-6 border-gray-100 md:border-l">
       <div class="w-full h-16 mb-4 bg-contain bg-no-repeat " :style="{backgroundImage: 'url(' + require('../assets/img/bandiera_stelle.png') + ')'}"></div>
-      <div class="w-full h-16 bg-contain bg-no-repeat " :style="{backgroundImage: 'url(' + require('../assets/img/logo-footer.svg') + ')'}"></div>
+      <a href="https://ngi.eu/" target="_blank" ><div class="w-full h-16 bg-contain bg-no-repeat " :style="{backgroundImage: 'url(' + require('../assets/img/logo-footer.svg') + ')'}"></div></a>
     </div>
   </div>
 </template>
