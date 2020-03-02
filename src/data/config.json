@@ -68,36 +68,6 @@
       "tagOthers": "webcontent-ngi-summit-2020-bio-small"
     },
     {
-      "type": "partners",
-      "id": "partners",
-      "display": {
-        "slides": 3
-      },
-      "content": [
-        {
-          "title": "City of Amsterdam",
-          "outlet": "City of Amsterdam",
-          "url":
-            "https://www.amsterdam.nl/en/",
-          "logo": "assets/img/logos/city_of_amsterdam.png"        
-        },
-        {
-          "title": "Nesta",
-          "outlet": "Nesta",
-          "url": " https://www.nesta.org.uk/",
-          "logo": "assets/img/logos/nesta.png"
-        },
-        {
-          "title":
-            "European Commission",
-          "outlet": "European Commission",
-          "url":
-            "https://ec.europa.eu/info/departments/communications-networks-content-and-technology_en",
-          "logo": "assets/img/logos/eucom.png"
-        }
-      ]
-    },
-    {
       "type": "topics",
       "id": "topics",
       "view": "cards",
@@ -149,7 +119,7 @@
         "poster": ""
       },
       "text": {
-        "content": "This event forms part of <strong>NGI Forward</strong>, the strategy and policy arm of the Next Generation Internet (NGI), a flagship initiative by the European Commission, which seeks to build a more democratic, resilient and inclusive future internet. The project is tasked with setting out an ambitious vision for what we want the future internet to look like, and identifying the concrete building blocks - from new technologies to policy interventions - that might help bring us closer towards that vision. You can find out more about our work at <a href='https://research.ngi.eu/'>NGI Forward’s Policy Lab</a>. ",
+        "content": "This event forms part of <strong>NGI Forward</strong>, the strategy and policy arm of the Next Generation Internet (NGI), a flagship initiative by the European Commission, which seeks to build a more democratic, resilient and inclusive future internet. The project is tasked with setting out an ambitious vision for what we want the future internet to look like, and identifying the concrete building blocks - from new technologies to policy interventions - that might help bring us closer towards that vision. You can find out more about our work at <a class='underline' href='https://research.ngi.eu/'>NGI Forward’s Policy Lab</a>. ",
         "position": "left",
         "buttons": [
           {
@@ -225,6 +195,36 @@
         "email": "It seems you already have an account on our forum using this e-mail address, or have entered an invalid address. Please choose a different e-mail address and click again on \"Send\".",
         "default": "Sorry, we were unable to store your response due to an unknown error. Please try clicking on \"Send\" again."
       }
+    },
+    {
+      "type": "partners",
+      "id": "organisers",
+      "display": {
+        "slides": 3
+      },
+      "content": [
+        {
+          "title": "City of Amsterdam",
+          "outlet": "City of Amsterdam",
+          "url":
+            "https://www.amsterdam.nl/en/",
+          "logo": "assets/img/logos/city_of_amsterdam.png"        
+        },
+        {
+          "title": "Nesta",
+          "outlet": "Nesta",
+          "url": " https://www.nesta.org.uk/",
+          "logo": "assets/img/logos/nesta.png"
+        },
+        {
+          "title":
+            "European Commission",
+          "outlet": "European Commission",
+          "url":
+            "https://ec.europa.eu/info/departments/communications-networks-content-and-technology_en",
+          "logo": "assets/img/logos/eucom.png"
+        }
+      ]
     }
   ]
 }

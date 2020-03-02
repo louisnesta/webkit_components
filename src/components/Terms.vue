@@ -19,28 +19,13 @@
           targert="_blank"
           >Nesta</a
         >, in collaboration with the European Commission.
-      </p>
+      </p><p class="text-white mt-2">This website is run by NGI Forward, which is part of the NGI initiative. NGI Forward has received funding from the European Union’s Horizon 2020 research and innovation programme under the Grant Agreement no 825652. The content of this website does not represent the opinion of the European Union, and the European Union is not responsible for any use that might be made of such content.</p>
+
     </div>
 
     <div class="md:w-1/4 pt-6 md:p-0 md:px-6 border-gray-100 md:border-l">
-      <h1 class="text-white font-bold">Contact Us</h1>
-      <p class="text-white mt-2">
-        <a class="underline" href="mailto:" target="_blank"
-          >Email</a
-        ><br />
-        <a
-          class="underline"
-          href=""
-          target="_blank"
-          >Twitter</a
-        ><br />
-        <a
-          class="underline"
-          href=""
-          target="_blank"
-          >Facebook</a
-        >
-      </p>
+      <div class="w-full h-16 mb-4 bg-contain bg-no-repeat " :style="{backgroundImage: 'url(' + require('../assets/img/bandiera_stelle.png') + ')'}"></div>
+      <div class="w-full h-16 bg-contain bg-no-repeat " :style="{backgroundImage: 'url(' + require('../assets/img/logo-footer.svg') + ')'}"></div>
     </div>
   </div>
 </template>
