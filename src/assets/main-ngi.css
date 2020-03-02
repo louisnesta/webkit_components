@@ -442,7 +442,7 @@ button:focus {outline:0;}
   }
 
   .user_grid {
-    @apply w-full whitespace-no-wrap h-20 mb-3 bg-white float-left;
+    @apply w-full whitespace-no-wrap mb-3 bg-white float-left;
     width: 100%;
     overflow-y: hidden;
     white-space: nowrap;
@@ -456,11 +456,6 @@ button:focus {outline:0;}
 
   .user_grid .user_avatar {
     @apply w-40 h-40 bg-cover inline-block;
-    border: 5px solid white;
-  }
-
-  .user_grid .other_speakers {
-    @apply w-20 h-20 bg-cover inline-block;
     border: 5px solid white;
   }
 

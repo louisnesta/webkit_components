@@ -118,7 +118,7 @@
 }
 
 .slide {
-	@apply bg-gray-100 overflow-hidden border border-gray-200 rounded-lg relative flex flex-col;
+	@apply bg-gray-100 overflow-hidden rounded-lg relative flex flex-col;
 	height: 400px;
 }
 
