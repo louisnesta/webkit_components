@@ -40,85 +40,12 @@ export default {
     Filters
   },
   methods: {
-    toggleView(view) {
-      this.view = view;
-      if (view == "calendar") {
-        this.$nextTick(() => {
-          this.$refs.Calendar.ChooseDate(this.selected[0].date);
-        });
-      }
-    },
     getEventTypes() {
       if (this.custom.types) {
         return this.custom.types;
       } else {
         return false
       }
-    },
-    toggleCalendar() {
-      if (this.$mq == "sm") {
-        this.minimize = !this.minimize;
-      }
-    },
-    selectEvent(value, toggle) {
-      var event;
-      if (value.date) {
-        event = this.data.filter(function(obj) {
-          return obj.date == value.date;
-        });
-        if (event.length) {
-          this.selected = event;
-          this.$nextTick(() => {
-            this.$refs.Calendar.ChooseDate(value.date);
-          });
-          if (toggle !== false) {
-            this.toggleCalendar()
-          }
-        }
-      }
-      else {
-        event = this.data.filter(function(obj) {
-          return obj.created_at == value;
-        });
-        this.selected = event;
-      }
-    },
-    next() {
-      var next;
-      if (this.$mq === "md") {
-        next =
-          this.data.find(
-            ({ event: { start } }) =>
-              moment(start) >
-              moment(this.selected[0].event.start)
-                .add(1, "month")
-                .startOf("month")
-          ) || this.selected[0];
-      } else {
-         next = this.data.find(
-              ({ event: { start } }) =>
-                moment(start) > moment(this.selected[0].event.start)
-            ) || this.selected[0];
-      }
-      this.selectEvent(next, false);
-    },
-    previous() {
-      var prev;
-      if (this.$mq === "md") {
-        prev = this.dataReverse.find(
-            ({ event: { start } }) =>
-              moment(start) <
-              moment(this.selected[0].event.start)
-                .add(-1, "month")
-                .endOf("month")
-          ) || this.selected[0];
-      } else {
-        prev = this.dataReverse.find(
-            ({ event: { start } }) =>
-              moment(start) < moment(this.selected[0].event.start)
-          ) || this.selected[0];
-      }
-       this.selectEvent(prev, false);
     },
     getEvents(tag) {
       axios.get(
