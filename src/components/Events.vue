@@ -2,82 +2,13 @@
   <div class="section md:section-md" id="events">
     <div class="section_title">
       {{ custom.title }}
-      <div class="toggle_menu mt-0 mb-0 md:flex">
-        <div
-          class="toggle calendar"
-          :class="{ active: view == 'calendar' }"
-          @click="toggleView('calendar')"
-        ></div>
-        <div
-          class="toggle list"
-          :class="{ active: view == 'list' }"
-          @click="toggleView('list')"
-        ></div>
-        <div
-          class="toggle list"
-          :class="{ active: view == 'timeline' }"
-          @click="toggleView('timeline')"
-        ></div>
-      </div>
     </div>
-    <div class="wrapper md:wrapper-md" :class="view" v-if="view == 'timeline'">
-      <Timeline :custom="data" />
-    </div>
-    <div class="wrapper md:wrapper-md" :class="view" v-if="view !== 'timeline'">
-      <div class="list md:list-md" v-if="view == 'list'">
-        <div
-          v-for="(item, index) in dataReverse"
-          :key="index"
-          :class="{ active: item.created_at == selected[0].created_at }"
-          class="list_item"
-          @click="selectEvent(item.created_at)"
-        >
-          <p class="font-bold">{{ item.event.start | formatDate }}</p>
-          <h4>{{ item.title }}</h4>
-        </div>
-      </div>
-      <div
-        class="calendar_container md:calendar_container-md"
-        :class="{ active: minimize == true }"
-        v-if="view == 'calendar'"
-      >
-        <div class="calendar_nav md:calendar_nav-md" v-if="selected">
-          <button class="arrow left" @click="previous"></button>
-          <h3 @click="toggleCalendar">
-            <span class="triangle md:hidden"></span>
-            <span v-if="$mq == 'sm'">{{
-              selected[0].event.start | formatDate
-            }}</span>
-            <span v-else>{{ selected[0].event.start | formatMonth }}</span>
-          </h3>
-          <button class="arrow right" @click="next"></button>
-        </div>
-        <FunctionalCalendar
-          v-if="data"
-          ref="Calendar"
-          @choseDay="selectEvent"
-          :hiddenElements="['navigationArrows']"
-          :date-format="'dd-mm-yyyy'"
-          :change-month-function="true"
-          :change-year-function="true"
-          :marked-dates="data"
-          :isDatePicker="true"
-        >
-        </FunctionalCalendar>
-      </div>
-      <div class="selected_event md:selected_event-md">
-        <h2
-          class="text-2xl font-bold pb-2 border-b mb-2 pl-2"
-          v-if="selected && selected.length > 1 && $mq !== 'sm'"
-        >
-          {{ selected[0].event.start | formatDate }}
-        </h2>
-        <Event
-          v-for="(event, index) in selected"
-          :data="event"
-          :multiple="selected && selected.length > 1"
-          :key="index"
-        />
+    <div class="wrapper md:wrapper-md">
+      <Timeline :config="getEventTypes()" :items="items" :data="data" />
+      <div class="sidebar">
+        <Search />
+        <CalComp :dates="dataReverse" :items="items" :config="getEventTypes()" />
+        <Filters :data="dataReverse" :items="items" :config="getEventTypes()" />
       </div>
     </div>
   </div>
@@ -85,25 +16,28 @@
 
 <script>
 import axios from "axios";
-import { FunctionalCalendar } from "vue-functional-calendar";
-import Event from "@/components/Event.vue";
 import Timeline from "@/components/views/Timeline.vue";
+import CalComp from "@/components/views/CalComp.vue";
+import Search from "@/components/views/Search.vue";
+import Filters from "@/components/views/Filters.vue";
 import moment from "moment";
 
 export default {
   props: ["custom", "baseUrl"],
   data() {
     return {
-      view: "calendar",
+      view: "timeline",
       data: null,
+      items: [ { "id": 12741, "title": "Registration & NGI Village Exhibition", "excerpt": "Location: Atrium", "url": "https://edgeryders.eu/t/registration-ngi-village-exhibition/12741", "image_url": "https://edgeryders.eu/uploads/default/original/2X/4/4b91659d19958ad850114c1ceec8f5a71cf1c7bc.jpeg", "views": 9, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:02:39.513Z", "bumped_at": "2020-02-26T17:49:20.637Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": "Atrium", "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-06-29T10:00:44+02:00", "end": "2020-06-29T13:00:44+02:00", "timezone": "Europe/Amsterdam" }, "location": "Main Hall", "date": "29-6-2020", "event_type": "network", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><div class=\"lightbox-wrapper\"><a class=\"lightbox\" href=\"https://edgeryders.eu/uploads/default/original/2X/4/4b91659d19958ad850114c1ceec8f5a71cf1c7bc.jpeg\" data-download-href=\"https://edgeryders.eu/uploads/default/4b91659d19958ad850114c1ceec8f5a71cf1c7bc\" title=\"Atrium.jpg\"><img src=\"https://edgeryders.eu/uploads/default/original/2X/4/4b91659d19958ad850114c1ceec8f5a71cf1c7bc.jpeg\" alt=\"Atrium\" data-base62-sha1=\"aMvjWRSahjMJFPqTBqUIUkYwaCw\" width=\"690\" height=\"460\" data-small-upload=\"https://edgeryders.eu/uploads/default/optimized/2X/4/4b91659d19958ad850114c1ceec8f5a71cf1c7bc_2_10x10.png\"><div class=\"meta\">\n<svg class=\"fa d-icon d-icon-far-image svg-icon\" aria-hidden=\"true\"><use xlink:href=\"#far-image\"></use></svg><span class=\"filename\">Atrium.jpg</span><span class=\"informations\">821×548 252 KB</span><svg class=\"fa d-icon d-icon-discourse-expand svg-icon\" aria-hidden=\"true\"><use xlink:href=\"#discourse-expand\"></use></svg>\n</div></a></div><br>\n<strong>Location:</strong> Atrium</p>", "class": "marked" }, { "id": 12756, "title": "[Capacity-Building Workshop] Slot 2", "excerpt": "Location: Smederij Speakers: To be confirmed", "url": "https://edgeryders.eu/t/capacity-building-workshop-slot-2/12756", "image_url": null, "views": 7, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:44:33.724Z", "bumped_at": "2020-02-26T17:44:33.787Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": "Smederij", "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-06-30T10:30:32+02:00", "end": "2020-06-30T13:00:32+02:00", "timezone": "Europe/Amsterdam" }, "location": "Test", "date": "29-6-2020", "event_type": "lecture", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Smederij</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li><em>To be confirmed</em></li>\n</ul>", "class": "marked" }, { "id": 12754, "title": "[Capacity-Building Workshop] Slot 1", "excerpt": "Location: Timmerlokaal Speakers: To be confirmed", "url": "https://edgeryders.eu/t/capacity-building-workshop-slot-1/12754", "image_url": null, "views": 6, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:41:39.110Z", "bumped_at": "2020-02-26T17:41:39.175Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-01T10:30:35+02:00", "end": "2020-07-01T13:00:35+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "30-6-2020", "event_type": "workshop", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Timmerlokaal</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li><em>To be confirmed</em></li>\n</ul>", "class": "marked" }, { "id": 12757, "title": "[Capacity-Building Workshop] Slot 3", "excerpt": "Location: Plaatwerkerij Speakers: To be confirmed", "url": "https://edgeryders.eu/t/capacity-building-workshop-slot-3/12757", "image_url": null, "views": 6, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:46:45.574Z", "bumped_at": "2020-02-26T17:46:45.645Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-14T10:30:43+02:00", "end": "2020-07-14T13:00:43+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> <strong>Plaatwerkerij</strong></p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li><em>To be confirmed</em></li>\n</ul>", "class": "marked" }, { "id": 12747, "title": "Lunch Break", "excerpt": "Location: Atrium Lunch break and a musical act", "url": "https://edgeryders.eu/t/lunch-break/12747", "image_url": null, "views": 7, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:18:00.742Z", "bumped_at": "2020-02-26T17:18:00.805Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-14T13:00:15+02:00", "end": "2020-07-14T14:00:15+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location</strong>: Atrium</p>\n<p>Lunch break and a musical act</p>", "class": "marked" }, { "id": 12742, "title": "Opening Ceremony", "excerpt": "Location: Atrium Welcome address by Femke Halsema, Mayor of Amsterdam (10 min)Brief opening statement by Raymond Knops, Dutch Secretary of State for the Interior (10 min)Brief opening statement by Roberto Viola, Dire...", "url": "https://edgeryders.eu/t/opening-ceremony/12742", "image_url": null, "views": 6, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:04:51.568Z", "bumped_at": "2020-02-26T17:04:51.629Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-16T14:00:50+02:00", "end": "2020-07-16T14:30:50+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<ul>\n<li>Welcome address by <strong>Femke Halsema</strong>, <em>Mayor of Amsterdam</em> (10 min)</li>\n<li>Brief opening statement by <strong>Raymond Knops</strong>, <em>Dutch Secretary of State for the Interior</em> (10 min)</li>\n<li>Brief opening statement by <strong>Roberto Viola</strong>, <em>Director-General, DG Connect</em> (10 min)</li>\n</ul>", "class": "marked" }, { "id": 12743, "title": "‘A Fireside Chat’ with Raymond Knops and Roberto Viola", "excerpt": "Location: Atrium A brief conversation with: Raymond Knops, Dutch Secretary of State for the InteriorRoberto Viola, Director-General, DG ConnectChaired by Ravi Gurumurthy, Chief Executive, Nesta", "url": "https://edgeryders.eu/t/a-fireside-chat-with-raymond-knops-and-roberto-viola/12743", "image_url": null, "views": 6, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:09:15.786Z", "bumped_at": "2020-02-26T17:09:15.854Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-16T14:30:10+02:00", "end": "2020-07-16T15:00:10+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<p>A brief conversation with:</p>\n<ul>\n<li>\n<strong>Raymond Knops</strong>, <em>Dutch Secretary of State for the Interior</em>\n</li>\n<li>\n<strong>Roberto Viola</strong>, <em>Director-General, DG Connect</em>\n</li>\n</ul>\n<p>Chaired by <strong>Ravi Gurumurthy</strong>, <em>Chief Executive, Nesta</em></p>", "class": "marked" }, { "id": 12744, "title": "[Lightning talks] Alternative Visions for the Future Internet", "excerpt": "Location: Atrium Speakers: Marleen Stikker, WaagRoope Mokka, Demos Helsinki", "url": "https://edgeryders.eu/t/lightning-talks-alternative-visions-for-the-future-internet/12744", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:10:41.231Z", "bumped_at": "2020-02-26T17:38:17.258Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-20T15:00:24+02:00", "end": "2020-07-20T15:15:24+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li>\n<strong>Marleen Stikker</strong>, <em>Waag</em>\n</li>\n<li>\n<strong>Roope Mokka</strong>, <em>Demos Helsinki</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12745, "title": "[Headline Panel] Europe’s role in the Digital World", "excerpt": "Location: Atrium", "url": "https://edgeryders.eu/t/headline-panel-europe-s-role-in-the-digital-world/12745", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:14:57.753Z", "bumped_at": "2020-02-26T17:38:05.674Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-20T15:15:57+02:00", "end": "2020-07-20T16:15:57+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location</strong>: Atrium</p>", "class": "marked" }, { "id": 12746, "title": "Coffee Break", "excerpt": "Location: Atrium", "url": "https://edgeryders.eu/t/coffee-break/12746", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:16:30.214Z", "bumped_at": "2020-02-26T17:16:30.275Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T16:15:06+02:00", "end": "2020-07-29T16:25:06+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>", "class": "marked" }, { "id": 12750, "title": "[Solutions Showcase] Built to Last: Resilience-by-Design and the Future Internet", "excerpt": "Location: Smederij Speakers: Michiel Leenaars, NLnet (Chair)Niels ten Oever, DATAACTIVE", "url": "https://edgeryders.eu/t/solutions-showcase-built-to-last-resilience-by-design-and-the-future-internet/12750", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:27:26.217Z", "bumped_at": "2020-02-26T17:27:26.291Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T16:25:13+02:00", "end": "2020-07-29T17:10:13+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Smederij</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li>\n<strong>Michiel Leenaars</strong>, <em>NLnet (Chair)</em>\n</li>\n<li>\n<strong>Niels ten Oever</strong>, <em>DATAACTIVE</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12751, "title": "[Capacity-Building Workshop] Slot 4", "excerpt": "Location: Plaatwerkerij Speakers: To be confirmed", "url": "https://edgeryders.eu/t/capacity-building-workshop-slot-4/12751", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:28:50.286Z", "bumped_at": "2020-02-26T17:28:50.349Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T16:25:45+02:00", "end": "2020-06-29T18:10:45+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Plaatwerkerij</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li><em>To be confirmed</em></li>\n</ul>", "class": "marked" }, { "id": 12749, "title": "[Solutions Showcase] The Power of Standard-Setting", "excerpt": "Location: Timmerlokaal Speakers: Katja Bego, Principal Researcher, Nesta (Chair)Silva Arapi, City of TiranaAlek Tarkowsky, President of the Board, Centrum CyfroweBen Cerveny, President, Foundation for Public...", "url": "https://edgeryders.eu/t/solutions-showcase-the-power-of-standard-setting/12749", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:23:55.350Z", "bumped_at": "2020-02-26T17:23:55.419Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T16:25:47+02:00", "end": "2020-06-29T17:10:47+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location</strong>: Timmerlokaal</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li>\n<strong>Katja Bego</strong>, <em>Principal Researcher, Nesta (Chair)</em>\n</li>\n<li>\n<strong>Silva Arapi</strong>, <em>City of Tirana</em>\n</li>\n<li>\n<strong>Alek Tarkowsky</strong>, <em>President of the Board, Centrum Cyfrowe</em>\n</li>\n<li>\n<strong>Ben Cerveny</strong>, <em>President, Foundation for Public Code</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12748, "title": "[Policy in Practice] Rebooting the Data Economy: Governance and Regulation", "excerpt": "Location: Atrium Speakers (tbc): Teemu Ropponen, CEO, MyData (Chair)Ger Baron, CTO of AmsterdamProf. Ingrid Schneider, Professor for Political Science, Uni HamburgEva Kaili, MEP, Chair of STOAMax Schrems,...", "url": "https://edgeryders.eu/t/policy-in-practice-rebooting-the-data-economy-governance-and-regulation/12748", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:21:04.356Z", "bumped_at": "2020-02-26T17:21:04.424Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T16:25:55+02:00", "end": "2020-06-29T17:10:55+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<p><strong>Speakers</strong> (tbc):</p>\n<ul>\n<li>\n<strong>Teemu Ropponen</strong>, <em>CEO, MyData (Chair)</em>\n</li>\n<li>\n<strong>Ger Baron</strong>, <em>CTO of Amsterdam</em>\n</li>\n<li>\n<strong>Prof. Ingrid Schneider</strong>, <em>Professor for Political Science, Uni Hamburg</em>\n</li>\n<li>\n<strong>Eva Kaili</strong>, <em>MEP, Chair of STOA</em>\n</li>\n<li>\n<strong>Max Schrems</strong>, <em>NOYB – European Center for Digital Rights</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12752, "title": "[Sustainability Panel] A Green Deal for the Future Internet?", "excerpt": "Location: Atrium Speakers: Anne Pettifor, Author ‘The Case for the Green New Deal’ (Chair)Francesca Bria, Italian Innovation FundMatthi Bolte, Green Party Spokesperson for Digital, North-Rhine WestphaliaBas ...", "url": "https://edgeryders.eu/t/sustainability-panel-a-green-deal-for-the-future-internet/12752", "image_url": null, "views": 5, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:37:34.047Z", "bumped_at": "2020-02-26T17:37:34.116Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-29T17:10:26+02:00", "end": "2020-06-29T18:10:26+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<p><strong>Speakers:</strong></p>\n<ul>\n<li>\n<strong>Anne Pettifor</strong>, <em>Author ‘The Case for the Green New Deal’ (Chair)</em>\n</li>\n<li>\n<strong>Francesca Bria</strong>, <em>Italian Innovation Fund</em>\n</li>\n<li>\n<strong>Matthi Bolte</strong>, <em>Green Party Spokesperson for Digital, North-Rhine Westphalia</em>\n</li>\n<li>\n<strong>Bas van Abel</strong>, <em>CEO of Fairphone</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12753, "title": "[Award Ceremony] NGI Blockchain for Social Good Awards", "excerpt": "Moderated by: Roberto Viola, Director-General, DG ConnectMarco Zappalorto, Nesta ItaliaClosing comments: Eva Kaili, MEP, Chair of STOA", "url": "https://edgeryders.eu/t/award-ceremony-ngi-blockchain-for-social-good-awards/12753", "image_url": null, "views": 6, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:40:20.623Z", "bumped_at": "2020-02-26T17:40:20.692Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-30T18:10:15+02:00", "end": "2020-06-29T19:00:15+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "28-7-2020", "event_type": "network", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Moderated by:</strong></p>\n<ul>\n<li>\n<strong>Roberto Viola</strong>, <em>Director-General, DG Connect</em>\n</li>\n<li>\n<strong>Marco Zappalorto</strong>, <em>Nesta Italia</em>\n</li>\n</ul>\n<p><strong>Closing comments:</strong></p>\n<ul>\n<li>\n<strong>Eva Kaili</strong>, <em>MEP, Chair of STOA</em>\n</li>\n</ul>", "class": "marked" }, { "id": 12755, "title": "Drinks Reception", "excerpt": "Location: Atrium The first day’s evening reception, accompanied by a musical performance", "url": "https://edgeryders.eu/t/drinks-reception/12755", "image_url": null, "views": 9, "reply_count": 0, "like_count": 0, "created_at": "2020-02-26T17:43:32.725Z", "bumped_at": "2020-02-26T17:43:32.778Z", "author": { "id": 5485, "username": "mdroemann", "name": "Mdroemann", "last_seen_at": "2020-03-04T16:51:36.415Z", "last_posted_at": "2020-02-26T18:08:53.333Z", "created_at": "2019-10-22T15:02:16.309Z", "bio_raw": null, "website": null, "location": null, "avatar_url": "https://edgeryders.eu/letter_avatar_proxy/v4/letter/m/3e96dc/200.png", "url": "https://edgeryders.eu/u/5485" }, "event": { "start": "2020-07-30T19:00:12+02:00", "end": "2020-06-29T21:00:12+02:00", "timezone": "Europe/Amsterdam" }, "location": "", "date": "29-6-2020", "event_type": "", "confirmed": false, "tags": [ { "id": 1693, "name": "event-ngi-summit-2020", "topic_count": 17, "staff": false } ], "cooked": "<p><strong>Location:</strong> Atrium</p>\n<p>The first day’s evening reception, accompanied by a musical performance</p>", "class": "marked" } ],
       selected: null,
       minimize: true
     };
   },
   components: {
-    FunctionalCalendar,
-    Event,
-    Timeline
+    Timeline,
+    CalComp,
+    Search,
+    Filters
   },
   methods: {
     toggleView(view) {
@@ -112,6 +46,13 @@ export default {
         this.$nextTick(() => {
           this.$refs.Calendar.ChooseDate(this.selected[0].date);
         });
+      }
+    },
+    getEventTypes() {
+      if (this.custom.types) {
+        return this.custom.types;
+      } else {
+        return false
       }
     },
     toggleCalendar() {
@@ -224,3 +165,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.sidebar {
+  max-width: 30%;
+  min-width: 300px;
+  display: inline-block;
+}
+</style>

@@ -22,6 +22,8 @@
     "vue-functional-calendar": "^2.7.4",
     "vue-mq": "^1.0.1",
     "vue-scrollactive": "^0.8.0",
+    "vue-scrollto": "^2.17.1",
+    "vue-select": "^3.9.0",
     "vue-swing": "0.0.10",
     "vue2-touch-events": "^2.1.0"
   },
