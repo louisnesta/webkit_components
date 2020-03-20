@@ -105,7 +105,7 @@ Displays topics either as a slideshow or scrollable row of cards
 {
   "type": "topics", // [string, required]
   "view": "", // [string, required], "featured" displays topics as slideshow, "cards" displays topics in row of cards
-  "tag": "", // [string, required], the tag from the platform from which to fetch topics
+  "tag": "", // [string, required], the tag of topics to display from the platform
   "sort_by": {
     "property": "", // [string, required], the property ["title", "created_at"] to sort topics by
     "order": "ascending" // [string, required], the order ["ascending", "descending"] to sort topics by
