@@ -33,37 +33,39 @@ Styling uses Tailwind utilities, [read more here](https://tailwindcss.com/docs/a
 
 All components are configured in @/data/config.json with the following properties:
 
+```
 {
- "type": "", // string (required), ex ["hero", "custom", "topics", "users", "people", "partners,"edgeryders", "terms", "form"]
- "title": "", // string (optional)
- "id": "", // string (optional), if included enables scroll to the component and includes link in the navigation menu with the "title" as the link text
+	 "type": "", // string (required), ex ["hero", "custom", "topics", "users", "people", "partners,"edgeryders", "terms", "form"]
+	 "title": "", // string (optional)
+	 "id": "", // string (optional), if included enables scroll to the component and includes link in the navigation menu with the "title" as the link text
 }
+```
 
 ### Hero
 
 Displays a hero banner at the top of the site.
 
 ```
-	{
-	  "type": "hero" // [string, requires]
-      "background": {
-        "color": "" // [string, required], ex: '#00000' or 'blue'
-      },
-      "text": {
-        "content": "", // [string, optional], hero text
-        "align": "", // [string, optional], aligns text "left" or "right" of main image
-        "buttons": // [array, optional], displays action buttons included below main text
-        [{
-            "text": "", // [string]
-            "url": "", //  [string] 
-            "background": "" // [string], ex: '#00000' or 'blue'
-        }]
-      },
-      "image": {
-        "url": "", // [string]
-        "width": 450 // [integer]
-      }
-    }
+{
+  "type": "hero" // [string, requires]
+  "background": {
+    "color": "" // [string, required], ex: '#00000' or 'blue'
+  },
+  "text": {
+    "content": "", // [string, optional], hero text
+    "align": "", // [string, optional], aligns text "left" or "right" of main image
+    "buttons": // [array, optional], displays action buttons included below main text
+      [{
+      "text": "", // [string]
+      "url": "", //  [string] 
+      "background": "" // [string], ex: '#00000' or 'blue'
+      }]
+  },
+  "image": {
+  "url": "", // [string]
+  "width": 450 // [integer]
+  }
+}
 ```
 
 ### Custom
@@ -84,13 +86,11 @@ Displays text alongside an optional image or video
   "text": {
     "content": "", // [string, optional], main text content 
     "position": "left", // [string, optional], positions text "left" or "right" in relation to image or video
-    "buttons": [
-      {
-        "text": "", // [string, required], button text 
-        "url": "", // [string, required], button url 
-        "background": "" [string, optional], background color of button in CSS, ex: '#00000' or 'blue'
-      }
-    ]
+    "buttons": [{
+      "text": "", // [string, required], button text 
+      "url": "", // [string, required], button url 
+      "background": "" [string, optional], background color of button in CSS, ex: '#00000' or 'blue'
+    }]
   }
 }
 ```
@@ -100,27 +100,27 @@ Displays text alongside an optional image or video
 Displays topics either as a slideshow of scrollable row of cards
 
 ```
-	{
-      "type": "topics", // [string, required]
-      "view": "", // [string, required], "featured" displays topics as slideshow, "cards" displays topics in row of cards
-      "tag": "", // [string, required], the tag from the platform from which to fetch topics
-      "sort_by": {
-        "property": "", // [string, required], the property ["title", "created_at"] to sort topics by
-        "order": "ascending" // [string, required], the order ["ascending", "descending"] to sort topics by
-      },
-      "display": ["title", "author", "date"] // [array, optional], determines whether to display author, date and title of topic
-      "image": {
-        "url": "" // [string, optional]
-      },
-      "video": {
-        "src": "", // [string, optional], src url of video
-        "poster": "" // [string, optional], url of image for video poster
-      },
-      "text": {
-        "content": "", // [string, optional]
-        "position": ""// [string, optional], position content "left" or "right" of video or image
-      }
-    }
+{
+  "type": "topics", // [string, required]
+  "view": "", // [string, required], "featured" displays topics as slideshow, "cards" displays topics in row of cards
+  "tag": "", // [string, required], the tag from the platform from which to fetch topics
+  "sort_by": {
+    "property": "", // [string, required], the property ["title", "created_at"] to sort topics by
+    "order": "ascending" // [string, required], the order ["ascending", "descending"] to sort topics by
+  },
+  "display": ["title", "author", "date"] // [array, optional], determines whether to display author, date and title of topic
+  "image": {
+    "url": "" // [string, optional]
+  },
+  "video": {
+    "src": "", // [string, optional], src url of video
+    "poster": "" // [string, optional], url of image for video poster
+  },
+  "text": {
+    "content": "", // [string, optional]
+    "position": ""// [string, optional], position content "left" or "right" of video or image
+  }
+}
 ```
 
 ### Events
@@ -128,12 +128,12 @@ Displays topics either as a slideshow of scrollable row of cards
 Displays topics in a calendar view. Topics from discourse must include an ```event``` property.
 
 ```
-	{
-      "tag": "", //  [string, required] tag of topics on platform to be included as events
-      "types": {
-	      "event_type": "", [string, optional], color of event_type ex: '#00000' or 'blue'
-       }
-    }
+{
+  "tag": "", //  [string, required] tag of topics on platform to be included as events
+  "types": {
+    "event_type": "", [string, optional], color of event_type ex: '#00000' or 'blue'
+  }
+}
 ```
 
 ### Users
@@ -141,11 +141,11 @@ Displays topics in a calendar view. Topics from discourse must include an ```eve
 Displays Discourse users from a specific category
 
 ```
-	{
-      "type": "users", // required
-      "category": "campfire", // [string, required] category slug from which to display users from the platform
-      "only_bios": true // [boolean, optional] display only users with a bio on the platform
-    }
+{
+  "type": "users", // required
+  "category": "campfire", // [string, required] category slug from which to display users from the platform
+  "only_bios": true // [boolean, optional] display only users with a bio on the platform
+}
 ```
 
 ### People
@@ -153,9 +153,9 @@ Displays Discourse users from a specific category
 Displays topics in the format of the 'Users' component for people with no Discourse account
 
 ```
-	{
-	  "tag": "" // [string, required] tag of topics on platform to be included as a bio
-	}
+{
+  "tag": "" // [string, required] tag of topics on platform to be included as a bio
+}
 ```
 
 ### Partners
@@ -163,21 +163,21 @@ Displays topics in the format of the 'Users' component for people with no Discou
 Displays a slider of partners with logos and dates
 
 ```
-	{
-      "type": "partners",
-      "display": {
-        "slides": 3 // [integer, required] number of slides to display in rotation
-      },
-      "content": [
-      	 {
-          "title": "", // [string] name of publication/partner
-          "date": "", // [string] date of quote
-          "url": "", // [string] url of partner/publication
-          "logo": "", // [string] image to be displayed in the slide
-          "excerpt": "" // [string] text to be displayed in the slide
-        }
-      ]
+{
+  "type": "partners",
+  "display": {
+    "slides": 3 // [integer, required] number of slides to display in rotation
+  },
+  "content": [
+    {
+    "title": "", // [string] name of publication/partner
+    "date": "", // [string] date of quote
+    "url": "", // [string] url of partner/publication
+    "logo": "", // [string] image to be displayed in the slide
+    "excerpt": "" // [string] text to be displayed in the slide
     }
+  ]
+}
 ```
 
 ### Edgeryders
@@ -185,10 +185,10 @@ Displays a slider of partners with logos and dates
 Displays the Edgeryders about section
 
 ```
-	{
-	  "type": "edgeryders", // [string, required]
-	  "title": "" // [string, optional]
-	}
+{
+  "type": "edgeryders", // [string, required]
+  "title": "" // [string, optional]
+}
 ```
 
 ### Form
@@ -196,57 +196,56 @@ Displays the Edgeryders about section
 Displays a form for signing up and/or posting to the platform
 
 ```
-	{
-	  "type": "form", // [string, required]
-	  "content": "", // [string, optional]
-	  "settings": {
-	    "createTopic": false // [boolean, required] determines if a topic is posted to platform on signup
-	  },
-	  "slideDefaults": {
-        "title": "Q{{index}}", // [string, required]
-        "backText": "", // [string, required] back button text
-        "nextText": "", // [string, required] next button text
-        "backTitle": "", // [string, required] title to go back
-        "nextTitle": "", // [string, required] title to continue
-        "fields": [{
-          "name": "message", // [string, required] input field to enter text
-          "type": "textarea", // [string, required] input type
-          "placeholder": "write here...", // [string, optional] input placeholder text
-          "required": true, // [boolean, required] determines if input text is required to continue
-          "autofocus": true, // [boolean, required] determines if input is focused on by default
-          "error": "Please write a response!"  // [string, required] determines error text
-        }],
-        "diagram": {},
-        "settings": { "omitFields": true }
-      },
-      "slides": [{
-        "index": 1, // [integer, required] slide index number determines order
-        "title": "", // [string, required] 
-        "nextTitle": "SIGN UP", // [string, required] title of next slide
-        "body": "", // [string, optional] body text of slide
-        "fields": [{
-          "name": "", // [string, required] field name
-          "type": "text", // [string, required] field type
-          "placeholder": "", // [string, optional] input placeholder text
-          "half": true, // [boolean, optional]
-          "required": true, // [boolean, required]
-          "autofocus": false, // [boolean, required]
-          "error": "" // [string, optional]
-        }],
-        {
-	       "nextText": "SEND", // [string, optional] final submit button
-	       "submit": true, // [boolean, required] submits the form
-	       "settings": { 
-	       		"omitBody": true 
-	   		}
-	   	}],
-	   	"errorMessages": {
-	        "networkError": "", [string, optional] // error message if network is down
-	        "username": "", // [string, optional] error message if username is already taken
-	        "email": "", // [string, optional] error message if email is already taken
-	        "default": "" // [string, optional] defauolt error message
-     	}
-	}]
+{
+  "type": "form", // [string, required]
+  "content": "", // [string, optional]
+  "settings": {
+    "createTopic": false // [boolean, required] determines if a topic is posted to platform on signup
+  },
+  "slideDefaults": {
+    "title": "Q{{index}}", // [string, required]
+    "backText": "", // [string, required] back button text
+    "nextText": "", // [string, required] next button text
+    "backTitle": "", // [string, required] title to go back
+    "nextTitle": "", // [string, required] title to continue
+    "fields": [{
+    "name": "message", // [string, required] input field to enter text
+    "type": "textarea", // [string, required] input type
+    "placeholder": "write here...", // [string, optional] input placeholder text
+    "required": true, // [boolean, required] determines if input text is required to continue
+    "autofocus": true, // [boolean, required] determines if input is focused on by default
+    "error": "Please write a response!"  // [string, required] determines error text
+    }],
+    "diagram": {},
+    "settings": { "omitFields": true }
+  },
+  "slides": [{
+    "index": 1, // [integer, required] slide index number determines order
+    "title": "", // [string, required] 
+    "nextTitle": "SIGN UP", // [string, required] title of next slide
+    "body": "", // [string, optional] body text of slide
+    "fields": [{
+    "name": "", // [string, required] field name
+    "type": "text", // [string, required] field type
+    "placeholder": "", // [string, optional] input placeholder text
+    "half": true, // [boolean, optional]
+    "required": true, // [boolean, required]
+    "autofocus": false, // [boolean, required]
+    "error": "" // [string, optional]
+  },
+  {
+    "nextText": "SEND", // [string, optional] final submit button
+    "submit": true, // [boolean, required] submits the form
+    "settings": { 
+    "omitBody": true 
+  }],
+  "errorMessages": {
+    "networkError": "", [string, optional] // error message if network is down
+    "username": "", // [string, optional] error message if username is already taken
+    "email": "", // [string, optional] error message if email is already taken
+    "default": "" // [string, optional] defauolt error message
+  }
+}
 ```
 
 ### Terms
@@ -254,9 +253,9 @@ Displays a form for signing up and/or posting to the platform
 Displays Edgeryders terms and conditions.
 
 ```
-	{
-	  "type": "terms" // [string, required]
-	}
+{
+  "type": "terms" // [string, required]
+}
 ```
 
 ## Project setup
