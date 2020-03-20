@@ -210,37 +210,41 @@ Displays a form for signing up and/or posting to the platform
     "nextText": "", // [string, required] next button text
     "backTitle": "", // [string, required] title to go back
     "nextTitle": "", // [string, required] title to continue
-    "fields": [{
-    "name": "message", // [string, required] input field to enter text
-    "type": "textarea", // [string, required] input type
-    "placeholder": "write here...", // [string, optional] input placeholder text
-    "required": true, // [boolean, required] determines if input text is required to continue
-    "autofocus": true, // [boolean, required] determines if input is focused on by default
-    "error": "Please write a response!"  // [string, required] determines error text
-    }],
+    "fields": [
+      {
+        "name": "message", // [string, required] input field to enter text
+        "type": "textarea", // [string, required] input type
+        "placeholder": "write here...", // [string, optional] input placeholder text
+        "required": true, // [boolean, required] determines if input text is required to continue
+        "autofocus": true, // [boolean, required] determines if input is focused on by default
+        "error": "Please write a response!"  // [string, required] determines error text
+      }
+    ],
     "diagram": {},
     "settings": { "omitFields": true }
   },
-  "slides": [{
-    "index": 1, // [integer, required] slide index number determines order
-    "title": "", // [string, required] 
-    "nextTitle": "SIGN UP", // [string, required] title of next slide
-    "body": "", // [string, optional] body text of slide
-    "fields": [{
-    "name": "", // [string, required] field name
-    "type": "text", // [string, required] field type
-    "placeholder": "", // [string, optional] input placeholder text
-    "half": true, // [boolean, optional]
-    "required": true, // [boolean, required]
-    "autofocus": false, // [boolean, required]
-    "error": "" // [string, optional]
-  },
-  {
-    "nextText": "SEND", // [string, optional] final submit button
-    "submit": true, // [boolean, required] submits the form
-    "settings": { 
-    "omitBody": true 
-  }],
+  "slides": [
+    {
+      "index": 1, // [integer, required] slide index number determines order
+      "title": "", // [string, required] 
+      "nextTitle": "SIGN UP", // [string, required] title of next slide
+      "body": "", // [string, optional] body text of slide
+      "fields": [{
+      "name": "", // [string, required] field name
+      "type": "text", // [string, required] field type
+      "placeholder": "", // [string, optional] input placeholder text
+      "half": true, // [boolean, optional]
+      "required": true, // [boolean, required]
+      "autofocus": false, // [boolean, required]
+      "error": "" // [string, optional]
+    },
+    {
+      "nextText": "SEND", // [string, optional] final submit button
+      "submit": true, // [boolean, required] submits the form
+      "settings": { 
+      "omitBody": true 
+    }
+  ],
   "errorMessages": {
     "networkError": "", [string, optional] // error message if network is down
     "username": "", // [string, optional] error message if username is already taken
