@@ -55,15 +55,17 @@ Displays a hero banner at the top of the site.
     "content": "", // [string, optional], hero text
     "align": "", // [string, optional], aligns text "left" or "right" of main image
     "buttons": // [array, optional], displays action buttons included below main text
-      [{
-      "text": "", // [string]
-      "url": "", //  [string] 
-      "background": "" // [string], ex: '#00000' or 'blue'
-      }]
+    [
+      {
+      "text": "", // [string, required], button text
+      "url": "", //  [string, optional], button url
+      "background": "" // [string, optional], ex: '#00000' or 'blue'
+      }
+    ]
   },
   "image": {
-  "url": "", // [string]
-  "width": 450 // [integer]
+    "url": "", // [string, require], url of image src
+    "width": 450 // [integer, optional], sets max_width of image
   }
 }
 ```
@@ -76,7 +78,7 @@ Displays text alongside an optional image or video
 {
   "type": "custom" // [string, required]
   "image": {
-    "url": "", // [string, required], url of image
+    "url": "", // [string, required], url of image src
     "width": 420 // [integer, optional], sets max_width of image
   },
   "video": {
