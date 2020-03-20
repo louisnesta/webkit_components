@@ -35,9 +35,9 @@ All components are configured in @/data/config.json with the following propertie
 
 ```
 {
-	 "type": "", // string (required), ex ["hero", "custom", "topics", "users", "people", "partners,"edgeryders", "terms", "form"]
-	 "title": "", // string (optional)
-	 "id": "", // string (optional), if included enables scroll to the component and includes link in the navigation menu with the "title" as the link text
+  "type": "", // string (required), ex: ["hero", "custom", "topics", "users", "people", "partners,"edgeryders", "terms", "form"]
+  "title": "", // string (optional)
+  "id": "", // string (optional), if included enables scroll to the component and includes link in the navigation menu with the "title" as the link text
 }
 ```
 
