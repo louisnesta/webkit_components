@@ -99,7 +99,7 @@ Displays text alongside an optional image or video
 
 ### Topics
 
-Displays topics either as a slideshow of scrollable row of cards
+Displays topics either as a slideshow or scrollable row of cards
 
 ```
 {
