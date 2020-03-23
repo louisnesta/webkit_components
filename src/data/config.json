@@ -81,13 +81,13 @@
     },
     {
       "type": "events",
-      "title": "Events",
+      "title": "Calendar",
       "id": "events",
-      "tag": "event-ngi-summit-2020",
+      "tag": "call",
       "types": {
-        "network": "blue",
-        "workshop": "green",
-        "lecture": "orangered"
+        "team": "blue",
+        "outreach": "green",
+        "community": "orangered"
       }
     },
     {

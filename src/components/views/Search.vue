@@ -16,6 +16,9 @@ export default {
   },
   watch: {
     search() {
+      
+     bus.$emit('clearDate', null);
+      bus.$emit('clearType', null);
       bus.$emit('filterSearch', this.search);
     }
   }

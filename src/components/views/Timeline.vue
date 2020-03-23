@@ -1,11 +1,16 @@
 <template>
-  <div class="timeline_container">
+  <div class="timeline_container md:timeline_container-md">
+
   <div class="timeline"  id="events_container">
-    <div class="filters w-full" v-if="filtered()">
-      <div class="filter type" v-if="type" @click="type = null">
-        <p class="key">type</p><p>{{type.label}}</p>
+    <div class="filters md:filters-md w-full" v-if="filtered()">
+      <div class="filter_icon"></div>
+      <div class="filter type" v-if="type" @click="clear('type')">
+        <p class="key">type</p><p>{{type}}</p>
       </div>
-      <div class="filter location" v-if="location" @click="location = null">
+      <div class="filter type" v-if="selectedDate" @click="clear('selectedDate')">
+        <p class="key">date</p><p>{{getDate(selectedDate)}}</p>
+      </div>
+      <div class="filter location" v-if="location" @click="clear(location)">
         <p class="key">location</p><p>{{location}}</p>
       </div>
       <div class="filter search" v-if="search" @click="search = ''">
@@ -13,23 +18,32 @@
       </div>
     </div>
     <transition-group name="list" tag="div" class="events_list">
-    <div v-for="(item, index) in filteredItems" :key='index' class="day" :class="{active: isActive(item.event.start) }">
+    <div v-for="(item, index) in filteredItems" :key='index' class="day md:day-md" :class="{active: isActive(item.event.start) }">
       <h4 v-if="newDate(index, item.event.start)"  :id="'day-' + dateId(item.event.start)">{{item.event.start | formatDate}}</h4>
-      <div class="event">
-        <div class="time">{{item.event.start | formatTime}}</div>
+      <div class="event md:event-md">
+        <div class="time md:time-md">{{item.event.start | formatTime}}</div>
 
-        <div class="info">
-          <div class="title">
+        <div class="info md:info-md" @click="toggleEvent(index)" :class="{active: expand == index}">
+          <div class="title md:hide">
+            <p :style="'border-bottom: 1px solid ' + getType(item.tags).color" :href="item.url" target="_blank">{{item.title}}</p>
+          </div>
+          <div class="hidden md:title-md">
+            <div class="marker" :style="{background: getType(item.tags).color}"></div>
             <a :style="'border-bottom: 1px solid ' + eventColor(item.event_type)" :href="item.url" target="_blank">{{item.title}}</a>
-            <div class="options">
-              <a class="icon info" :href="item.url" target="_blank"></a>
+            <div class="options md:options-md">
+              <a class="icon information" :href="item.url" target="_blank"></a>
                 <a class="icon twitter" :href="'https://twitter.com/home?status=Check out this upcoming event: ' + item.title + ' - ' + item.url + ' #edgeryders'" target="_blank"></a>
                 <a class="icon facebook" :href="'https://www.facebook.com/sharer/sharer.php?u=' + item.url" target="_blank"></a>
                 <a class="icon email" :href="'mailto:?subject=Check out this upcoming event by Edgeryders&body=' + item.title + ' - ' +  item.url" target="_blank"></a>
             </div>
           </div>
-          <div class="description">
-            <div class="excerpt">{{item.cooked}}</div>
+          <div class="description md:description-md">
+            <div class="excerpt" v-if="item.json">
+              <a v-if="item.json.host" :href="item.json.host" target="_blank" class="underline">{{item.json.host}}</a>
+              <p>{{item.event.start | formatDate}} at {{item.event.start | formatTime}}</p>
+              <p v-if="item.json.info" class="mt-2 pb-2 w-full">{{item.json.info}}</p>
+
+            </div>
           </div>
         </div>
 
@@ -51,8 +65,7 @@
 <script>
 import moment from "moment";
 import { bus } from '@/main';
-import VueScrollTo from 'vue-scrollto';
-
+import axios from "axios";
 export default {
   name: 'Timeline',
   data () {
@@ -61,6 +74,7 @@ export default {
       events: [],
       search: "",
       location: null,
+      expand: null,
       date: null,
       type: null,
       locations: [],
@@ -80,9 +94,62 @@ export default {
     }
   },
   methods: {
+    getObject(value){
+      var obj = JSON.parse(value);
+
+      return obj;
+    },
+    getEventData() {
+         var i = 0;
+          var eventsdata = this.data;
+
+        for (i = 0; i < eventsdata.length; i++) { 
+          var eventId = eventsdata[i]['id'];
+
+          var count = i;
+           axios.get(
+          `${this.baseUrl}/raw/${eventId}`
+          ).then(({ data }) => {
+            var event = eventsdata[count];
+            event['cooked'] = data;
+            this.eventsdata.push(event)
+          });
+        }
+    },
+    toggleEvent(index){
+      if (this.$mq !== "md") {
+        if (this.expand == index) {
+          this.expand = null
+        } else {
+          this.expand = index
+        }
+      }
+    },
+    getType(tags){
+      var types = this.config;
+      var tag = tags.filter(function(tag) {
+        if (types[tag.name]){
+          return tag;
+        } else {
+          return null
+        }
+      });
+      var name = tag[0].name;
+      var obj = {
+        name: tag[0].name,
+        color: types[name]
+      }
+      return obj;
+    },
     selectDate(){
       this.location = null;
       this.type = null;
+    },
+    getTags(tags){
+      let array = tags.map(function(tag) {
+        return tag.name
+      })
+      return array
     },
     clear(key){
       this[key] = null;
@@ -90,7 +157,9 @@ export default {
     mapEvents(){
       const events = this.data.reduce((c, v) => {
         let date = this.getDate(v.event.start);
-        c[date] = c[date] || [];       //Initiate if key does not exist
+        let tags = this.getTags(v.tags);
+        c[date] = c[date] || []; 
+        c[tags] = tags;
         c[date].push(v);                //Push the value
         return c;
       }, {});
@@ -101,6 +170,7 @@ export default {
 
       this.locations = this.mapData('location');
       this.types = this.mapData('event', 'event_type');
+
     },
     mapInfo(tag){
       let array = [];
@@ -179,19 +249,27 @@ export default {
       }
     },
     filtered() {
-      if (this.type !== null || this.search !== "" || this.location) {
+      if (this.type !== null || this.search !== "" || this.selectedDate || this.location) {
         return true
       } else {
         return false
       }
-    }
+    },
   },
   created() {
     this.mapEvents();
     bus.$on('setDate', (data) => {
       this.selectedDate = data;
-      var scrollId = '#day-' + data;
-      VueScrollTo.scrollTo(scrollId, 500, this.options)
+    })
+    bus.$on('clearDate', (data) => {
+      this.selectedDate = data;
+    })
+    bus.$on('clearType', (data) => {
+      this.type = data;
+    })
+    bus.$on('clearSearch', (data) => {
+      this.search = "";
+      window.console.log(data)
     })
     bus.$on('filterDate', (data) => {
       this.date = data;
@@ -225,8 +303,8 @@ export default {
 
       let filtered = this.items;
 
-      if (this.date != null) {
-           filtered = filtered.filter(e => e.date == this.date)
+      if (this.selectedDate != null) {
+           filtered = filtered.filter(e => moment(e.event.start).format("YYYYMMDD") == this.selectedDate);
       }
 
       if (this.search != "") {
@@ -238,21 +316,54 @@ export default {
       }
 
       if (this.type != null) {
-           filtered = filtered.filter(e => e.event_type == this.type.label)
+
+        var type = this.type;
+        var self = this;
+
+          var test = filtered.filter(function(obj) {
+            var tags = self.getTags(obj.tags);
+            var x = tags.includes(type);
+            if (x) {
+              window.console.log(obj);
+              return obj
+            }
+          })
+
+          filtered = test;
+
       }
 
-      return filtered;
+      return filtered
+
     }
   },
-  props: ["data", "config", "items"]
+  watch: {
+    type() {
+      if (this.type) {
+      bus.$emit('filterType', this.type);
+      } else {
+        bus.$emit('filterType', null);
+      }
+    }
+  },
+  props: ["data", "config", "items", "eventsdata"]
 }
 </script>
 
 <style lang="scss" scoped>
+
 .filters {
-  @apply w-full flex items-start border-b pb-4;
+  @apply w-full flex items-center border-b pb-2;
+  background-size: 25px;
   width: auto;
-  height: 60px;
+  height: 50px;
+  .filter_icon {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 75'%3E%3Cpath fill='rgba(0,0,0,0.3)' d='M54 11H6l-1 1v8l18 12v16a1 1 0 001 1h1l11-3 1-1V32l18-12v-8l-1-1z'/%3E%3C/svg%3E") no-repeat 0 0;
+      width: 25px;
+      margin-top: 6px;
+      margin-right: 7px;
+      height: 25px;
+  }
   p {
     @apply flex items-center px-3;
     height: 100%;
@@ -266,7 +377,12 @@ export default {
     border-radius: 4px;
     &:hover {
       cursor: pointer;
-      opacity: 0.7;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 40'%3E%3Cpath fill='black' d='M16 2a14 14 0 100 28 14 14 0 000-28zm6 18a1.5 1.5 0 11-2 2l-4-3.9-4 4a1.5 1.5 0 01-2 0c-.6-.6-.6-1.6 0-2.2l3.9-3.9-4-4a1.5 1.5 0 112.2-2l3.9 3.9 4-4a1.5 1.5 0 112 2.2L18.2 16l4 4z'/%3E%3C/svg%3E") no-repeat 7px 7.5px #efefef !important;
+      background-size: 14px !important;
+      padding-left: 16px;
+      .key {
+        display: none;
+      }
     }
     p.key {
       @apply bg-black font-bold;
@@ -280,14 +396,12 @@ export default {
     }
   }
 }
-.timeline_container {
-  @apply flex;
-  max-width: 65%;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
+
 .timeline {
   flex-basis: 100%;
+  min-width: 100% !important;
+  flex-shrink: 0;
+  width: 100% !important;
   height: 500px;
   overflow: scroll;
 }
@@ -304,11 +418,9 @@ export default {
     @apply mt-4 mb-3 font-bold;
   }
   &.active {
-    background: #fafafa;
-    padding-left: 2%;
-    width: 100%;
+    width: 90%;
     h4 {
-      @apply pt-4 mt-4 mb-3 ml-2;
+      @apply pt-2 mt-4 mb-2 ;
       font-size: 1.2rem;
     }
     &.last {
@@ -318,47 +430,20 @@ export default {
 }
 
 .event {
-  @apply flex flex-row;
   width: 100%;
   .info {
-    @apply flex w-full flex-col border-l;
-    position: relative;
     transition: border .4s ease;
-    &:hover {
-      border-left: 1px solid #000;
-      background: #fafafa;
-      cursor: pointer;
-      .title {
-        padding-bottom: 4px;
-        transition: padding 0.2s ease;
-      }
-      .description {
-        max-height: 500px;
-        transition: max-height 1s ease;
-        @apply pb-2;
-      }
-    }
   }
   .title a {
     @apply pb-1 mb-0;
   }
-  .description {
-    @apply pl-4;
-    max-height: 0px;
-    font-size: 11px;
-    
-    transition: max-height 0s ease;
-    overflow: hidden;
-  }
-  
-  .time {
-    @apply pr-3 py-4 text-xs flex flex-col justify-center items-center;
-    width: 60px !important;
-    flex-shrink: 0;
-  }
+
+
   .title {
-    @apply py-4 pt-2 pl-4 pb-2 flex items-center;
     transition: padding 0s ease;
+    .marker {
+      
+    }
     &:hover {
       .options {
         opacity: 1;
@@ -366,15 +451,6 @@ export default {
       }
     }
     .options {
-      width: 120px !important;
-      opacity: 0;
-      transition: all .5s ease;
-      transform: translateX(-3px);
-      min-width: 120px;
-      height: 23px;
-      float: left;
-      margin-left: 15px;
-      display: inline-block;
       .icon {
         width: 23px;
         height: 23px !important;
@@ -387,7 +463,7 @@ export default {
         &:hover {
           border: .5px solid #000;
         }
-        &.info {
+        &.information {
           background: url("data:image/svg+xml,%3Csvg width='17' height='48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 6c0 1.7-.6 3-1.7 4.2a5.6 5.6 0 01-4.1 1.8c-1.7 0-3-.6-4.2-1.8A5.8 5.8 0 015.3 6c0-1.6.6-3 1.7-4.2A5.6 5.6 0 0111.2 0c1.6 0 3 .6 4 1.8A5.9 5.9 0 0117 6zm-.6 39.5l-4 1.9c-1.1.4-2.3.6-3.7.6-2 0-3.7-.6-4.8-1.9a6.6 6.6 0 01-1.7-4.7 20.2 20.2 0 01.5-4.8L5 27.3a51.1 51.1 0 00.6-4.7c0-1.1-.2-2-.6-2.4-.4-.5-1.1-.7-2.3-.7a5 5 0 00-1.7.3c-.6.2-.9-2.3-.9-2.3l4-1.8c1.3-.5 2.5-.7 3.7-.7 2 0 3.7.6 4.8 1.8a6.7 6.7 0 011.7 4.8 32.2 32.2 0 01-.6 4.9l-2.1 9.2a29.2 29.2 0 00-.7 4.7c0 1.2.2 2 .7 2.5.4.4 1.2.6 2.3.6.5 0 1.1 0 1.8-.3.6-.2.8 2.3.8 2.3z' fill='%23000' fill-rule='nonzero'/%3E%3C/svg%3E") no-repeat center 65% #fff;
           background-size: 17% !important;
         }
