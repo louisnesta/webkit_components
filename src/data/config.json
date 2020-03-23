@@ -84,7 +84,7 @@
       "title": "Calendar",
       "id": "events",
       "tag": "call",
-      "types": {
+      "filters": {
         "team": "blue",
         "outreach": "green",
         "community": "orangered"

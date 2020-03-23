@@ -1,11 +1,10 @@
 <template>
   <div class="filters md:filters-md"> 
       <h4 class="border-b font-bold pb-1 text-xl w-full mb-3 mt-2 hidden md:block">Filters</h4>
-<div v-for="option in types" :key="option" class="tag" @click="selectType(option)" :class="{active: type == option}" >
-    <span class="event_color" :style="'background: ' + eventColor(option)"></span>
-    {{option}}
-</div>
-     
+      <div v-for="option in types" :key="option" class="tag" @click="selectType(option)" :class="{active: type == option}" >
+          <span class="event_color" :style="'background: ' + eventColor(option)"></span>
+          {{option}}
+      </div>
   </div>
 </template>
 
@@ -89,7 +88,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "vue-select/src/scss/vue-select.scss";
-
 
 .select {
   display: flex;

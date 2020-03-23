@@ -8,7 +8,7 @@
         <p class="key">type</p><p>{{type}}</p>
       </div>
       <div class="filter type" v-if="selectedDate" @click="clear('selectedDate')">
-        <p class="key">date</p><p>{{getDate(selectedDate)}}</p>
+        <p class="key">date</p><p>{{selectedDate | formatDate}}</p>
       </div>
       <div class="filter location" v-if="location" @click="clear(location)">
         <p class="key">location</p><p>{{location}}</p>
@@ -42,80 +42,31 @@
               <a v-if="item.json.host" :href="item.json.host" target="_blank" class="underline">{{item.json.host}}</a>
               <p>{{item.event.start | formatDate}} at {{item.event.start | formatTime}}</p>
               <p v-if="item.json.info" class="mt-2 pb-2 w-full">{{item.json.info}}</p>
-
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </transition-group>
-
-
   </div>
-<!--   <div class="sidebar">
-   
-  
- 
-
-  </div> -->
 </div>
 </template>
 
 <script>
 import moment from "moment";
 import { bus } from '@/main';
-import axios from "axios";
 export default {
   name: 'Timeline',
   data () {
     return {
-      dates: [],
-      events: [],
       search: "",
       location: null,
       expand: null,
-      date: null,
       type: null,
-      locations: [],
-      types: [],
-      options: {
-        container: '#events_container',
-        duration: 500,
-         easing: "ease"
-      },
-      selected: null,
-      selectedDate: null,
-      select: {
-        date: null,
-        location: null,
-        type: null
-      }
+      selectedDate: null
     }
   },
   methods: {
-    getObject(value){
-      var obj = JSON.parse(value);
-
-      return obj;
-    },
-    getEventData() {
-         var i = 0;
-          var eventsdata = this.data;
-
-        for (i = 0; i < eventsdata.length; i++) { 
-          var eventId = eventsdata[i]['id'];
-
-          var count = i;
-           axios.get(
-          `${this.baseUrl}/raw/${eventId}`
-          ).then(({ data }) => {
-            var event = eventsdata[count];
-            event['cooked'] = data;
-            this.eventsdata.push(event)
-          });
-        }
-    },
     toggleEvent(index){
       if (this.$mq !== "md") {
         if (this.expand == index) {
@@ -141,10 +92,6 @@ export default {
       }
       return obj;
     },
-    selectDate(){
-      this.location = null;
-      this.type = null;
-    },
     getTags(tags){
       let array = tags.map(function(tag) {
         return tag.name
@@ -154,55 +101,6 @@ export default {
     clear(key){
       this[key] = null;
     },
-    mapEvents(){
-      const events = this.data.reduce((c, v) => {
-        let date = this.getDate(v.event.start);
-        let tags = this.getTags(v.tags);
-        c[date] = c[date] || []; 
-        c[tags] = tags;
-        c[date].push(v);                //Push the value
-        return c;
-      }, {});
-      this.events.push(events);
-
-      var dates = this.mapData('date');
-      this.dates = this.filterDuplicates(dates);
-
-      this.locations = this.mapData('location');
-      this.types = this.mapData('event', 'event_type');
-
-    },
-    mapInfo(tag){
-      let array = [];
-      if (this.date || this.type) {
-        array = this.filteredItems.map(obj => 
-          obj[tag]
-        );
-      } else {
-        array = this.items.map(obj => 
-          obj[tag]
-        );
-      }
-      array = this.filterDuplicates(array);
-      return array;
-    },
-    selectType(tag){
-      this.type = tag;
-    },
-    mapTypes(){
-      let array = [];
-      if (this.select.date || this.select.type) {
-        array = this.items.map(obj => 
-          obj.event_type
-        );
-      } else {
-        array = this.items.map(obj => 
-          obj.event_type
-        );
-      }
-      array = this.filterDuplicates(array);
-      return array;
-    },
     newDate(index, date){
       var prevIndex = this.filteredItems[index-1];
       if (index == 0 || moment(prevIndex.event.start).format("YYYY-MM-DD") !== moment(date).format("YYYY-MM-DD")) {
@@ -210,25 +108,6 @@ export default {
       } else {
         return false
       }
-    },
-    mapData(key, key2){
-      let array;
-      array = this.items.map(obj => 
-        obj[key]
-      );
-      if (key2) {
-        array = this.items.map(obj => 
-          obj[key2]
-        );
-      }
-      return array.filter(Boolean);
-    },
-    filterDuplicates(array){
-      let unique = [...new Set(array)];
-      return unique.filter(Boolean);
-    },
-    getDate: function(value) {
-      return moment(value).format("dddd, MMMM Do");
     },
     dateId: function(value) {
       return moment(value).format("YYYYMMDD");
@@ -257,7 +136,6 @@ export default {
     },
   },
   created() {
-    this.mapEvents();
     bus.$on('setDate', (data) => {
       this.selectedDate = data;
     })
@@ -272,22 +150,21 @@ export default {
       window.console.log(data)
     })
     bus.$on('filterDate', (data) => {
-      this.date = data;
+      this.selectedDate = data;
       this.type = null;
       this.location = null;
     })
     bus.$on('filterSearch', (data) => {
       this.search = data;
       this.type = null;
-      this.date = null;
+      this.selectedDate = null;
     })
     bus.$on('filterLocation', (data) => {
       this.location = data;
-      this.date = null;
+      this.selectedDate = null;
     })
     bus.$on('filterType', (data) => {
       this.type = data;
-      window.console.log(data);
     })
   },
   filters: {
@@ -316,21 +193,18 @@ export default {
       }
 
       if (this.type != null) {
-
         var type = this.type;
         var self = this;
 
-          var test = filtered.filter(function(obj) {
-            var tags = self.getTags(obj.tags);
-            var x = tags.includes(type);
-            if (x) {
-              window.console.log(obj);
-              return obj
-            }
-          })
+        var test = filtered.filter(function(obj) {
+          var tags = self.getTags(obj.tags);
+          var x = tags.includes(type);
+          if (x) {
+            return obj
+          }
+        })
 
-          filtered = test;
-
+        filtered = test;
       }
 
       return filtered
@@ -340,7 +214,7 @@ export default {
   watch: {
     type() {
       if (this.type) {
-      bus.$emit('filterType', this.type);
+        bus.$emit('filterType', this.type);
       } else {
         bus.$emit('filterType', null);
       }
@@ -357,7 +231,7 @@ export default {
   background-size: 25px;
   width: auto;
   height: 50px;
-  .filter_icon {
+  .icon {
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 75'%3E%3Cpath fill='rgba(0,0,0,0.3)' d='M54 11H6l-1 1v8l18 12v16a1 1 0 001 1h1l11-3 1-1V32l18-12v-8l-1-1z'/%3E%3C/svg%3E") no-repeat 0 0;
       width: 25px;
       margin-top: 6px;

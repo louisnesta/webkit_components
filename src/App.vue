@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col w-full">
-    <Nav style="margin-bottom: 60px" :data="selectedComponents" />
+    <Nav style="margin-bottom: 60px" :data="navItems" />
 
-    <Hero :baseUrl="data.baseUrl" :custom="getSectionData('hero')" :category="getCategoryMetadata()"/>
+    <Hero :baseUrl="data.baseUrl" :custom="getSectionData('hero')"/>
 
     <div v-for="section in data.sections" :key="section.title" :id="section.id">
       <Custom v-if="section.type == 'custom'" :custom="section" html=true />
@@ -44,7 +44,8 @@ export default {
     return {
       data,
       category: { users: [] },
-      categories: []
+      categories: [],
+      sections: null
     };
   },
   components: {
@@ -61,43 +62,36 @@ export default {
     Terms
   },
   created() {
-    this.fetchData();
+    if (this.data.configId) {
+      axios.get(
+        `https://edgeryders.eu/webkit_components/topics.json?serializer=event&tags=webcontent`
+      ).then(({ data }) => {
+        var post = data.find(post => post.id === this.data.configId);
+        var json = this.getJson(post.cooked);
+        this.sections = json.sections;
+      });
+    } else {
+      this.sections = this.data.sections;
+    }
   },
   methods: {
-    fetchData() {
-      axios
-        .get(`${this.data.baseUrl}/webkit_components/categories.json`)
-        .then(this.applyCategory);
-    },
-    applyCategory({ data }) {
-      this.categories = data;
-    },
-    getCategoryMetadata() {
-      var hero_data = this.getSectionData('hero');
-      if (hero_data.category) {
-         return this.categories.find(category => category.id === hero_data.category) || {};
-      } else {
-        return null
-      }
-    },
     getSectionData(type) {
-      return this.data.sections.find(section => section.type === type) || {};
+      return this.sections.find(section => section.type === type) || {};
     }
   },
   computed: {
-    selectedComponents() {
-    var navArray = this.data.sections.map(function(el) {
-            if (el.id) {
-              return {
-                title: el.title,
-                id: el.id,
-              } 
-            }
-          });
-    return navArray.filter(function (el) {
-        return el != null;
-    });
-    
+    navItems() {
+      var navArray = this.sections.map(function(el) {
+              if (el.id) {
+                return {
+                  title: el.title,
+                  id: el.id,
+                } 
+              }
+            });
+      return navArray.filter(function (el) {
+          return el != null;
+      });
     }
   }
 };
