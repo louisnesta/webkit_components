@@ -19,6 +19,12 @@
             "url": "#",
             "background": "rgb(255, 219, 106)",
             "color": "#333"
+          },
+          {
+            "text": "Contact us",
+            "url": "#",
+            "background": "rgb(255, 219, 106)",
+            "color": "#333"
           }
         ]
       },
@@ -198,6 +204,7 @@
     },
     {
       "type": "partners",
+      "title": "Organised by",
       "id": "organisers",
       "display": {
         "slides": 3

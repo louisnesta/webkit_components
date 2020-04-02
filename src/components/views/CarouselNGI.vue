@@ -1,6 +1,6 @@
 <template>
   <div class='carousel-view' @mouseover="clear_interval" @mouseleave="toggle_play">
-    <div class="section_title w-full md:w-auto border-none mb-0">
+    <div class="section_title w-full border-none mb-0">
       <div>{{ custom.title }}</div>
     </div>
 
@@ -112,11 +112,11 @@ export default {
   align-items: flex-start;
   overflow: hidden;
   width: 100% !important;
-  height: 22em;
+  height: 14em;
 }
 .slide {
     flex-basis: 30%;
-    height: 20em;
+    height: 10em;
     margin: 1em;
     display: flex;
     flex-direction: column;
@@ -135,7 +135,7 @@ export default {
     justify-content: center;
     background-color: #ff !important;
     background-repeat: no-repeat !important;
-    background-position: center center !important;
+    background-position: left center !important;
     background-size: 80% !important;
     padding-bottom: 20px;
   }

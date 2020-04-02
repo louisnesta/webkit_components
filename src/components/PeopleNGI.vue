@@ -5,24 +5,25 @@
     </div>
     <div class="wrapper md:wrapper-md">
       <div class="user_grid md:user_grid-md">
-        <div
-          class="user_avatar md:user_avatar-md"
-          v-for="(item, index) in people"
-          :key="index"
-          @click="setActive(index)"
-          :class="{ active: selected === index }"
-          :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
-        ></div>
-      </div>
-      <div class="w-8/12 px-2 md:px-2 md:pt-2" v-if="people[selected]">
-        <p
-          class="user_name border-b mb-2 pb-2"
-          :href="people[selected].url"
-          target="_blank"
-        >
-          {{ people[selected].title }} <span>{{ getUser(people[selected].excerpt) }}</span>
-        </p>
-        <div class="bio" v-html="processProfilePost(people[selected].cooked)" />
+        <div>
+          <div
+            class="user_avatar md:user_avatar-md"
+            v-for="(item, index) in people"
+            :key="index"
+            @click="setActive(index)"
+            :class="{ active: selected === index }"
+            :style="{ backgroundImage: 'url(' + item.image_url + ')' }"
+          > 
+            <div class="avatar_info">
+              <div class="title" v-html="processProfilePost(people[index].cooked)" />
+              <div class="name">
+                <p>
+                  {{ people[index].title }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +36,7 @@ export default {
   data() {
     return {
       people: [],
-      selected: 0
+      selected: "False"
     };
   },
   methods: {
@@ -83,9 +84,56 @@ export default {
   }
 }
 #people .user_avatar {
-  border: 4px solid white;
+  width: 10rem;
+  height: 10rem;
+  margin: 6px;
   &.active {
-    border: 4px solid black;
+    background-color: rgba(0,0,0,.5); // Tint color
+    background-blend-mode: multiply;
+    .title { 
+      visibility: visible;
+    }
+  }
+  &:hover {
+    background-color: rgba(0,0,0,.5); // Tint color
+    background-blend-mode: multiply;
+    .title { 
+      visibility: visible;
+    }
+  }
+}
+
+.avatar_info {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+
+.name {
+  width: 100%;
+  height: 1.5rem;
+  background-color: black;
+  position: absolute;
+  padding-top: 0.2rem;
+  bottom: 0;
+  p {
+    text-align: center;
+    font-size: 0.75rem;
+    color: white;
+  }
+}
+
+.title {
+  padding: 0rem 0.5rem 0.5rem 0.5rem;
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  visibility: hidden;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  p {
+    font-size: 0.75rem;
   }
 }
 

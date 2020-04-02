@@ -456,7 +456,6 @@ button:focus {outline:0;}
 
   .user_grid .user_avatar {
     @apply w-40 h-40 bg-cover inline-block;
-    border: 5px solid white;
   }
 
   .user_avatar:hover {
@@ -464,7 +463,6 @@ button:focus {outline:0;}
   }
 
   .user_avatar.active {
-    border: 5px solid black;
   }
 
   .user_avatar-md {
